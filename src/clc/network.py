@@ -15,7 +15,7 @@ class Network:
 	def GetNetworks(alias=None,location=None):
 		"""Gets the list of Networks mapped to the account in the specified datacenter.
 
-		https://t3n.zendesk.com/entries/21024721-Get-Networks
+		<a href="https://t3n.zendesk.com/entries/21024721-Get-Networks">https://t3n.zendesk.com/entries/21024721-Get-Networks</a>
 
 		:param alias: short code for a particular account.  If none will use account's default alias
 		:param location: datacenter where group resides.  If none will use account's primary datacenter
