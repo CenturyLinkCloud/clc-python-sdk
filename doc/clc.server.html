@@ -8,7 +8,7 @@
 <td valign=bottom>&nbsp;<br>
 <font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong><a href="clc.html"><font color="#ffffff">clc</font></a>.server</strong></big></big></font></td
 ><td align=right valign=bottom
-><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/Users/keithresar/clc_python_sdk_git/src/clc/server.py">/Users/keithresar/clc_python_sdk_git/src/clc/server.py</a></font></td></tr></table>
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/Users/keithresar/clc_git/src/clc/server.py">/Users/keithresar/clc_git/src/clc/server.py</a></font></td></tr></table>
     <p><tt><a href="#Server">Server</a>&nbsp;related&nbsp;functions.<br>
 &nbsp;<br>
 These&nbsp;server&nbsp;related&nbsp;functions&nbsp;generally&nbsp;align&nbsp;one-for-one&nbsp;with&nbsp;published&nbsp;API&nbsp;calls&nbsp;categorized&nbsp;in&nbsp;the&nbsp;server&nbsp;category<br>
@@ -42,14 +42,14 @@ API&nbsp;v2&nbsp;-&nbsp;https://t3n.zendesk.com/forums/21613150-Servers</tt></p>
     
 <tr><td bgcolor="#ffc8d8"><tt>&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
 <td width="100%">Static methods defined here:<br>
-<dl><dt><a name="Server-Archive"><strong>Archive</strong></a>(alias, servers)</dt><dd><tt>Archives&nbsp;the&nbsp;specified&nbsp;servers.<br>
+<dl><dt><a name="Server-Archive"><strong>Archive</strong></a>(servers, alias<font color="#909090">=None</font>)</dt><dd><tt>Archives&nbsp;the&nbsp;specified&nbsp;servers.<br>
 &nbsp;<br>
 https://t3n.zendesk.com/entries/21016957-Archive-<a href="#Server">Server</a><br>
 &nbsp;<br>
 :param&nbsp;alias:&nbsp;short&nbsp;code&nbsp;for&nbsp;a&nbsp;particular&nbsp;account.&nbsp;&nbsp;If&nbsp;none&nbsp;will&nbsp;use&nbsp;account's&nbsp;default&nbsp;alias<br>
 :param&nbsp;servers:&nbsp;list&nbsp;of&nbsp;server&nbsp;names</tt></dd></dl>
 
-<dl><dt><a name="Server-Create"><strong>Create</strong></a>(alias, location, name, template, cpu, ram, backup_level, group, network<font color="#909090">=''</font>, description<font color="#909090">=''</font>, password<font color="#909090">=''</font>)</dt><dd><tt>Gets&nbsp;the&nbsp;list&nbsp;of&nbsp;Templates&nbsp;available&nbsp;to&nbsp;the&nbsp;account&nbsp;and&nbsp;location.<br>
+<dl><dt><a name="Server-Create"><strong>Create</strong></a>(name, template, cpu, ram, backup_level, group, alias<font color="#909090">=None</font>, location<font color="#909090">=None</font>, network<font color="#909090">=''</font>, description<font color="#909090">=''</font>, password<font color="#909090">=''</font>)</dt><dd><tt>Gets&nbsp;the&nbsp;list&nbsp;of&nbsp;Templates&nbsp;available&nbsp;to&nbsp;the&nbsp;account&nbsp;and&nbsp;location.<br>
 &nbsp;<br>
 https://t3n.zendesk.com/entries/21006677-Create-<a href="#Server">Server</a><br>
 &nbsp;<br>
@@ -65,7 +65,7 @@ https://t3n.zendesk.com/entries/21006677-Create-<a href="#Server">Server</a><br>
 :param&nbsp;description:&nbsp;optional&nbsp;description&nbsp;for&nbsp;the&nbsp;server.&nbsp;&nbsp;If&nbsp;None&nbsp;the&nbsp;server&nbsp;name&nbsp;will&nbsp;be&nbsp;used.<br>
 :param&nbsp;password:&nbsp;optional&nbsp;administrator&nbsp;password.&nbsp;&nbsp;If&nbsp;None&nbsp;the&nbsp;system&nbsp;will&nbsp;generate&nbsp;one</tt></dd></dl>
 
-<dl><dt><a name="Server-Delete"><strong>Delete</strong></a>(alias, servers)</dt><dd><tt>Deletes&nbsp;the&nbsp;specified&nbsp;servers&nbsp;and&nbsp;releases&nbsp;all&nbsp;associated&nbsp;resources.<br>
+<dl><dt><a name="Server-Delete"><strong>Delete</strong></a>(servers, alias<font color="#909090">=None</font>)</dt><dd><tt>Deletes&nbsp;the&nbsp;specified&nbsp;servers&nbsp;and&nbsp;releases&nbsp;all&nbsp;associated&nbsp;resources.<br>
 &nbsp;<br>
 https://t3n.zendesk.com/entries/21016852-Delete-<a href="#Server">Server</a><br>
 &nbsp;<br>
@@ -76,14 +76,14 @@ https://t3n.zendesk.com/entries/21016852-Delete-<a href="#Server">Server</a><br>
 &nbsp;<br>
 :param&nbsp;alias:&nbsp;short&nbsp;code&nbsp;for&nbsp;a&nbsp;particular&nbsp;account.&nbsp;&nbsp;If&nbsp;none&nbsp;will&nbsp;use&nbsp;account's&nbsp;default&nbsp;alias</tt></dd></dl>
 
-<dl><dt><a name="Server-GetCredentials"><strong>GetCredentials</strong></a>(alias, servers)</dt><dd><tt>Gets&nbsp;the&nbsp;credentials&nbsp;for&nbsp;the&nbsp;specified&nbsp;servers.<br>
+<dl><dt><a name="Server-GetCredentials"><strong>GetCredentials</strong></a>(servers, alias<font color="#909090">=None</font>)</dt><dd><tt>Gets&nbsp;the&nbsp;credentials&nbsp;for&nbsp;the&nbsp;specified&nbsp;servers.<br>
 &nbsp;<br>
 https://t3n.zendesk.com/entries/21053657-Get-<a href="#Server">Server</a>-Credentials<br>
 &nbsp;<br>
 :param&nbsp;alias:&nbsp;short&nbsp;code&nbsp;for&nbsp;a&nbsp;particular&nbsp;account.&nbsp;&nbsp;If&nbsp;none&nbsp;will&nbsp;use&nbsp;account's&nbsp;default&nbsp;alias<br>
 :param&nbsp;servers:&nbsp;list&nbsp;of&nbsp;server&nbsp;names</tt></dd></dl>
 
-<dl><dt><a name="Server-GetDisks"><strong>GetDisks</strong></a>(alias, server, guest_names<font color="#909090">=True</font>)</dt><dd><tt>Returns&nbsp;list&nbsp;of&nbsp;disks&nbsp;configured&nbsp;for&nbsp;the&nbsp;server<br>
+<dl><dt><a name="Server-GetDisks"><strong>GetDisks</strong></a>(server, alias<font color="#909090">=None</font>, guest_names<font color="#909090">=True</font>)</dt><dd><tt>Returns&nbsp;list&nbsp;of&nbsp;disks&nbsp;configured&nbsp;for&nbsp;the&nbsp;server<br>
 &nbsp;<br>
 https://t3n.zendesk.com/entries/23087091-List-Disks<br>
 &nbsp;<br>
@@ -98,7 +98,7 @@ https://t3n.zendesk.com/entries/21741917-Get-<a href="#Server">Server</a><br>
 :param&nbsp;alias:&nbsp;short&nbsp;code&nbsp;for&nbsp;a&nbsp;particular&nbsp;account.&nbsp;&nbsp;If&nbsp;none&nbsp;will&nbsp;use&nbsp;account's&nbsp;default&nbsp;alias<br>
 :param&nbsp;server:&nbsp;name&nbsp;of&nbsp;server&nbsp;to&nbsp;queury</tt></dd></dl>
 
-<dl><dt><a name="Server-GetServers"><strong>GetServers</strong></a>(alias, location, group, name_groups<font color="#909090">=False</font>)</dt><dd><tt>Gets&nbsp;a&nbsp;deep&nbsp;list&nbsp;of&nbsp;all&nbsp;Servers&nbsp;for&nbsp;a&nbsp;given&nbsp;Hardware&nbsp;Group&nbsp;and&nbsp;its&nbsp;sub&nbsp;groups,&nbsp;or&nbsp;all&nbsp;Servers&nbsp;for&nbsp;a&nbsp;given&nbsp;location.<br>
+<dl><dt><a name="Server-GetServers"><strong>GetServers</strong></a>(location, group<font color="#909090">=None</font>, alias<font color="#909090">=None</font>, name_groups<font color="#909090">=False</font>)</dt><dd><tt>Gets&nbsp;a&nbsp;deep&nbsp;list&nbsp;of&nbsp;all&nbsp;Servers&nbsp;for&nbsp;a&nbsp;given&nbsp;Hardware&nbsp;Group&nbsp;and&nbsp;its&nbsp;sub&nbsp;groups,&nbsp;or&nbsp;all&nbsp;Servers&nbsp;for&nbsp;a&nbsp;given&nbsp;location.<br>
 &nbsp;<br>
 https://t3n.zendesk.com/entries/21735513-Get-All-Servers<br>
 &nbsp;<br>
@@ -119,49 +119,49 @@ https://t3n.zendesk.com/entries/23102683-List-Available-<a href="#Server">Server
 :param&nbsp;alias:&nbsp;short&nbsp;code&nbsp;for&nbsp;a&nbsp;particular&nbsp;account.&nbsp;&nbsp;If&nbsp;none&nbsp;will&nbsp;use&nbsp;account's&nbsp;default&nbsp;alias<br>
 :param&nbsp;location:&nbsp;datacenter&nbsp;where&nbsp;group&nbsp;resides</tt></dd></dl>
 
-<dl><dt><a name="Server-Pause"><strong>Pause</strong></a>(alias, servers)</dt><dd><tt>Pauses&nbsp;the&nbsp;specified&nbsp;servers&nbsp;and&nbsp;releases&nbsp;all&nbsp;associated&nbsp;resources.<br>
+<dl><dt><a name="Server-Pause"><strong>Pause</strong></a>(servers, alias<font color="#909090">=None</font>)</dt><dd><tt>Pauses&nbsp;the&nbsp;specified&nbsp;servers&nbsp;and&nbsp;releases&nbsp;all&nbsp;associated&nbsp;resources.<br>
 &nbsp;<br>
 https://t3n.zendesk.com/entries/21005343-Pause-<a href="#Server">Server</a><br>
 &nbsp;<br>
 :param&nbsp;alias:&nbsp;short&nbsp;code&nbsp;for&nbsp;a&nbsp;particular&nbsp;account.&nbsp;&nbsp;If&nbsp;none&nbsp;will&nbsp;use&nbsp;account's&nbsp;default&nbsp;alias<br>
 :param&nbsp;servers:&nbsp;list&nbsp;of&nbsp;server&nbsp;names</tt></dd></dl>
 
-<dl><dt><a name="Server-Poweroff"><strong>Poweroff</strong></a>(alias, servers)</dt><dd><tt>Powers&nbsp;off&nbsp;the&nbsp;specified&nbsp;servers.<br>
+<dl><dt><a name="Server-Poweroff"><strong>Poweroff</strong></a>(servers, alias<font color="#909090">=None</font>)</dt><dd><tt>Powers&nbsp;off&nbsp;the&nbsp;specified&nbsp;servers.<br>
 &nbsp;<br>
 https://t3n.zendesk.com/entries/21005353-Power-Off-<a href="#Server">Server</a><br>
 &nbsp;<br>
 :param&nbsp;alias:&nbsp;short&nbsp;code&nbsp;for&nbsp;a&nbsp;particular&nbsp;account.&nbsp;&nbsp;If&nbsp;none&nbsp;will&nbsp;use&nbsp;account's&nbsp;default&nbsp;alias<br>
 :param&nbsp;servers:&nbsp;list&nbsp;of&nbsp;server&nbsp;names</tt></dd></dl>
 
-<dl><dt><a name="Server-Poweron"><strong>Poweron</strong></a>(alias, servers)</dt><dd><tt>Powers&nbsp;on&nbsp;the&nbsp;specified&nbsp;servers.<br>
+<dl><dt><a name="Server-Poweron"><strong>Poweron</strong></a>(servers, alias<font color="#909090">=None</font>)</dt><dd><tt>Powers&nbsp;on&nbsp;the&nbsp;specified&nbsp;servers.<br>
 &nbsp;<br>
 https://t3n.zendesk.com/entries/20985206-Power-On-<a href="#Server">Server</a><br>
 &nbsp;<br>
 :param&nbsp;alias:&nbsp;short&nbsp;code&nbsp;for&nbsp;a&nbsp;particular&nbsp;account.&nbsp;&nbsp;If&nbsp;none&nbsp;will&nbsp;use&nbsp;account's&nbsp;default&nbsp;alias<br>
 :param&nbsp;servers:&nbsp;list&nbsp;of&nbsp;server&nbsp;names</tt></dd></dl>
 
-<dl><dt><a name="Server-Reboot"><strong>Reboot</strong></a>(alias, servers)</dt><dd><tt>Reboots&nbsp;the&nbsp;specified&nbsp;servers.<br>
+<dl><dt><a name="Server-Reboot"><strong>Reboot</strong></a>(servers, alias<font color="#909090">=None</font>)</dt><dd><tt>Reboots&nbsp;the&nbsp;specified&nbsp;servers.<br>
 &nbsp;<br>
 https://t3n.zendesk.com/entries/20998347-Reboot-<a href="#Server">Server</a><br>
 &nbsp;<br>
 :param&nbsp;alias:&nbsp;short&nbsp;code&nbsp;for&nbsp;a&nbsp;particular&nbsp;account.&nbsp;&nbsp;If&nbsp;none&nbsp;will&nbsp;use&nbsp;account's&nbsp;default&nbsp;alias<br>
 :param&nbsp;servers:&nbsp;list&nbsp;of&nbsp;server&nbsp;names</tt></dd></dl>
 
-<dl><dt><a name="Server-Reset"><strong>Reset</strong></a>(alias, servers)</dt><dd><tt>Resets&nbsp;the&nbsp;specified&nbsp;servers.<br>
+<dl><dt><a name="Server-Reset"><strong>Reset</strong></a>(servers, alias<font color="#909090">=None</font>)</dt><dd><tt>Resets&nbsp;the&nbsp;specified&nbsp;servers.<br>
 &nbsp;<br>
 https://t3n.zendesk.com/entries/21005363-Reset-<a href="#Server">Server</a><br>
 &nbsp;<br>
 :param&nbsp;alias:&nbsp;short&nbsp;code&nbsp;for&nbsp;a&nbsp;particular&nbsp;account.&nbsp;&nbsp;If&nbsp;none&nbsp;will&nbsp;use&nbsp;account's&nbsp;default&nbsp;alias<br>
 :param&nbsp;servers:&nbsp;list&nbsp;of&nbsp;server&nbsp;names</tt></dd></dl>
 
-<dl><dt><a name="Server-Shutdown"><strong>Shutdown</strong></a>(alias, servers)</dt><dd><tt>Shuts&nbsp;down&nbsp;the&nbsp;specified&nbsp;servers.<br>
+<dl><dt><a name="Server-Shutdown"><strong>Shutdown</strong></a>(servers, alias<font color="#909090">=None</font>)</dt><dd><tt>Shuts&nbsp;down&nbsp;the&nbsp;specified&nbsp;servers.<br>
 &nbsp;<br>
 https://t3n.zendesk.com/entries/23126728-Shutdown-<a href="#Server">Server</a><br>
 &nbsp;<br>
 :param&nbsp;alias:&nbsp;short&nbsp;code&nbsp;for&nbsp;a&nbsp;particular&nbsp;account.&nbsp;&nbsp;If&nbsp;none&nbsp;will&nbsp;use&nbsp;account's&nbsp;default&nbsp;alias<br>
 :param&nbsp;servers:&nbsp;list&nbsp;of&nbsp;server&nbsp;names</tt></dd></dl>
 
-<dl><dt><a name="Server-Snapshot"><strong>Snapshot</strong></a>(alias, servers)</dt><dd><tt>Initiates&nbsp;a&nbsp;server&nbsp;snapshot.<br>
+<dl><dt><a name="Server-Snapshot"><strong>Snapshot</strong></a>(servers, alias<font color="#909090">=None</font>)</dt><dd><tt>Initiates&nbsp;a&nbsp;server&nbsp;snapshot.<br>
 &nbsp;<br>
 https://t3n.zendesk.com/entries/23106211-Snapshot-<a href="#Server">Server</a><br>
 &nbsp;<br>

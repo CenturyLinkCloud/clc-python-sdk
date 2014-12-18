@@ -8,7 +8,7 @@
 <td valign=bottom>&nbsp;<br>
 <font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong><a href="clc.html"><font color="#ffffff">clc</font></a>.billing</strong></big></big></font></td
 ><td align=right valign=bottom
-><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/Users/keithresar/clc_python_sdk_git/src/clc/billing.py">/Users/keithresar/clc_python_sdk_git/src/clc/billing.py</a></font></td></tr></table>
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/Users/keithresar/clc_git/src/clc/billing.py">/Users/keithresar/clc_git/src/clc/billing.py</a></font></td></tr></table>
     <p><tt><a href="#Billing">Billing</a>&nbsp;related&nbsp;functions.<br>
 &nbsp;<br>
 These&nbsp;billing&nbsp;related&nbsp;functions&nbsp;generally&nbsp;align&nbsp;one-for-one&nbsp;with&nbsp;published&nbsp;API&nbsp;calls&nbsp;categorized&nbsp;in&nbsp;the&nbsp;billing&nbsp;category<br>
@@ -41,13 +41,13 @@ API&nbsp;v2&nbsp;-&nbsp;n/a</tt></p>
     
 <tr><td bgcolor="#ffc8d8"><tt>&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
 <td width="100%">Static methods defined here:<br>
-<dl><dt><a name="Billing-GetAccountSummary"><strong>GetAccountSummary</strong></a>(alias)</dt><dd><tt>Gets&nbsp;monthly&nbsp;and&nbsp;hourly&nbsp;charges&nbsp;and&nbsp;estimates&nbsp;for&nbsp;a&nbsp;given&nbsp;account&nbsp;or&nbsp;collection&nbsp;of&nbsp;accounts.<br>
+<dl><dt><a name="Billing-GetAccountSummary"><strong>GetAccountSummary</strong></a>(alias<font color="#909090">=None</font>)</dt><dd><tt>Gets&nbsp;monthly&nbsp;and&nbsp;hourly&nbsp;charges&nbsp;and&nbsp;estimates&nbsp;for&nbsp;a&nbsp;given&nbsp;account&nbsp;or&nbsp;collection&nbsp;of&nbsp;accounts.<br>
 &nbsp;<br>
 https://t3n.zendesk.com/entries/22408882-GetAccountSummary<br>
 &nbsp;<br>
 :param&nbsp;alias:&nbsp;short&nbsp;code&nbsp;for&nbsp;a&nbsp;particular&nbsp;account.&nbsp;&nbsp;If&nbsp;none&nbsp;will&nbsp;use&nbsp;account's&nbsp;default&nbsp;alias</tt></dd></dl>
 
-<dl><dt><a name="Billing-GetGroupEstimate"><strong>GetGroupEstimate</strong></a>(alias, location, group)</dt><dd><tt>Gets&nbsp;estimated&nbsp;costs&nbsp;for&nbsp;a&nbsp;group&nbsp;of&nbsp;servers.<br>
+<dl><dt><a name="Billing-GetGroupEstimate"><strong>GetGroupEstimate</strong></a>(group, alias<font color="#909090">=None</font>, location<font color="#909090">=None</font>)</dt><dd><tt>Gets&nbsp;estimated&nbsp;costs&nbsp;for&nbsp;a&nbsp;group&nbsp;of&nbsp;servers.<br>
 &nbsp;<br>
 https://t3n.zendesk.com/entries/22423906-GetGroupEstimate<br>
 &nbsp;<br>
@@ -55,7 +55,7 @@ https://t3n.zendesk.com/entries/22423906-GetGroupEstimate<br>
 :param&nbsp;location:&nbsp;datacenter&nbsp;where&nbsp;group&nbsp;resides<br>
 :param&nbsp;group:&nbsp;group&nbsp;name</tt></dd></dl>
 
-<dl><dt><a name="Billing-GetGroupSummaries"><strong>GetGroupSummaries</strong></a>(alias, date_start<font color="#909090">=None</font>, date_end<font color="#909090">=None</font>)</dt><dd><tt>Gets&nbsp;the&nbsp;charges&nbsp;for&nbsp;groups&nbsp;and&nbsp;servers&nbsp;within&nbsp;a&nbsp;given&nbsp;account,&nbsp;and&nbsp;for&nbsp;any&nbsp;date&nbsp;range.<br>
+<dl><dt><a name="Billing-GetGroupSummaries"><strong>GetGroupSummaries</strong></a>(alias<font color="#909090">=None</font>, date_start<font color="#909090">=None</font>, date_end<font color="#909090">=None</font>)</dt><dd><tt>Gets&nbsp;the&nbsp;charges&nbsp;for&nbsp;groups&nbsp;and&nbsp;servers&nbsp;within&nbsp;a&nbsp;given&nbsp;account,&nbsp;and&nbsp;for&nbsp;any&nbsp;date&nbsp;range.<br>
 &nbsp;<br>
 https://t3n.zendesk.com/entries/22423916-GetGroupSummaries<br>
 &nbsp;<br>
@@ -63,7 +63,7 @@ https://t3n.zendesk.com/entries/22423916-GetGroupSummaries<br>
 :param&nbsp;date_start:&nbsp;YYYY-MM-DD&nbsp;string&nbsp;for&nbsp;start&nbsp;date.&nbsp;&nbsp;If&nbsp;None&nbsp;defaults&nbsp;to&nbsp;start&nbsp;of&nbsp;current&nbsp;month<br>
 :param&nbsp;date_end:&nbsp;YYYY-MM-DD&nbsp;string&nbsp;for&nbsp;end&nbsp;date.&nbsp;&nbsp;If&nbsp;None&nbsp;defaults&nbsp;to&nbsp;current&nbsp;day&nbsp;of&nbsp;current&nbsp;month</tt></dd></dl>
 
-<dl><dt><a name="Billing-GetServerEstimate"><strong>GetServerEstimate</strong></a>(alias, server)</dt><dd><tt>Gets&nbsp;the&nbsp;estimated&nbsp;monthly&nbsp;cost&nbsp;for&nbsp;a&nbsp;given&nbsp;server.<br>
+<dl><dt><a name="Billing-GetServerEstimate"><strong>GetServerEstimate</strong></a>(server, alias<font color="#909090">=None</font>)</dt><dd><tt>Gets&nbsp;the&nbsp;estimated&nbsp;monthly&nbsp;cost&nbsp;for&nbsp;a&nbsp;given&nbsp;server.<br>
 &nbsp;<br>
 https://t3n.zendesk.com/entries/22422323-GetServerEstimate<br>
 &nbsp;<br>
