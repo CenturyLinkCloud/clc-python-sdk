@@ -8,7 +8,7 @@
 <td valign=bottom>&nbsp;<br>
 <font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>clc</strong></big></big></font></td
 ><td align=right valign=bottom
-><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/Users//clc_git/src/clc/__init__.py">/Users//clc_git/src/clc/__init__.py</a></font></td></tr></table>
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/Users//clc_python_sdk_git/src/clc/__init__.py">/Users//clc_python_sdk_git/src/clc/__init__.py</a></font></td></tr></table>
     <p><tt>CenturyLink&nbsp;Cloud&nbsp;Python&nbsp;SDK&nbsp;and&nbsp;CLI&nbsp;tool.<br>
 &nbsp;<br>
 The&nbsp;CenturyLink&nbsp;Cloud&nbsp;Python&nbsp;SDK&nbsp;provides&nbsp;close&nbsp;to&nbsp;a&nbsp;one-to-one&nbsp;mapping&nbsp;between<br>
@@ -29,22 +29,10 @@ API&nbsp;Documentaton&nbsp;v2:&nbsp;https://t3n.zendesk.com/categories/20067994-
 <font color="#ffffff" face="helvetica, arial"><big><strong>Package Contents</strong></big></font></td></tr>
     
 <tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
-<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="clc.account.html">account</a><br>
-<a href="clc.api.html">api</a><br>
-<a href="clc.billing.html">billing</a><br>
-<a href="clc.blueprint.html">blueprint</a><br>
-</td><td width="25%" valign=top><a href="clc.cli.html">cli</a><br>
-<a href="clc.defaults.html">defaults</a><br>
-<a href="clc.exceptions.html">exceptions</a><br>
-<a href="clc.group.html">group</a><br>
-</td><td width="25%" valign=top><a href="clc.network.html">network</a><br>
-<a href="clc.output.html">output</a><br>
-<a href="clc.queue.html">queue</a><br>
-<a href="clc.server.html">server</a><br>
-</td><td width="25%" valign=top><a href="clc.shell.html">shell</a><br>
-<a href="clc.terminal_size.html">terminal_size</a><br>
-<a href="clc.user.html">user</a><br>
-</td></tr></table></td></tr></table><p>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="clc.APIv1.html"><strong>APIv1</strong>&nbsp;(package)</a><br>
+</td><td width="25%" valign=top><a href="clc.APIv2.html"><strong>APIv2</strong>&nbsp;(package)</a><br>
+</td><td width="25%" valign=top><a href="clc.defaults.html">defaults</a><br>
+</td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
 <tr bgcolor="#ee77aa">
 <td colspan=3 valign=bottom>&nbsp;<br>
@@ -52,14 +40,15 @@ API&nbsp;Documentaton&nbsp;v2:&nbsp;https://t3n.zendesk.com/categories/20067994-
     
 <tr><td bgcolor="#ee77aa"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
 <td width="100%"><dl>
-<dt><font face="helvetica, arial"><a href="clc.html#output">output</a>
-</font></dt><dt><font face="helvetica, arial"><a href="exceptions.html#Exception">exceptions.Exception</a>(<a href="exceptions.html#BaseException">exceptions.BaseException</a>)
+<dt><font face="helvetica, arial"><a href="exceptions.html#Exception">exceptions.Exception</a>(<a href="exceptions.html#BaseException">exceptions.BaseException</a>)
 </font></dt><dd>
 <dl>
 <dt><font face="helvetica, arial"><a href="clc.html#CLCException">CLCException</a>
 </font></dt><dd>
 <dl>
-<dt><font face="helvetica, arial"><a href="clc.html#AccountDeletedException">AccountDeletedException</a>
+<dt><font face="helvetica, arial"><a href="clc.html#APIV1NotEnabled">APIV1NotEnabled</a>
+</font></dt><dt><font face="helvetica, arial"><a href="clc.html#APIV2NotEnabled">APIV2NotEnabled</a>
+</font></dt><dt><font face="helvetica, arial"><a href="clc.html#AccountDeletedException">AccountDeletedException</a>
 </font></dt><dt><font face="helvetica, arial"><a href="clc.html#AccountDoesNotExistException">AccountDoesNotExistException</a>
 </font></dt><dt><font face="helvetica, arial"><a href="clc.html#AccountLoginException">AccountLoginException</a>
 </font></dt></dl>
@@ -68,6 +57,124 @@ API&nbsp;Documentaton&nbsp;v2:&nbsp;https://t3n.zendesk.com/categories/20067994-
 </dd>
 </dl>
  <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="APIV1NotEnabled">class <strong>APIV1NotEnabled</strong></a>(<a href="clc.html#CLCException">CLCException</a>)</font></td></tr>
+    
+<tr><td bgcolor="#ffc8d8"><tt>&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="clc.html#APIV1NotEnabled">APIV1NotEnabled</a></dd>
+<dd><a href="clc.html#CLCException">CLCException</a></dd>
+<dd><a href="exceptions.html#Exception">exceptions.Exception</a></dd>
+<dd><a href="exceptions.html#BaseException">exceptions.BaseException</a></dd>
+<dd><a href="__builtin__.html#object">__builtin__.object</a></dd>
+</dl>
+<hr>
+Data descriptors inherited from <a href="clc.html#CLCException">CLCException</a>:<br>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<hr>
+Methods inherited from <a href="exceptions.html#Exception">exceptions.Exception</a>:<br>
+<dl><dt><a name="APIV1NotEnabled-__init__"><strong>__init__</strong></a>(...)</dt><dd><tt>x.<a href="#APIV1NotEnabled-__init__">__init__</a>(...)&nbsp;initializes&nbsp;x;&nbsp;see&nbsp;help(type(x))&nbsp;for&nbsp;signature</tt></dd></dl>
+
+<hr>
+Data and other attributes inherited from <a href="exceptions.html#Exception">exceptions.Exception</a>:<br>
+<dl><dt><strong>__new__</strong> = &lt;built-in method __new__ of type object&gt;<dd><tt>T.<a href="#APIV1NotEnabled-__new__">__new__</a>(S,&nbsp;...)&nbsp;-&gt;&nbsp;a&nbsp;new&nbsp;object&nbsp;with&nbsp;type&nbsp;S,&nbsp;a&nbsp;subtype&nbsp;of&nbsp;T</tt></dl>
+
+<hr>
+Methods inherited from <a href="exceptions.html#BaseException">exceptions.BaseException</a>:<br>
+<dl><dt><a name="APIV1NotEnabled-__delattr__"><strong>__delattr__</strong></a>(...)</dt><dd><tt>x.<a href="#APIV1NotEnabled-__delattr__">__delattr__</a>('name')&nbsp;&lt;==&gt;&nbsp;del&nbsp;x.name</tt></dd></dl>
+
+<dl><dt><a name="APIV1NotEnabled-__getattribute__"><strong>__getattribute__</strong></a>(...)</dt><dd><tt>x.<a href="#APIV1NotEnabled-__getattribute__">__getattribute__</a>('name')&nbsp;&lt;==&gt;&nbsp;x.name</tt></dd></dl>
+
+<dl><dt><a name="APIV1NotEnabled-__getitem__"><strong>__getitem__</strong></a>(...)</dt><dd><tt>x.<a href="#APIV1NotEnabled-__getitem__">__getitem__</a>(y)&nbsp;&lt;==&gt;&nbsp;x[y]</tt></dd></dl>
+
+<dl><dt><a name="APIV1NotEnabled-__getslice__"><strong>__getslice__</strong></a>(...)</dt><dd><tt>x.<a href="#APIV1NotEnabled-__getslice__">__getslice__</a>(i,&nbsp;j)&nbsp;&lt;==&gt;&nbsp;x[i:j]<br>
+&nbsp;<br>
+Use&nbsp;of&nbsp;negative&nbsp;indices&nbsp;is&nbsp;not&nbsp;supported.</tt></dd></dl>
+
+<dl><dt><a name="APIV1NotEnabled-__reduce__"><strong>__reduce__</strong></a>(...)</dt></dl>
+
+<dl><dt><a name="APIV1NotEnabled-__repr__"><strong>__repr__</strong></a>(...)</dt><dd><tt>x.<a href="#APIV1NotEnabled-__repr__">__repr__</a>()&nbsp;&lt;==&gt;&nbsp;repr(x)</tt></dd></dl>
+
+<dl><dt><a name="APIV1NotEnabled-__setattr__"><strong>__setattr__</strong></a>(...)</dt><dd><tt>x.<a href="#APIV1NotEnabled-__setattr__">__setattr__</a>('name',&nbsp;value)&nbsp;&lt;==&gt;&nbsp;x.name&nbsp;=&nbsp;value</tt></dd></dl>
+
+<dl><dt><a name="APIV1NotEnabled-__setstate__"><strong>__setstate__</strong></a>(...)</dt></dl>
+
+<dl><dt><a name="APIV1NotEnabled-__str__"><strong>__str__</strong></a>(...)</dt><dd><tt>x.<a href="#APIV1NotEnabled-__str__">__str__</a>()&nbsp;&lt;==&gt;&nbsp;str(x)</tt></dd></dl>
+
+<dl><dt><a name="APIV1NotEnabled-__unicode__"><strong>__unicode__</strong></a>(...)</dt></dl>
+
+<hr>
+Data descriptors inherited from <a href="exceptions.html#BaseException">exceptions.BaseException</a>:<br>
+<dl><dt><strong>__dict__</strong></dt>
+</dl>
+<dl><dt><strong>args</strong></dt>
+</dl>
+<dl><dt><strong>message</strong></dt>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="APIV2NotEnabled">class <strong>APIV2NotEnabled</strong></a>(<a href="clc.html#CLCException">CLCException</a>)</font></td></tr>
+    
+<tr><td bgcolor="#ffc8d8"><tt>&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="clc.html#APIV2NotEnabled">APIV2NotEnabled</a></dd>
+<dd><a href="clc.html#CLCException">CLCException</a></dd>
+<dd><a href="exceptions.html#Exception">exceptions.Exception</a></dd>
+<dd><a href="exceptions.html#BaseException">exceptions.BaseException</a></dd>
+<dd><a href="__builtin__.html#object">__builtin__.object</a></dd>
+</dl>
+<hr>
+Data descriptors inherited from <a href="clc.html#CLCException">CLCException</a>:<br>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<hr>
+Methods inherited from <a href="exceptions.html#Exception">exceptions.Exception</a>:<br>
+<dl><dt><a name="APIV2NotEnabled-__init__"><strong>__init__</strong></a>(...)</dt><dd><tt>x.<a href="#APIV2NotEnabled-__init__">__init__</a>(...)&nbsp;initializes&nbsp;x;&nbsp;see&nbsp;help(type(x))&nbsp;for&nbsp;signature</tt></dd></dl>
+
+<hr>
+Data and other attributes inherited from <a href="exceptions.html#Exception">exceptions.Exception</a>:<br>
+<dl><dt><strong>__new__</strong> = &lt;built-in method __new__ of type object&gt;<dd><tt>T.<a href="#APIV2NotEnabled-__new__">__new__</a>(S,&nbsp;...)&nbsp;-&gt;&nbsp;a&nbsp;new&nbsp;object&nbsp;with&nbsp;type&nbsp;S,&nbsp;a&nbsp;subtype&nbsp;of&nbsp;T</tt></dl>
+
+<hr>
+Methods inherited from <a href="exceptions.html#BaseException">exceptions.BaseException</a>:<br>
+<dl><dt><a name="APIV2NotEnabled-__delattr__"><strong>__delattr__</strong></a>(...)</dt><dd><tt>x.<a href="#APIV2NotEnabled-__delattr__">__delattr__</a>('name')&nbsp;&lt;==&gt;&nbsp;del&nbsp;x.name</tt></dd></dl>
+
+<dl><dt><a name="APIV2NotEnabled-__getattribute__"><strong>__getattribute__</strong></a>(...)</dt><dd><tt>x.<a href="#APIV2NotEnabled-__getattribute__">__getattribute__</a>('name')&nbsp;&lt;==&gt;&nbsp;x.name</tt></dd></dl>
+
+<dl><dt><a name="APIV2NotEnabled-__getitem__"><strong>__getitem__</strong></a>(...)</dt><dd><tt>x.<a href="#APIV2NotEnabled-__getitem__">__getitem__</a>(y)&nbsp;&lt;==&gt;&nbsp;x[y]</tt></dd></dl>
+
+<dl><dt><a name="APIV2NotEnabled-__getslice__"><strong>__getslice__</strong></a>(...)</dt><dd><tt>x.<a href="#APIV2NotEnabled-__getslice__">__getslice__</a>(i,&nbsp;j)&nbsp;&lt;==&gt;&nbsp;x[i:j]<br>
+&nbsp;<br>
+Use&nbsp;of&nbsp;negative&nbsp;indices&nbsp;is&nbsp;not&nbsp;supported.</tt></dd></dl>
+
+<dl><dt><a name="APIV2NotEnabled-__reduce__"><strong>__reduce__</strong></a>(...)</dt></dl>
+
+<dl><dt><a name="APIV2NotEnabled-__repr__"><strong>__repr__</strong></a>(...)</dt><dd><tt>x.<a href="#APIV2NotEnabled-__repr__">__repr__</a>()&nbsp;&lt;==&gt;&nbsp;repr(x)</tt></dd></dl>
+
+<dl><dt><a name="APIV2NotEnabled-__setattr__"><strong>__setattr__</strong></a>(...)</dt><dd><tt>x.<a href="#APIV2NotEnabled-__setattr__">__setattr__</a>('name',&nbsp;value)&nbsp;&lt;==&gt;&nbsp;x.name&nbsp;=&nbsp;value</tt></dd></dl>
+
+<dl><dt><a name="APIV2NotEnabled-__setstate__"><strong>__setstate__</strong></a>(...)</dt></dl>
+
+<dl><dt><a name="APIV2NotEnabled-__str__"><strong>__str__</strong></a>(...)</dt><dd><tt>x.<a href="#APIV2NotEnabled-__str__">__str__</a>()&nbsp;&lt;==&gt;&nbsp;str(x)</tt></dd></dl>
+
+<dl><dt><a name="APIV2NotEnabled-__unicode__"><strong>__unicode__</strong></a>(...)</dt></dl>
+
+<hr>
+Data descriptors inherited from <a href="exceptions.html#BaseException">exceptions.BaseException</a>:<br>
+<dl><dt><strong>__dict__</strong></dt>
+</dl>
+<dl><dt><strong>args</strong></dt>
+</dl>
+<dl><dt><strong>message</strong></dt>
+</dl>
+</td></tr></table> <p>
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
 <tr bgcolor="#ffc8d8">
 <td colspan=3 valign=bottom>&nbsp;<br>
@@ -302,26 +409,7 @@ Data descriptors inherited from <a href="exceptions.html#BaseException">exceptio
 </dl>
 <dl><dt><strong>message</strong></dt>
 </dl>
-</td></tr></table> <p>
-<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
-<tr bgcolor="#ffc8d8">
-<td colspan=3 valign=bottom>&nbsp;<br>
-<font color="#000000" face="helvetica, arial"><a name="output">class <strong>output</strong></a></font></td></tr>
-    
-<tr><td bgcolor="#ffc8d8"><tt>&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
-<td width="100%">Static methods defined here:<br>
-<dl><dt><a name="output-Status"><strong>Status</strong></a>(status, level, message)</dt></dl>
-
 </td></tr></table></td></tr></table><p>
-<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
-<tr bgcolor="#eeaa77">
-<td colspan=3 valign=bottom>&nbsp;<br>
-<font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
-    
-<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
-<td width="100%"><dl><dt><a name="-SetCredentialsV1"><strong>SetCredentialsV1</strong></a>(api_key, api_passwd)</dt><dd><tt>Establish&nbsp;API&nbsp;key&nbsp;and&nbsp;password&nbsp;associated&nbsp;with&nbsp;APIv1&nbsp;commands.</tt></dd></dl>
- <dl><dt><a name="-SetCredentialsV2"><strong>SetCredentialsV2</strong></a>(api_username, api_passwd)</dt><dd><tt>Establish&nbsp;API&nbsp;username&nbsp;and&nbsp;password&nbsp;associated&nbsp;with&nbsp;APIv2&nbsp;commands.</tt></dd></dl>
-</td></tr></table><p>
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
 <tr bgcolor="#55aa55">
 <td colspan=3 valign=bottom>&nbsp;<br>
