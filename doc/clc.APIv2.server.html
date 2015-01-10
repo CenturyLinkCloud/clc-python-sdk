@@ -1,0 +1,286 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module clc.APIv2.server</title>
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong><a href="clc.html"><font color="#ffffff">clc</font></a>.<a href="clc.APIv2.html"><font color="#ffffff">APIv2</font></a>.server</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/Users//clc_python_sdk_git/src/clc/APIv2/server.py">/Users//clc_python_sdk_git/src/clc/APIv2/server.py</a></font></td></tr></table>
+    <p><tt><a href="#Server">Server</a>&nbsp;related&nbsp;functions.&nbsp;&nbsp;<br>
+&nbsp;<br>
+These&nbsp;server&nbsp;related&nbsp;functions&nbsp;generally&nbsp;align&nbsp;one-for-one&nbsp;with&nbsp;published&nbsp;API&nbsp;calls&nbsp;categorized&nbsp;in&nbsp;the&nbsp;account&nbsp;category<br>
+&nbsp;<br>
+API&nbsp;v2&nbsp;-&nbsp;https://t3n.zendesk.com/forums/21613150-<a href="#Servers">Servers</a><br>
+&nbsp;<br>
+<a href="#Server">Server</a>&nbsp;<a href="__builtin__.html#object">object</a>&nbsp;variables:<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;server.id<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;server.description<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;server.cpu<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;server.power_state<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;server.memory<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;server.storage<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;server.group_id<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;server.is_template<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;server.location_id<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;server.name<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;server.os<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;server.os_type<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;server.status<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;server.type<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;server.storage_type<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;server.in_maintenance_mode<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;server.reserved_drive_paths<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;server.adding_cpu_requires_reboot<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;server.adding_memory_requires_reboot<br>
+&nbsp;<br>
+<a href="#Server">Server</a>&nbsp;<a href="__builtin__.html#object">object</a>&nbsp;variables&nbsp;available&nbsp;but&nbsp;access&nbsp;subject&nbsp;to&nbsp;change&nbsp;with&nbsp;future&nbsp;releases:<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;server.custom_fields<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;server.change_info<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;server.alert_policies<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;server.ip_addresses</tt></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="clc.html">clc</a><br>
+<a href="json.html">json</a><br>
+</td><td width="25%" valign=top><a href="math.html">math</a><br>
+<a href="re.html">re</a><br>
+</td><td width="25%" valign=top><a href="time.html">time</a><br>
+</td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ee77aa">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Classes</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#ee77aa"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl>
+<dt><font face="helvetica, arial"><a href="__builtin__.html#object">__builtin__.object</a>
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="clc.APIv2.server.html#Server">Server</a>
+</font></dt><dt><font face="helvetica, arial"><a href="clc.APIv2.server.html#Servers">Servers</a>
+</font></dt></dl>
+</dd>
+</dl>
+ <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="Server">class <strong>Server</strong></a>(<a href="__builtin__.html#object">__builtin__.object</a>)</font></td></tr>
+    
+<tr><td bgcolor="#ffc8d8"><tt>&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="Server-Account"><strong>Account</strong></a>(self)</dt><dd><tt>Return&nbsp;account&nbsp;<a href="__builtin__.html#object">object</a>&nbsp;for&nbsp;account&nbsp;containing&nbsp;this&nbsp;server.<br>
+&nbsp;<br>
+&gt;&gt;&gt;&nbsp;clc.v2.<a href="#Server">Server</a>("CA3BTDICNTRLM01").<a href="#Server-Account">Account</a>()<br>
+&lt;clc.APIv2.account.Account&nbsp;instance&nbsp;at&nbsp;0x108789878&gt;<br>
+&gt;&gt;&gt;&nbsp;print&nbsp;_<br>
+BTDI</tt></dd></dl>
+
+<dl><dt><a name="Server-Alerts"><strong>Alerts</strong></a>(self)</dt><dd><tt>Returns&nbsp;an&nbsp;Alerts&nbsp;<a href="__builtin__.html#object">object</a>&nbsp;containing&nbsp;all&nbsp;alerts&nbsp;mapped&nbsp;to&nbsp;this&nbsp;server.<br>
+&nbsp;<br>
+&gt;&gt;&gt;&nbsp;clc.v2.<a href="#Server">Server</a>("NY1BTDIPHYP0101").<a href="#Server-Alerts">Alerts</a>()<br>
+&lt;clc.APIv2.alert.Alerts&nbsp;<a href="__builtin__.html#object">object</a>&nbsp;at&nbsp;0x1065b0150&gt;</tt></dd></dl>
+
+<dl><dt><a name="Server-Clone"><strong>Clone</strong></a>(self, network_id, name<font color="#909090">=None</font>, cpu<font color="#909090">=None</font>, memory<font color="#909090">=None</font>, group_id<font color="#909090">=None</font>, alias<font color="#909090">=None</font>, password<font color="#909090">=None</font>, ip_address<font color="#909090">=None</font>, storage_type<font color="#909090">=None</font>, type<font color="#909090">=None</font>, primary_dns<font color="#909090">=None</font>, secondary_dns<font color="#909090">=None</font>, custom_fields<font color="#909090">=None</font>, ttl<font color="#909090">=None</font>, managed_os<font color="#909090">=False</font>, description<font color="#909090">=None</font>, source_server_password<font color="#909090">=None</font>, cpu_autoscale_policy_id<font color="#909090">=None</font>, anti_affinity_policy_id<font color="#909090">=None</font>, packages<font color="#909090">=[]</font>, count<font color="#909090">=1</font>)</dt><dd><tt>Creates&nbsp;one&nbsp;or&nbsp;more&nbsp;clones&nbsp;of&nbsp;existing&nbsp;server.<br>
+&nbsp;<br>
+https://t3n.zendesk.com/entries/59565550-Create-<a href="#Server">Server</a><br>
+&nbsp;<br>
+Set&nbsp;ttl&nbsp;as&nbsp;number&nbsp;of&nbsp;seconds&nbsp;before&nbsp;server&nbsp;is&nbsp;to&nbsp;be&nbsp;terminated.<br>
+&nbsp;<br>
+*&nbsp;-&nbsp;network_id&nbsp;is&nbsp;currently&nbsp;a&nbsp;required&nbsp;parameter.&nbsp;&nbsp;This&nbsp;will&nbsp;change&nbsp;to&nbsp;optional&nbsp;once&nbsp;APIs&nbsp;are&nbsp;available&nbsp;to<br>
+&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;the&nbsp;network&nbsp;id&nbsp;of&nbsp;self.<br>
+*&nbsp;-&nbsp;if&nbsp;no&nbsp;password&nbsp;is&nbsp;supplied&nbsp;will&nbsp;reuse&nbsp;the&nbsp;password&nbsp;of&nbsp;self.&nbsp;&nbsp;Is&nbsp;this&nbsp;the&nbsp;expected&nbsp;behavior?&nbsp;&nbsp;Take&nbsp;note<br>
+&nbsp;&nbsp;&nbsp;&nbsp;there&nbsp;is&nbsp;no&nbsp;way&nbsp;to&nbsp;for&nbsp;a&nbsp;system&nbsp;generated&nbsp;password&nbsp;with&nbsp;this&nbsp;pattern&nbsp;since&nbsp;we&nbsp;cannot&nbsp;leave&nbsp;as&nbsp;None<br>
+*&nbsp;-&nbsp;any&nbsp;DNS&nbsp;settings&nbsp;from&nbsp;self&nbsp;aren't&nbsp;propogated&nbsp;to&nbsp;clone&nbsp;since&nbsp;they&nbsp;are&nbsp;unknown&nbsp;at&nbsp;system&nbsp;level&nbsp;and<br>
+&nbsp;&nbsp;&nbsp;&nbsp;the&nbsp;clone&nbsp;process&nbsp;will&nbsp;touch&nbsp;them<br>
+*&nbsp;-&nbsp;no&nbsp;change&nbsp;to&nbsp;the&nbsp;disk&nbsp;layout&nbsp;we&nbsp;will&nbsp;clone&nbsp;all<br>
+*&nbsp;-&nbsp;clone&nbsp;will&nbsp;not&nbsp;replicate&nbsp;managed&nbsp;OS&nbsp;setting&nbsp;from&nbsp;self&nbsp;so&nbsp;this&nbsp;must&nbsp;be&nbsp;explicitly&nbsp;set<br>
+&nbsp;<br>
+&gt;&gt;&gt;&nbsp;d&nbsp;=&nbsp;clc.v2.Datacenter()<br>
+&gt;&gt;&gt;&nbsp;clc.v2.<a href="#Server">Server</a>(alias='BTDI',id='WA1BTDIAPI207').<a href="#Server-Clone">Clone</a>(network_id=d.Networks().networks[0].id,count=2)<br>
+0</tt></dd></dl>
+
+<dl><dt><a name="Server-CreateSnapshot"><strong>CreateSnapshot</strong></a>(self, delete_existing<font color="#909090">=True</font>, expiration_days<font color="#909090">=7</font>)</dt><dd><tt>Take&nbsp;a&nbsp;Hypervisor&nbsp;level&nbsp;snapshot&nbsp;retained&nbsp;for&nbsp;between&nbsp;1&nbsp;and&nbsp;10&nbsp;days&nbsp;(7&nbsp;is&nbsp;default).<br>
+Currently&nbsp;only&nbsp;one&nbsp;snapshop&nbsp;may&nbsp;exist&nbsp;at&nbsp;a&nbsp;time,&nbsp;thus&nbsp;will&nbsp;delete&nbsp;snapshots&nbsp;if&nbsp;one&nbsp;already<br>
+exists&nbsp;before&nbsp;taking&nbsp;this&nbsp;snapshot.<br>
+&nbsp;<br>
+&gt;&gt;&gt;&nbsp;clc.v2.<a href="#Server">Server</a>("WA1BTDIAPI219").<a href="#Server-CreateSnapshot">CreateSnapshot</a>(2)<br>
+&lt;clc.APIv2.queue.Requests&nbsp;<a href="__builtin__.html#object">object</a>&nbsp;at&nbsp;0x10d106cd0&gt;<br>
+&gt;&gt;&gt;&nbsp;_.WaitUntilComplete()<br>
+0</tt></dd></dl>
+
+<dl><dt><a name="Server-Credentials"><strong>Credentials</strong></a>(self)</dt><dd><tt>Returns&nbsp;the&nbsp;administrative&nbsp;credentials&nbsp;for&nbsp;this&nbsp;server.<br>
+&nbsp;<br>
+&gt;&gt;&gt;&nbsp;clc.v2.<a href="#Server">Server</a>("NY1BTDIPHYP0101").<a href="#Server-Credentials">Credentials</a>()<br>
+{u'userName':&nbsp;u'administrator',&nbsp;u'password':&nbsp;u'dszkjh498s^'}</tt></dd></dl>
+
+<dl><dt><a name="Server-Delete"><strong>Delete</strong></a>(self)</dt><dd><tt>Delete&nbsp;server.<br>
+&nbsp;<br>
+https://t3n.zendesk.com/entries/59220824-Delete-<a href="#Server">Server</a><br>
+&nbsp;<br>
+&gt;&gt;&gt;&nbsp;clc.v2.<a href="#Server">Server</a>("WA1BTDIAPI219").<a href="#Server-Delete">Delete</a>().WaitUntilComplete()<br>
+0</tt></dd></dl>
+
+<dl><dt><a name="Server-DeleteSnapshot"><strong>DeleteSnapshot</strong></a>(self, names<font color="#909090">=None</font>)</dt><dd><tt>Removes&nbsp;an&nbsp;existing&nbsp;Hypervisor&nbsp;level&nbsp;snapshot.<br>
+&nbsp;<br>
+Supply&nbsp;one&nbsp;or&nbsp;more&nbsp;snapshot&nbsp;names&nbsp;to&nbsp;delete&nbsp;them&nbsp;concurrently.<br>
+If&nbsp;no&nbsp;snapshot&nbsp;names&nbsp;are&nbsp;supplied&nbsp;will&nbsp;delete&nbsp;all&nbsp;existing&nbsp;snapshots.<br>
+&nbsp;<br>
+&gt;&gt;&gt;&nbsp;clc.v2.<a href="#Server">Server</a>(alias='BTDI',id='WA1BTDIKRT02').<a href="#Server-DeleteSnapshot">DeleteSnapshot</a>().WaitUntilComplete()<br>
+0</tt></dd></dl>
+
+<dl><dt><a name="Server-ExecutePackage"><strong>ExecutePackage</strong></a>(self, package_id, parameters<font color="#909090">={}</font>)</dt><dd><tt>Execute&nbsp;an&nbsp;existing&nbsp;Bluerprint&nbsp;package&nbsp;on&nbsp;the&nbsp;server.<br>
+&nbsp;<br>
+https://t3n.zendesk.com/entries/59727040-Execute-Package<br>
+&nbsp;<br>
+Requires&nbsp;package&nbsp;ID,&nbsp;currently&nbsp;only&nbsp;available&nbsp;by&nbsp;browsing&nbsp;control&nbsp;and&nbsp;browsing<br>
+for&nbsp;the&nbsp;package&nbsp;itself.&nbsp;&nbsp;The&nbsp;UUID&nbsp;parameter&nbsp;is&nbsp;the&nbsp;package&nbsp;ID&nbsp;we&nbsp;need.<br>
+&nbsp;<br>
+&gt;&gt;&gt;&nbsp;clc.v2.<a href="#Server">Server</a>(alias='BTDI',id='WA1BTDIKRT06').&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#Server-ExecutePackage">ExecutePackage</a>(package_id="77ab3844-579d-4c8d-8955-c69a94a2ba1a",parameters={}).&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WaitUntilComplete()<br>
+0</tt></dd></dl>
+
+<dl><dt><a name="Server-GetSnapshots"><strong>GetSnapshots</strong></a>(self)</dt><dd><tt>Returns&nbsp;list&nbsp;of&nbsp;all&nbsp;snapshot&nbsp;names.<br>
+&nbsp;<br>
+&gt;&gt;&gt;&nbsp;clc.v2.<a href="#Server">Server</a>("WA1BTDIAPI219").<a href="#Server-GetSnapshots">GetSnapshots</a>()<br>
+[u'2015-01-10.02:10:38']</tt></dd></dl>
+
+<dl><dt><a name="Server-Group"><strong>Group</strong></a>(self)</dt><dd><tt>Return&nbsp;group&nbsp;<a href="__builtin__.html#object">object</a>&nbsp;for&nbsp;group&nbsp;containing&nbsp;this&nbsp;server.<br>
+&nbsp;<br>
+&gt;&gt;&gt;&nbsp;clc.v2.<a href="#Server">Server</a>("CA3BTDICNTRLM01").<a href="#Server-Group">Group</a>()<br>
+&lt;clc.APIv2.group.Group&nbsp;<a href="__builtin__.html#object">object</a>&nbsp;at&nbsp;0x10b07b7d0&gt;<br>
+&gt;&gt;&gt;&nbsp;print&nbsp;_<br>
+Ansible&nbsp;Managed&nbsp;<a href="#Servers">Servers</a></tt></dd></dl>
+
+<dl><dt><a name="Server-Pause"><strong>Pause</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="Server-PowerOff"><strong>PowerOff</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="Server-PowerOn"><strong>PowerOn</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="Server-Reboot"><strong>Reboot</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="Server-Reset"><strong>Reset</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="Server-RestoreSnapshot"><strong>RestoreSnapshot</strong></a>(self, name<font color="#909090">=None</font>)</dt><dd><tt>Restores&nbsp;an&nbsp;existing&nbsp;Hypervisor&nbsp;level&nbsp;snapshot.<br>
+&nbsp;<br>
+Supply&nbsp;snapshot&nbsp;name&nbsp;to&nbsp;restore<br>
+If&nbsp;no&nbsp;snapshot&nbsp;name&nbsp;is&nbsp;supplied&nbsp;will&nbsp;restore&nbsp;the&nbsp;first&nbsp;snapshot&nbsp;found<br>
+&nbsp;<br>
+&gt;&gt;&gt;&nbsp;clc.v2.<a href="#Server">Server</a>(alias='BTDI',id='WA1BTDIKRT02').<a href="#Server-RestoreSnapshot">RestoreSnapshot</a>().WaitUntilComplete()<br>
+0</tt></dd></dl>
+
+<dl><dt><a name="Server-ShutDown"><strong>ShutDown</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="Server-StartMaintenance"><strong>StartMaintenance</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="Server-StopMaintenance"><strong>StopMaintenance</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="Server-Update"><strong>Update</strong></a>(self)</dt><dd><tt>Update&nbsp;group<br>
+&nbsp;<br>
+*TODO*&nbsp;API&nbsp;not&nbsp;yet&nbsp;documented</tt></dd></dl>
+
+<dl><dt><a name="Server-__getattr__"><strong>__getattr__</strong></a>(self, var)</dt></dl>
+
+<dl><dt><a name="Server-__init__"><strong>__init__</strong></a>(self, id, alias<font color="#909090">=None</font>, server_obj<font color="#909090">=None</font>)</dt><dd><tt>Create&nbsp;<a href="#Server">Server</a>&nbsp;<a href="__builtin__.html#object">object</a>.<br>
+&nbsp;<br>
+https://t3n.zendesk.com/entries/32859214-Get-<a href="#Server">Server</a><br>
+&nbsp;<br>
+#If&nbsp;parameters&nbsp;are&nbsp;populated&nbsp;then&nbsp;create&nbsp;<a href="__builtin__.html#object">object</a>&nbsp;location.&nbsp;&nbsp;<br>
+#Else&nbsp;if&nbsp;only&nbsp;id&nbsp;is&nbsp;supplied&nbsp;issue&nbsp;a&nbsp;Get&nbsp;Policy&nbsp;call<br>
+&nbsp;<br>
+#&nbsp;successful&nbsp;creation<br>
+&gt;&gt;&gt;&nbsp;clc.v2.<a href="#Server">Server</a>("CA3BTDICNTRLM01")<br>
+&lt;clc.APIv2.server.<a href="#Server">Server</a>&nbsp;<a href="__builtin__.html#object">object</a>&nbsp;at&nbsp;0x10c28fe50&gt;<br>
+&gt;&gt;&gt;&nbsp;print&nbsp;_<br>
+CA3BTDICNTRLM01<br>
+&nbsp;<br>
+#&nbsp;error.&nbsp;&nbsp;API&nbsp;returns&nbsp;404&nbsp;when&nbsp;server&nbsp;does&nbsp;not&nbsp;exist,&nbsp;we&nbsp;raise&nbsp;exception<br>
+&gt;&gt;&gt;&nbsp;clc.v2.<a href="#Server">Server</a>(alias='BTDI',id='WA1BTDIKRT01')<br>
+clc.CLCException:&nbsp;<a href="#Server">Server</a>&nbsp;does&nbsp;not&nbsp;exist</tt></dd></dl>
+
+<dl><dt><a name="Server-__str__"><strong>__str__</strong></a>(self)</dt></dl>
+
+<hr>
+Static methods defined here:<br>
+<dl><dt><a name="Server-Create"><strong>Create</strong></a>(name, cpu, memory, template, group_id, network_id, alias<font color="#909090">=None</font>, password<font color="#909090">=None</font>, ip_address<font color="#909090">=None</font>, storage_type<font color="#909090">='standard'</font>, type<font color="#909090">='standard'</font>, primary_dns<font color="#909090">=None</font>, secondary_dns<font color="#909090">=None</font>, additional_disks<font color="#909090">=[]</font>, custom_fields<font color="#909090">=[]</font>, ttl<font color="#909090">=None</font>, managed_os<font color="#909090">=False</font>, description<font color="#909090">=None</font>, source_server_password<font color="#909090">=None</font>, cpu_autoscale_policy_id<font color="#909090">=None</font>, anti_affinity_policy_id<font color="#909090">=None</font>, packages<font color="#909090">=[]</font>)</dt><dd><tt>Creates&nbsp;a&nbsp;new&nbsp;server.<br>
+&nbsp;<br>
+https://t3n.zendesk.com/entries/59565550-Create-<a href="#Server">Server</a><br>
+&nbsp;<br>
+Set&nbsp;ttl&nbsp;as&nbsp;number&nbsp;of&nbsp;seconds&nbsp;before&nbsp;server&nbsp;is&nbsp;to&nbsp;be&nbsp;terminated.&nbsp;&nbsp;Must&nbsp;be&nbsp;&gt;3600<br>
+&nbsp;<br>
+&gt;&gt;&gt;&nbsp;d&nbsp;=&nbsp;clc.v2.Datacenter()<br>
+&gt;&gt;&gt;&nbsp;clc.v2.<a href="#Server">Server</a>.<a href="#Server-Create">Create</a>(name="api2",cpu=1,memory=1,group_id="wa1-4416",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;template=d.Templates().Search("centos-6-64")[0].id,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;network_id=d.Networks().networks[0].id).WaitUntilComplete()<br>
+0</tt></dd></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="Servers">class <strong>Servers</strong></a>(<a href="__builtin__.html#object">__builtin__.object</a>)</font></td></tr>
+    
+<tr><td bgcolor="#ffc8d8"><tt>&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="Servers-Pause"><strong>Pause</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="Servers-PowerOff"><strong>PowerOff</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="Servers-PowerOn"><strong>PowerOn</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="Servers-Reboot"><strong>Reboot</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="Servers-Reset"><strong>Reset</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="Servers-Servers"><strong>Servers</strong></a>(self, cached<font color="#909090">=True</font>)</dt><dd><tt>Returns&nbsp;list&nbsp;of&nbsp;server&nbsp;objects,&nbsp;populates&nbsp;if&nbsp;necessary.<br>
+&nbsp;<br>
+&gt;&gt;&gt;&nbsp;clc.v2.<a href="#Servers-Servers">Servers</a>(["NY1BTDIPHYP0101","NY1BTDIWEB0101"]).<a href="#Servers-Servers">Servers</a>()<br>
+[&lt;clc.APIv2.server.<a href="#Server">Server</a>&nbsp;<a href="__builtin__.html#object">object</a>&nbsp;at&nbsp;0x1065b0d50&gt;,&nbsp;&lt;clc.APIv2.server.<a href="#Server">Server</a>&nbsp;<a href="__builtin__.html#object">object</a>&nbsp;at&nbsp;0x1065b0e50&gt;]<br>
+&gt;&gt;&gt;&nbsp;print&nbsp;_[0]<br>
+NY1BTDIPHYP0101</tt></dd></dl>
+
+<dl><dt><a name="Servers-ShutDown"><strong>ShutDown</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="Servers-StartMaintenance"><strong>StartMaintenance</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="Servers-StopMaintenance"><strong>StopMaintenance</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="Servers-__getattr__"><strong>__getattr__</strong></a>(self, key)</dt></dl>
+
+<dl><dt><a name="Servers-__init__"><strong>__init__</strong></a>(self, servers_lst, alias<font color="#909090">=None</font>)</dt><dd><tt>Container&nbsp;class&nbsp;for&nbsp;one&nbsp;or&nbsp;more&nbsp;servers.<br>
+&nbsp;<br>
+Behaves&nbsp;differently&nbsp;than&nbsp;the&nbsp;other&nbsp;container&nbsp;classes&nbsp;like&nbsp;Groups&nbsp;where&nbsp;the&nbsp;*_lst<br>
+parameter&nbsp;can&nbsp;fully&nbsp;define&nbsp;the&nbsp;<a href="__builtin__.html#object">object</a>.&nbsp;&nbsp;All&nbsp;we&nbsp;have&nbsp;is&nbsp;the&nbsp;server&nbsp;name&nbsp;on&nbsp;construction.<br>
+We&nbsp;will&nbsp;lazily&nbsp;create&nbsp;server&nbsp;objects&nbsp;as&nbsp;needed&nbsp;since&nbsp;each&nbsp;requires&nbsp;a&nbsp;seperate&nbsp;API&nbsp;call.<br>
+&nbsp;<br>
+&gt;&gt;&gt;&nbsp;clc.v2.<a href="#Servers-Servers">Servers</a>(["NY1BTDIPHYP0101","NY1BTDIWEB0101"])<br>
+&lt;clc.APIv2.server.<a href="#Servers">Servers</a>&nbsp;<a href="__builtin__.html#object">object</a>&nbsp;at&nbsp;0x105fa27d0&gt;</tt></dd></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+</td></tr></table></td></tr></table>
+</body></html>

@@ -1,0 +1,163 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module clc.APIv2.group</title>
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong><a href="clc.html"><font color="#ffffff">clc</font></a>.<a href="clc.APIv2.html"><font color="#ffffff">APIv2</font></a>.group</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/Users//clc_python_sdk_git/src/clc/APIv2/group.py">/Users//clc_python_sdk_git/src/clc/APIv2/group.py</a></font></td></tr></table>
+    <p><tt><a href="#Group">Group</a>&nbsp;related&nbsp;functions.&nbsp;&nbsp;<br>
+&nbsp;<br>
+These&nbsp;group&nbsp;related&nbsp;functions&nbsp;generally&nbsp;align&nbsp;one-for-one&nbsp;with&nbsp;published&nbsp;API&nbsp;calls&nbsp;categorized&nbsp;in&nbsp;the&nbsp;group&nbsp;category<br>
+&nbsp;<br>
+API&nbsp;v2&nbsp;-&nbsp;https://t3n.zendesk.com/forums/21013480-<a href="#Groups">Groups</a><br>
+&nbsp;<br>
+<a href="#Groups">Groups</a>&nbsp;<a href="__builtin__.html#object">object</a>&nbsp;variables:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;groups.alias<br>
+&nbsp;<br>
+<a href="#Group">Group</a>&nbsp;<a href="__builtin__.html#object">object</a>&nbsp;variables:<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;group.id<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;group.name<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;group.description<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;group.type<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;group.status<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;group.server_count<br>
+&nbsp;<br>
+<a href="#Group">Group</a>&nbsp;<a href="__builtin__.html#object">object</a>&nbsp;variables&nbsp;available&nbsp;but&nbsp;access&nbsp;subject&nbsp;to&nbsp;change&nbsp;with&nbsp;future&nbsp;releases:<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;group.custom_fields<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;group.change_info</tt></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="clc.html">clc</a><br>
+</td><td width="25%" valign=top><a href="json.html">json</a><br>
+</td><td width="25%" valign=top><a href="re.html">re</a><br>
+</td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ee77aa">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Classes</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#ee77aa"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl>
+<dt><font face="helvetica, arial"><a href="__builtin__.html#object">__builtin__.object</a>
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="clc.APIv2.group.html#Group">Group</a>
+</font></dt><dt><font face="helvetica, arial"><a href="clc.APIv2.group.html#Groups">Groups</a>
+</font></dt></dl>
+</dd>
+</dl>
+ <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="Group">class <strong>Group</strong></a>(<a href="__builtin__.html#object">__builtin__.object</a>)</font></td></tr>
+    
+<tr><td bgcolor="#ffc8d8"><tt>&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="Group-Account"><strong>Account</strong></a>(self)</dt><dd><tt>Return&nbsp;account&nbsp;<a href="__builtin__.html#object">object</a>.<br>
+&nbsp;<br>
+&gt;&gt;&gt;&nbsp;clc.v2.<a href="#Group">Group</a>(alias="BTDI",id="wa1-837").<a href="#Group-Account">Account</a>()<br>
+&lt;clc.APIv2.account.Account&nbsp;instance&nbsp;at&nbsp;0x108789878&gt;<br>
+&gt;&gt;&gt;&nbsp;print&nbsp;_<br>
+BTDI</tt></dd></dl>
+
+<dl><dt><a name="Group-Create"><strong>Create</strong></a>(self, name, description<font color="#909090">=None</font>)</dt><dd><tt>Creates&nbsp;a&nbsp;new&nbsp;group<br>
+&nbsp;<br>
+&gt;&gt;&gt;&nbsp;clc.v2.Datacenter(location="WA1").RootGroup().<a href="#Group-Create">Create</a>("Test3","Description3")<br>
+&lt;clc.APIv2.group.<a href="#Group">Group</a>&nbsp;<a href="__builtin__.html#object">object</a>&nbsp;at&nbsp;0x10cc76c90&gt;<br>
+&gt;&gt;&gt;&nbsp;print&nbsp;_<br>
+Test5</tt></dd></dl>
+
+<dl><dt><a name="Group-Delete"><strong>Delete</strong></a>(self)</dt><dd><tt>Delete&nbsp;group.<br>
+&nbsp;<br>
+&gt;&gt;&gt;&nbsp;clc.v2.<a href="#Group">Group</a>("wa1-4416").<a href="#Group-Create">Create</a>(name="Test6")<br>
+&lt;clc.APIv2.group.<a href="#Group">Group</a>&nbsp;<a href="__builtin__.html#object">object</a>&nbsp;at&nbsp;0x1041937d0&gt;<br>
+&gt;&gt;&gt;&nbsp;clc.v2.<a href="#Group">Group</a>(_.id).<a href="#Group-Delete">Delete</a>().WaitUntilComplete()<br>
+0</tt></dd></dl>
+
+<dl><dt><a name="Group-Servers"><strong>Servers</strong></a>(self)</dt><dd><tt>Returns&nbsp;a&nbsp;Servers&nbsp;<a href="__builtin__.html#object">object</a>&nbsp;containing&nbsp;all&nbsp;servers&nbsp;within&nbsp;the&nbsp;group.<br>
+&nbsp;<br>
+&gt;&gt;&gt;&nbsp;clc.v2.<a href="#Group">Group</a>("wa1-4416").<a href="#Group-Servers">Servers</a>()<br>
+&lt;clc.APIv2.server.Servers&nbsp;<a href="__builtin__.html#object">object</a>&nbsp;at&nbsp;0x1065b0f10&gt;</tt></dd></dl>
+
+<dl><dt><a name="Group-Subgroups"><strong>Subgroups</strong></a>(self)</dt><dd><tt>Returns&nbsp;a&nbsp;<a href="#Groups">Groups</a>&nbsp;<a href="__builtin__.html#object">object</a>&nbsp;containing&nbsp;all&nbsp;child&nbsp;groups.<br>
+&nbsp;<br>
+&gt;&gt;&gt;&nbsp;clc.v2.<a href="#Group">Group</a>("wa1-4416").<a href="#Group-Subgroups">Subgroups</a>()<br>
+&lt;clc.APIv2.group.<a href="#Groups">Groups</a>&nbsp;<a href="__builtin__.html#object">object</a>&nbsp;at&nbsp;0x105fa27d0&gt;</tt></dd></dl>
+
+<dl><dt><a name="Group-Update"><strong>Update</strong></a>(self)</dt><dd><tt>Update&nbsp;group<br>
+&nbsp;<br>
+*TODO*&nbsp;API&nbsp;not&nbsp;yet&nbsp;documented</tt></dd></dl>
+
+<dl><dt><a name="Group-__getattr__"><strong>__getattr__</strong></a>(self, var)</dt></dl>
+
+<dl><dt><a name="Group-__init__"><strong>__init__</strong></a>(self, id, alias<font color="#909090">=None</font>, group_obj<font color="#909090">=None</font>)</dt><dd><tt>Create&nbsp;<a href="#Group">Group</a>&nbsp;<a href="__builtin__.html#object">object</a>.<br>
+&nbsp;<br>
+If&nbsp;parameters&nbsp;are&nbsp;populated&nbsp;then&nbsp;create&nbsp;<a href="__builtin__.html#object">object</a>&nbsp;location.&nbsp;&nbsp;<br>
+Else&nbsp;if&nbsp;only&nbsp;id&nbsp;is&nbsp;supplied&nbsp;issue&nbsp;a&nbsp;Get&nbsp;Policy&nbsp;call<br>
+&nbsp;<br>
+&gt;&gt;&gt;&nbsp;clc.v2.<a href="#Group">Group</a>(id="wa1-1798")<br>
+&lt;clc.APIv2.group.<a href="#Group">Group</a>&nbsp;<a href="__builtin__.html#object">object</a>&nbsp;at&nbsp;0x109188b90&gt;</tt></dd></dl>
+
+<dl><dt><a name="Group-__str__"><strong>__str__</strong></a>(self)</dt></dl>
+
+<hr>
+Static methods defined here:<br>
+<dl><dt><a name="Group-GetAll"><strong>GetAll</strong></a>(root_group_id, alias<font color="#909090">=None</font>)</dt><dd><tt>Gets&nbsp;a&nbsp;list&nbsp;of&nbsp;groups&nbsp;within&nbsp;a&nbsp;given&nbsp;account.<br>
+&nbsp;<br>
+&gt;&gt;&gt;&nbsp;clc.v2.<a href="#Group">Group</a>.<a href="#Group-GetAll">GetAll</a>("wa1-4416")<br>
+[&lt;clc.APIv2.group.<a href="#Group">Group</a>&nbsp;<a href="__builtin__.html#object">object</a>&nbsp;at&nbsp;0x1065b0190&gt;,&nbsp;&lt;clc.APIv2.group.<a href="#Group">Group</a>&nbsp;<a href="__builtin__.html#object">object</a>&nbsp;at&nbsp;0x1065b0dd0&gt;]</tt></dd></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="Groups">class <strong>Groups</strong></a>(<a href="__builtin__.html#object">__builtin__.object</a>)</font></td></tr>
+    
+<tr><td bgcolor="#ffc8d8"><tt>&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="Groups-Get"><strong>Get</strong></a>(self, key)</dt><dd><tt>Get&nbsp;group&nbsp;by&nbsp;providing&nbsp;name,&nbsp;ID,&nbsp;description&nbsp;or&nbsp;other&nbsp;unique&nbsp;key.<br>
+&nbsp;<br>
+If&nbsp;key&nbsp;is&nbsp;not&nbsp;unique&nbsp;and&nbsp;finds&nbsp;multiple&nbsp;matches&nbsp;only&nbsp;the&nbsp;first<br>
+will&nbsp;be&nbsp;returned<br>
+&nbsp;<br>
+&gt;&gt;&gt;&nbsp;clc.v2.Datacenter().<a href="#Groups">Groups</a>().<a href="#Groups-Get">Get</a>("Default&nbsp;<a href="#Group">Group</a>")<br>
+&lt;clc.APIv2.group.<a href="#Group">Group</a>&nbsp;<a href="__builtin__.html#object">object</a>&nbsp;at&nbsp;0x1065e5250&gt;</tt></dd></dl>
+
+<dl><dt><a name="Groups-Search"><strong>Search</strong></a>(self, key)</dt><dd><tt>Search&nbsp;group&nbsp;list&nbsp;by&nbsp;providing&nbsp;partial&nbsp;name,&nbsp;ID,&nbsp;description&nbsp;or&nbsp;other&nbsp;key.<br>
+&nbsp;<br>
+&gt;&gt;&gt;&nbsp;clc.v2.Datacenter().<a href="#Groups">Groups</a>().<a href="#Groups-Search">Search</a>("Default&nbsp;<a href="#Group">Group</a>")<br>
+[&lt;clc.APIv2.group.<a href="#Group">Group</a>&nbsp;<a href="__builtin__.html#object">object</a>&nbsp;at&nbsp;0x1065b0f50&gt;,&nbsp;&lt;clc.APIv2.group.<a href="#Group">Group</a>&nbsp;<a href="__builtin__.html#object">object</a>&nbsp;at&nbsp;0x1065b0d10&gt;]</tt></dd></dl>
+
+<dl><dt><a name="Groups-__init__"><strong>__init__</strong></a>(self, groups_lst, alias<font color="#909090">=None</font>)</dt></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+</td></tr></table></td></tr></table>
+</body></html>
