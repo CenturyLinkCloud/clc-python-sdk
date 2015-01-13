@@ -8,7 +8,7 @@
 <td valign=bottom>&nbsp;<br>
 <font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong><a href="clc.html"><font color="#ffffff">clc</font></a>.<a href="clc.APIv2.html"><font color="#ffffff">APIv2</font></a>.server</strong></big></big></font></td
 ><td align=right valign=bottom
-><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/Users//clc_python_sdk_git/src/clc/APIv2/server.py">/Users//clc_python_sdk_git/src/clc/APIv2/server.py</a></font></td></tr></table>
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/Users//clc_git/src/clc/APIv2/server.py">/Users//clc_git/src/clc/APIv2/server.py</a></font></td></tr></table>
     <p><tt><a href="#Server">Server</a>&nbsp;related&nbsp;functions.&nbsp;&nbsp;<br>
 &nbsp;<br>
 These&nbsp;server&nbsp;related&nbsp;functions&nbsp;generally&nbsp;align&nbsp;one-for-one&nbsp;with&nbsp;published&nbsp;API&nbsp;calls&nbsp;categorized&nbsp;in&nbsp;the&nbsp;account&nbsp;category<br>
@@ -29,13 +29,14 @@ API&nbsp;v2&nbsp;-&nbsp;https://t3n.zendesk.com/forums/21613150-<a href="#Server
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;server.name<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;server.os<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;server.os_type<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;server.status<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;server.status&nbsp;-&nbsp;active,&nbsp;archived<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;server.type<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;server.storage_type<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;server.in_maintenance_mode<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;server.reserved_drive_paths<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;server.adding_cpu_requires_reboot<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;server.adding_memory_requires_reboot<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;server.dirty&nbsp;-&nbsp;bool&nbsp;indicating&nbsp;whether&nbsp;server&nbsp;<a href="__builtin__.html#object">object</a>&nbsp;is&nbsp;different&nbsp;than&nbsp;cloud&nbsp;<a href="__builtin__.html#object">object</a><br>
 &nbsp;<br>
 <a href="#Server">Server</a>&nbsp;<a href="__builtin__.html#object">object</a>&nbsp;variables&nbsp;available&nbsp;but&nbsp;access&nbsp;subject&nbsp;to&nbsp;change&nbsp;with&nbsp;future&nbsp;releases:<br>
 &nbsp;<br>
@@ -90,6 +91,15 @@ BTDI</tt></dd></dl>
 &nbsp;<br>
 &gt;&gt;&gt;&nbsp;clc.v2.<a href="#Server">Server</a>("NY1BTDIPHYP0101").<a href="#Server-Alerts">Alerts</a>()<br>
 &lt;clc.APIv2.alert.Alerts&nbsp;<a href="__builtin__.html#object">object</a>&nbsp;at&nbsp;0x1065b0150&gt;</tt></dd></dl>
+
+<dl><dt><a name="Server-Archive"><strong>Archive</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="Server-Change"><strong>Change</strong></a>(self, cpu<font color="#909090">=None</font>, memory<font color="#909090">=None</font>, description<font color="#909090">=None</font>, group_id<font color="#909090">=None</font>)</dt><dd><tt>Change&nbsp;existing&nbsp;server&nbsp;<a href="__builtin__.html#object">object</a>.<br>
+&nbsp;<br>
+One&nbsp;more&nbsp;more&nbsp;fields&nbsp;can&nbsp;be&nbsp;set&nbsp;and&nbsp;method&nbsp;will&nbsp;return&nbsp;with&nbsp;a&nbsp;requests<br>
+<a href="__builtin__.html#object">object</a>&nbsp;for&nbsp;all&nbsp;queued&nbsp;activities.&nbsp;&nbsp;This&nbsp;is&nbsp;a&nbsp;convenience&nbsp;function&nbsp;-&nbsp;all<br>
+each&nbsp;of&nbsp;these&nbsp;changes&nbsp;requires&nbsp;a&nbsp;seperate&nbsp;API&nbsp;call.&nbsp;&nbsp;Some&nbsp;API&nbsp;calls&nbsp;are&nbsp;synchronous<br>
+(e.g.&nbsp;changing&nbsp;group&nbsp;ID&nbsp;or&nbsp;password)&nbsp;while&nbsp;others&nbsp;are&nbsp;async.</tt></dd></dl>
 
 <dl><dt><a name="Server-Clone"><strong>Clone</strong></a>(self, network_id, name<font color="#909090">=None</font>, cpu<font color="#909090">=None</font>, memory<font color="#909090">=None</font>, group_id<font color="#909090">=None</font>, alias<font color="#909090">=None</font>, password<font color="#909090">=None</font>, ip_address<font color="#909090">=None</font>, storage_type<font color="#909090">=None</font>, type<font color="#909090">=None</font>, primary_dns<font color="#909090">=None</font>, secondary_dns<font color="#909090">=None</font>, custom_fields<font color="#909090">=None</font>, ttl<font color="#909090">=None</font>, managed_os<font color="#909090">=False</font>, description<font color="#909090">=None</font>, source_server_password<font color="#909090">=None</font>, cpu_autoscale_policy_id<font color="#909090">=None</font>, anti_affinity_policy_id<font color="#909090">=None</font>, packages<font color="#909090">=[]</font>, count<font color="#909090">=1</font>)</dt><dd><tt>Creates&nbsp;one&nbsp;or&nbsp;more&nbsp;clones&nbsp;of&nbsp;existing&nbsp;server.<br>
 &nbsp;<br>
@@ -169,7 +179,19 @@ Ansible&nbsp;Managed&nbsp;<a href="#Servers">Servers</a></tt></dd></dl>
 
 <dl><dt><a name="Server-Reboot"><strong>Reboot</strong></a>(self)</dt></dl>
 
+<dl><dt><a name="Server-Refresh"><strong>Refresh</strong></a>(self)</dt><dd><tt>Reloads&nbsp;the&nbsp;server&nbsp;<a href="__builtin__.html#object">object</a>&nbsp;to&nbsp;synchronize&nbsp;with&nbsp;cloud&nbsp;representation.<br>
+&nbsp;<br>
+&gt;&gt;&gt;&nbsp;clc.v2.<a href="#Server">Server</a>("CA3BTDICNTRLM01").<a href="#Server-Refresh">Refresh</a>()</tt></dd></dl>
+
 <dl><dt><a name="Server-Reset"><strong>Reset</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="Server-Restore"><strong>Restore</strong></a>(self)</dt><dd><tt>Restore&nbsp;archived&nbsp;server&nbsp;to&nbsp;running&nbsp;state.<br>
+&nbsp;<br>
+If&nbsp;server&nbsp;is&nbsp;already&nbsp;running&nbsp;returns&nbsp;with&nbsp;no&nbsp;change.<br>
+&nbsp;<br>
+#&nbsp;{u'href':&nbsp;u'/v2/servers/btdi/wa1btdichange01/restore',<br>
+#&nbsp;u'rel':&nbsp;u'restore'},<br>
+#if&nbsp;status&nbsp;!==&nbsp;"archived":&nbsp;pass</tt></dd></dl>
 
 <dl><dt><a name="Server-RestoreSnapshot"><strong>RestoreSnapshot</strong></a>(self, name<font color="#909090">=None</font>)</dt><dd><tt>Restores&nbsp;an&nbsp;existing&nbsp;Hypervisor&nbsp;level&nbsp;snapshot.<br>
 &nbsp;<br>
@@ -179,15 +201,27 @@ If&nbsp;no&nbsp;snapshot&nbsp;name&nbsp;is&nbsp;supplied&nbsp;will&nbsp;restore&
 &gt;&gt;&gt;&nbsp;clc.v2.<a href="#Server">Server</a>(alias='BTDI',id='WA1BTDIKRT02').<a href="#Server-RestoreSnapshot">RestoreSnapshot</a>().WaitUntilComplete()<br>
 0</tt></dd></dl>
 
+<dl><dt><a name="Server-SetCPU"><strong>SetCPU</strong></a>(self, value)</dt></dl>
+
+<dl><dt><a name="Server-SetDescription"><strong>SetDescription</strong></a>(self, value)</dt></dl>
+
+<dl><dt><a name="Server-SetGroup"><strong>SetGroup</strong></a>(self, group_id)</dt></dl>
+
+<dl><dt><a name="Server-SetMemory"><strong>SetMemory</strong></a>(self, value)</dt></dl>
+
+<dl><dt><a name="Server-SetPassword"><strong>SetPassword</strong></a>(self, password)</dt><dd><tt>Request&nbsp;change&nbsp;of&nbsp;password.<br>
+&nbsp;<br>
+The&nbsp;API&nbsp;request&nbsp;requires&nbsp;supplying&nbsp;the&nbsp;current&nbsp;password.&nbsp;&nbsp;For&nbsp;this&nbsp;we&nbsp;issue&nbsp;a&nbsp;call<br>
+to&nbsp;retrieve&nbsp;the&nbsp;credentials&nbsp;so&nbsp;note&nbsp;there&nbsp;will&nbsp;be&nbsp;an&nbsp;activity&nbsp;log&nbsp;for&nbsp;retrieving&nbsp;the<br>
+credentials&nbsp;associated&nbsp;with&nbsp;any&nbsp;SetPassword&nbsp;entry<br>
+&nbsp;<br>
+&gt;&gt;&gt;&nbsp;s.<a href="#Server-SetPassword">SetPassword</a>("newpassword")</tt></dd></dl>
+
 <dl><dt><a name="Server-ShutDown"><strong>ShutDown</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="Server-StartMaintenance"><strong>StartMaintenance</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="Server-StopMaintenance"><strong>StopMaintenance</strong></a>(self)</dt></dl>
-
-<dl><dt><a name="Server-Update"><strong>Update</strong></a>(self)</dt><dd><tt>Update&nbsp;group<br>
-&nbsp;<br>
-*TODO*&nbsp;API&nbsp;not&nbsp;yet&nbsp;documented</tt></dd></dl>
 
 <dl><dt><a name="Server-__getattr__"><strong>__getattr__</strong></a>(self, var)</dt></dl>
 
@@ -212,9 +246,12 @@ clc.CLCException:&nbsp;<a href="#Server">Server</a>&nbsp;does&nbsp;not&nbsp;exis
 
 <hr>
 Static methods defined here:<br>
-<dl><dt><a name="Server-Create"><strong>Create</strong></a>(name, cpu, memory, template, group_id, network_id, alias<font color="#909090">=None</font>, password<font color="#909090">=None</font>, ip_address<font color="#909090">=None</font>, storage_type<font color="#909090">='standard'</font>, type<font color="#909090">='standard'</font>, primary_dns<font color="#909090">=None</font>, secondary_dns<font color="#909090">=None</font>, additional_disks<font color="#909090">=[]</font>, custom_fields<font color="#909090">=[]</font>, ttl<font color="#909090">=None</font>, managed_os<font color="#909090">=False</font>, description<font color="#909090">=None</font>, source_server_password<font color="#909090">=None</font>, cpu_autoscale_policy_id<font color="#909090">=None</font>, anti_affinity_policy_id<font color="#909090">=None</font>, packages<font color="#909090">=[]</font>)</dt><dd><tt>Creates&nbsp;a&nbsp;new&nbsp;server.<br>
+<dl><dt><a name="Server-Create"><strong>Create</strong></a>(name, template, group_id, network_id, cpu<font color="#909090">=None</font>, memory<font color="#909090">=None</font>, alias<font color="#909090">=None</font>, password<font color="#909090">=None</font>, ip_address<font color="#909090">=None</font>, storage_type<font color="#909090">='standard'</font>, type<font color="#909090">='standard'</font>, primary_dns<font color="#909090">=None</font>, secondary_dns<font color="#909090">=None</font>, additional_disks<font color="#909090">=[]</font>, custom_fields<font color="#909090">=[]</font>, ttl<font color="#909090">=None</font>, managed_os<font color="#909090">=False</font>, description<font color="#909090">=None</font>, source_server_password<font color="#909090">=None</font>, cpu_autoscale_policy_id<font color="#909090">=None</font>, anti_affinity_policy_id<font color="#909090">=None</font>, packages<font color="#909090">=[]</font>)</dt><dd><tt>Creates&nbsp;a&nbsp;new&nbsp;server.<br>
 &nbsp;<br>
 https://t3n.zendesk.com/entries/59565550-Create-<a href="#Server">Server</a><br>
+&nbsp;<br>
+cpu&nbsp;and&nbsp;memory&nbsp;are&nbsp;optional&nbsp;and&nbsp;if&nbsp;not&nbsp;provided&nbsp;we&nbsp;pull&nbsp;from&nbsp;the&nbsp;default&nbsp;server&nbsp;size&nbsp;values&nbsp;associated&nbsp;with<br>
+the&nbsp;provided&nbsp;group_id.<br>
 &nbsp;<br>
 Set&nbsp;ttl&nbsp;as&nbsp;number&nbsp;of&nbsp;seconds&nbsp;before&nbsp;server&nbsp;is&nbsp;to&nbsp;be&nbsp;terminated.&nbsp;&nbsp;Must&nbsp;be&nbsp;&gt;3600<br>
 &nbsp;<br>
@@ -240,6 +277,8 @@ Data descriptors defined here:<br>
     
 <tr><td bgcolor="#ffc8d8"><tt>&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
 <td width="100%">Methods defined here:<br>
+<dl><dt><a name="Servers-Archive"><strong>Archive</strong></a>(self)</dt></dl>
+
 <dl><dt><a name="Servers-Pause"><strong>Pause</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="Servers-PowerOff"><strong>PowerOff</strong></a>(self)</dt></dl>
