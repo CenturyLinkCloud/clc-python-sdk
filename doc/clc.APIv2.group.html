@@ -27,11 +27,15 @@ API&nbsp;v2&nbsp;-&nbsp;https://t3n.zendesk.com/forums/21013480-<a href="#Groups
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;group.type<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;group.status<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;group.server_count<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;group.created_by<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;group.created_date&nbsp;-&nbsp;POSIX&nbsp;time<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;group.modified_by<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;group.modified_date&nbsp;-&nbsp;POSIX&nbsp;time<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;group.dirty&nbsp;-&nbsp;bool&nbsp;indicating&nbsp;whether&nbsp;server&nbsp;<a href="__builtin__.html#object">object</a>&nbsp;is&nbsp;different&nbsp;than&nbsp;cloud&nbsp;<a href="__builtin__.html#object">object</a><br>
 &nbsp;<br>
 <a href="#Group">Group</a>&nbsp;<a href="__builtin__.html#object">object</a>&nbsp;variables&nbsp;available&nbsp;but&nbsp;access&nbsp;subject&nbsp;to&nbsp;change&nbsp;with&nbsp;future&nbsp;releases:<br>
 &nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;group.custom_fields<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;group.change_info</tt></p>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;group.custom_fields</tt></p>
 <p>
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
 <tr bgcolor="#aa55cc">
@@ -73,6 +77,8 @@ API&nbsp;v2&nbsp;-&nbsp;https://t3n.zendesk.com/forums/21013480-<a href="#Groups
 &gt;&gt;&gt;&nbsp;print&nbsp;_<br>
 BTDI</tt></dd></dl>
 
+<dl><dt><a name="Group-Archive"><strong>Archive</strong></a>(self)</dt></dl>
+
 <dl><dt><a name="Group-Create"><strong>Create</strong></a>(self, name, description<font color="#909090">=None</font>)</dt><dd><tt>Creates&nbsp;a&nbsp;new&nbsp;group<br>
 &nbsp;<br>
 &gt;&gt;&gt;&nbsp;clc.v2.Datacenter(location="WA1").RootGroup().<a href="#Group-Create">Create</a>("Test3","Description3")<br>
@@ -95,10 +101,30 @@ If&nbsp;specified&nbsp;key&nbsp;is&nbsp;not&nbsp;defined&nbsp;returns&nbsp;None.
 &gt;&gt;&gt;&nbsp;clc.v2.<a href="#Group">Group</a>(_.id).<a href="#Group-Delete">Delete</a>().WaitUntilComplete()<br>
 0</tt></dd></dl>
 
+<dl><dt><a name="Group-Pause"><strong>Pause</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="Group-PowerOff"><strong>PowerOff</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="Group-PowerOn"><strong>PowerOn</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="Group-Reboot"><strong>Reboot</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="Group-Refresh"><strong>Refresh</strong></a>(self)</dt><dd><tt>Reloads&nbsp;the&nbsp;group&nbsp;<a href="__builtin__.html#object">object</a>&nbsp;to&nbsp;synchronize&nbsp;with&nbsp;cloud&nbsp;representation.<br>
+&nbsp;<br>
+&gt;&gt;&gt;&nbsp;clc.v2.<a href="#Group">Group</a>("wa-1234").<a href="#Group-Refresh">Refresh</a>()</tt></dd></dl>
+
+<dl><dt><a name="Group-Reset"><strong>Reset</strong></a>(self)</dt></dl>
+
 <dl><dt><a name="Group-Servers"><strong>Servers</strong></a>(self)</dt><dd><tt>Returns&nbsp;a&nbsp;Servers&nbsp;<a href="__builtin__.html#object">object</a>&nbsp;containing&nbsp;all&nbsp;servers&nbsp;within&nbsp;the&nbsp;group.<br>
 &nbsp;<br>
 &gt;&gt;&gt;&nbsp;clc.v2.<a href="#Group">Group</a>("wa1-4416").<a href="#Group-Servers">Servers</a>()<br>
 &lt;clc.APIv2.server.Servers&nbsp;<a href="__builtin__.html#object">object</a>&nbsp;at&nbsp;0x1065b0f10&gt;</tt></dd></dl>
+
+<dl><dt><a name="Group-ShutDown"><strong>ShutDown</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="Group-StartMaintenance"><strong>StartMaintenance</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="Group-StopMaintenance"><strong>StopMaintenance</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="Group-Subgroups"><strong>Subgroups</strong></a>(self)</dt><dd><tt>Returns&nbsp;a&nbsp;<a href="#Groups">Groups</a>&nbsp;<a href="__builtin__.html#object">object</a>&nbsp;containing&nbsp;all&nbsp;child&nbsp;groups.<br>
 &nbsp;<br>

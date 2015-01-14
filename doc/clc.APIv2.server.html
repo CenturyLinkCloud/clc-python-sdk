@@ -36,14 +36,19 @@ API&nbsp;v2&nbsp;-&nbsp;https://t3n.zendesk.com/forums/21613150-<a href="#Server
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;server.reserved_drive_paths<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;server.adding_cpu_requires_reboot<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;server.adding_memory_requires_reboot<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;server.created_by<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;server.created_date&nbsp;-&nbsp;POSIX&nbsp;time<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;server.modified_by<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;server.modified_date&nbsp;-&nbsp;POSIX&nbsp;time<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;server.dirty&nbsp;-&nbsp;bool&nbsp;indicating&nbsp;whether&nbsp;server&nbsp;<a href="__builtin__.html#object">object</a>&nbsp;is&nbsp;different&nbsp;than&nbsp;cloud&nbsp;<a href="__builtin__.html#object">object</a><br>
 &nbsp;<br>
 <a href="#Server">Server</a>&nbsp;<a href="__builtin__.html#object">object</a>&nbsp;variables&nbsp;available&nbsp;but&nbsp;access&nbsp;subject&nbsp;to&nbsp;change&nbsp;with&nbsp;future&nbsp;releases:<br>
 &nbsp;<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;server.custom_fields<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;server.change_info<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;server.partitions<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;server.alert_policies<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;server.ip_addresses</tt></p>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;server.ip_addresses<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;server.managed_apps</tt></p>
 <p>
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
 <tr bgcolor="#aa55cc">
@@ -148,6 +153,11 @@ If&nbsp;no&nbsp;snapshot&nbsp;names&nbsp;are&nbsp;supplied&nbsp;will&nbsp;delete
 &nbsp;<br>
 &gt;&gt;&gt;&nbsp;clc.v2.<a href="#Server">Server</a>(alias='BTDI',id='WA1BTDIKRT02').<a href="#Server-DeleteSnapshot">DeleteSnapshot</a>().WaitUntilComplete()<br>
 0</tt></dd></dl>
+
+<dl><dt><a name="Server-Disks"><strong>Disks</strong></a>(self)</dt><dd><tt>Return&nbsp;disks&nbsp;<a href="__builtin__.html#object">object</a>&nbsp;associated&nbsp;with&nbsp;server.<br>
+&nbsp;<br>
+&gt;&gt;&gt;&nbsp;clc.v2.<a href="#Server">Server</a>("WA1BTDIX01").<a href="#Server-Disks">Disks</a>()<br>
+&lt;clc.APIv2.disk.Disks&nbsp;<a href="__builtin__.html#object">object</a>&nbsp;at&nbsp;0x10feea190&gt;</tt></dd></dl>
 
 <dl><dt><a name="Server-ExecutePackage"><strong>ExecutePackage</strong></a>(self, package_id, parameters<font color="#909090">={}</font>)</dt><dd><tt>Execute&nbsp;an&nbsp;existing&nbsp;Bluerprint&nbsp;package&nbsp;on&nbsp;the&nbsp;server.<br>
 &nbsp;<br>
