@@ -64,7 +64,7 @@ class API():
 		else:  fq_url = "%s/v2/%s" % (clc.defaults.ENDPOINT_URL_V2,url)
 
 		headers = {'Authorization': "Bearer %s" % clc._LOGIN_TOKEN_V2}
-		if type(payload) is str:  headers['content-type'] = "Application/json" # added for server ops with str payload
+		if isinstance(payload, basestring):  headers['content-type'] = "Application/json" # added for server ops with str payload
 
 		if method=="GET":
 			r = requests.request(method,fq_url,
