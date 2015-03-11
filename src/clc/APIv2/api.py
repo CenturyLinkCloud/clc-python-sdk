@@ -10,23 +10,6 @@ import sys
 
 class API():
 	
-	# requests module includes cacert.pem which is visible when run as installed module.
-	# pyinstall single-file deployment needs cacert.pem packaged along and referenced.
-	# This module proxies between the two based on whether the cacert.pem exists in
-	# the expected runtime directory.
-	#
-	# https://github.com/kennethreitz/requests/issues/557
-	# http://stackoverflow.com/questions/7674790/bundling-data-files-with-pyinstaller-onefile
-	#
-	@staticmethod
-	def _ResourcePath(relative):
-		if os.path.isfile(os.path.join(getattr(sys, '_MEIPASS', os.path.abspath(".")),relative)):
-			# Pyinstall packaged windows file
-			return(os.path.join(getattr(sys, '_MEIPASS', os.path.abspath(".")),relative))
-		else:
-			return(True)
-
-
 	@staticmethod
 	def _DebugRequest(request,response):
 		print('{}\n{}\n{}\n\n{}\n'.format(
@@ -52,7 +35,7 @@ class API():
 			
 		r = requests.post("%s/v2/%s" % (clc.defaults.ENDPOINT_URL_V2,"authentication/login"), 
 						  data={"username": clc.v2.V2_API_USERNAME, "password": clc.v2.V2_API_PASSWD},
-						  verify=API._ResourcePath('clc/cacert.pem'))
+						  verify=clc.v2.SSL_VERIFY)
 
 		if r.status_code == 200:
 			clc._LOGIN_TOKEN_V2 = r.json()['bearerToken']
@@ -81,18 +64,18 @@ class API():
 		else:  fq_url = "%s/v2/%s" % (clc.defaults.ENDPOINT_URL_V2,url)
 
 		headers = {'Authorization': "Bearer %s" % clc._LOGIN_TOKEN_V2}
-		if type(payload) is str:  headers['content-type'] = "Application/json" # added for server ops with str payload
+		if isinstance(payload, basestring):  headers['content-type'] = "Application/json" # added for server ops with str payload
 
 		if method=="GET":
 			r = requests.request(method,fq_url,
 								 headers=headers,
 			                     params=payload, 
-								 verify=API._ResourcePath('clc/cacert.pem'))
+								 verify=clc.v2.SSL_VERIFY)
 		else:
 			r = requests.request(method,fq_url,
 								 headers=headers,
 			                     data=payload, 
-								 verify=API._ResourcePath('clc/cacert.pem'))
+								 verify=clc.v2.SSL_VERIFY)
 
 		if debug:  
 			API._DebugRequest(request=requests.Request(method,fq_url,data=payload,headers=headers).prepare(),

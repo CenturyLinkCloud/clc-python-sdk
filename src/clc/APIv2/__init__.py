@@ -30,10 +30,14 @@ from clc.APIv2.datacenter import Datacenter
 from clc.APIv2.api import API
 import clc.APIv2.time_utils
 
+import os
+import sys
+
 
 ####### module/object vars #######
 V2_API_USERNAME = False
 V2_API_PASSWD = False
+SSL_VERIFY = True
 
 _V2_ENABLED = False
 _LOGINS = 0
@@ -49,3 +53,20 @@ def SetCredentials(api_username,api_passwd):
 	V2_API_PASSWD = api_passwd
 
 
+def SetSSLVerify(verify):
+        """"Enable disable SSL Certfificate verification.
+        # requests module includes cacert.pem which is visible when run as installed module.
+        # pyinstall single-file deployment needs cacert.pem packaged along and referenced.
+        # This module proxies between the two based on whether the cacert.pem exists in
+        # the expected runtime directory.
+        #
+        # https://github.com/kennethreitz/requests/issues/557
+        # http://stackoverflow.com/questions/7674790/bundling-data-files-with-pyinstaller-onefile
+        #
+        """
+        global SSL_VERIFY
+        if isinstance(verify, basestring):
+            if os.path.isfile(os.path.join(getattr(sys, '_MEIPASS', os.path.abspath(".")),verify)):
+                SSL_VERIFY = os.path.join(getattr(sys, '_MEIPASS', os.path.abspath(".")),verify)
+            else: SSL_VERIFY = True
+        else: SSL_VERIFY = verify
