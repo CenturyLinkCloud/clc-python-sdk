@@ -50,10 +50,16 @@ class Requests(object):
 		elif 'href' in requests_lst: requests_lst = [{'isQueued': True, 'links': [requests_lst]}]
 
 		for r in requests_lst:
-			if 'server' in r:  
+			if 'server' in r:
 				context_key = "server"
+                                context_val = r['server']
 				for l in r['links']:
-                                    if l['rel']=='self': context_val = l['href']
+                                    if l['rel']=='self':
+                                        # Workaround while the create server method does not return the true server id
+                                        # of the newly created server
+                                        context_key = "newserver"
+                                        context_val = l['href']
+                               
                             
 			else:  
 				context_key = "Unknown"
@@ -187,8 +193,10 @@ class Request(object):
 
 	def Server(self):
 		"""Return server associated with this request."""
-                server_id = clc.v2.API.Call('GET', self.context_val)['id']
-		if self.context_key == 'server':  return(clc.v2.Server(id=server_id,alias=self.alias))
+                if self.context_key == 'newserver':
+                     server_id = clc.v2.API.Call('GET', self.context_val)['id']
+                     return(clc.v2.Server(id=server_id,alias=self.alias))
+                elif self.context_key == 'server':  return(clc.v2.Server(id=self.context_val,alias=self.alias))
 		else:  raise(clc.CLCException("%s object not server" % self.context_key))
 
 
