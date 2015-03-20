@@ -13,8 +13,7 @@
 &nbsp;<br>
 These&nbsp;server&nbsp;related&nbsp;functions&nbsp;generally&nbsp;align&nbsp;one-for-one&nbsp;with&nbsp;published&nbsp;API&nbsp;calls&nbsp;categorized&nbsp;in&nbsp;the&nbsp;server&nbsp;category<br>
 &nbsp;<br>
-API&nbsp;v1&nbsp;-&nbsp;https://t3n.zendesk.com/forums/20578872-<a href="#Server">Server</a><br>
-API&nbsp;v2&nbsp;-&nbsp;https://t3n.zendesk.com/forums/21613150-Servers</tt></p>
+API&nbsp;v1&nbsp;-&nbsp;<a href="http://www.centurylinkcloud.com/api-docs/v1/#server">http://www.centurylinkcloud.com/api-docs/v1/#server</a></tt></p>
 <p>
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
 <tr bgcolor="#aa55cc">
@@ -48,6 +47,15 @@ https://t3n.zendesk.com/entries/21016957-Archive-<a href="#Server">Server</a><br
 &nbsp;<br>
 :param&nbsp;alias:&nbsp;short&nbsp;code&nbsp;for&nbsp;a&nbsp;particular&nbsp;account.&nbsp;&nbsp;If&nbsp;none&nbsp;will&nbsp;use&nbsp;account's&nbsp;default&nbsp;alias<br>
 :param&nbsp;servers:&nbsp;list&nbsp;of&nbsp;server&nbsp;names</tt></dd></dl>
+
+<dl><dt><a name="Server-ConvertToTemplate"><strong>ConvertToTemplate</strong></a>(server, template, password<font color="#909090">=None</font>, alias<font color="#909090">=None</font>)</dt><dd><tt>Converts&nbsp;an&nbsp;existing&nbsp;server&nbsp;into&nbsp;a&nbsp;template.<br>
+&nbsp;<br>
+<a href="http://www.centurylinkcloud.com/api-docs/v1/#server-convert-server-to-template">http://www.centurylinkcloud.com/api-docs/v1/#server-convert-server-to-template</a><br>
+&nbsp;<br>
+:param&nbsp;server:&nbsp;source&nbsp;server&nbsp;to&nbsp;convert<br>
+:param&nbsp;template:&nbsp;name&nbsp;of&nbsp;destination&nbsp;template<br>
+:param&nbsp;password:&nbsp;source&nbsp;server&nbsp;password&nbsp;(optional&nbsp;-&nbsp;will&nbsp;lookup&nbsp;password&nbsp;if&nbsp;None)<br>
+:param&nbsp;alias:&nbsp;short&nbsp;code&nbsp;for&nbsp;a&nbsp;particular&nbsp;account.&nbsp;&nbsp;If&nbsp;none&nbsp;will&nbsp;use&nbsp;account's&nbsp;default&nbsp;alias</tt></dd></dl>
 
 <dl><dt><a name="Server-Create"><strong>Create</strong></a>(name, template, cpu, ram, backup_level, group, alias<font color="#909090">=None</font>, location<font color="#909090">=None</font>, network<font color="#909090">=''</font>, description<font color="#909090">=''</font>, password<font color="#909090">=''</font>)</dt><dd><tt>Gets&nbsp;the&nbsp;list&nbsp;of&nbsp;Templates&nbsp;available&nbsp;to&nbsp;the&nbsp;account&nbsp;and&nbsp;location.<br>
 &nbsp;<br>
