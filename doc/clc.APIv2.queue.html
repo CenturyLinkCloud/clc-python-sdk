@@ -8,7 +8,7 @@
 <td valign=bottom>&nbsp;<br>
 <font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong><a href="clc.html"><font color="#ffffff">clc</font></a>.<a href="clc.APIv2.html"><font color="#ffffff">APIv2</font></a>.queue</strong></big></big></font></td
 ><td align=right valign=bottom
-><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/Users//clc_python_sdk_git/src/clc/APIv2/queue.py">/Users//clc_python_sdk_git/src/clc/APIv2/queue.py</a></font></td></tr></table>
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/Users//clc_git/src/clc/APIv2/queue.py">/Users//clc_git/src/clc/APIv2/queue.py</a></font></td></tr></table>
     <p><tt><a href="#Queue">Queue</a>&nbsp;related&nbsp;functions.&nbsp;&nbsp;<br>
 &nbsp;<br>
 These&nbsp;queue&nbsp;related&nbsp;functions&nbsp;generally&nbsp;align&nbsp;one-for-one&nbsp;with&nbsp;published&nbsp;API&nbsp;calls&nbsp;categorized&nbsp;in&nbsp;the&nbsp;queue&nbsp;category<br>
@@ -28,8 +28,9 @@ Server&nbsp;<a href="__builtin__.html#object">object</a>&nbsp;variables:<br>
     
 <tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
 <td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="clc.html">clc</a><br>
+</td><td width="25%" valign=top><a href="re.html">re</a><br>
 </td><td width="25%" valign=top><a href="time.html">time</a><br>
-</td><td width="25%" valign=top></td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
+</td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
 <tr bgcolor="#ee77aa">
 <td colspan=3 valign=bottom>&nbsp;<br>
@@ -68,7 +69,16 @@ Server&nbsp;<a href="__builtin__.html#object">object</a>&nbsp;variables:<br>
     
 <tr><td bgcolor="#ffc8d8"><tt>&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
 <td width="100%">Methods defined here:<br>
-<dl><dt><a name="Request-Server"><strong>Server</strong></a>(self)</dt><dd><tt>Return&nbsp;server&nbsp;associated&nbsp;with&nbsp;this&nbsp;request.</tt></dd></dl>
+<dl><dt><a name="Request-Server"><strong>Server</strong></a>(self)</dt><dd><tt>Return&nbsp;server&nbsp;associated&nbsp;with&nbsp;this&nbsp;request.<br>
+&nbsp;<br>
+&gt;&gt;&gt;&nbsp;d&nbsp;=&nbsp;clc.v2.Datacenter()<br>
+&gt;&gt;&gt;&nbsp;q&nbsp;=&nbsp;clc.v2.Server.Create(name="api2",cpu=1,memory=1,group_id=d.Groups().Get("Default&nbsp;Group").id,template=d.Templates().Search("centos-6-64")[0].id,network_id=d.Networks().networks[0].id,ttl=4000)<br>
+&gt;&gt;&gt;&nbsp;q.<a href="#Request-WaitUntilComplete">WaitUntilComplete</a>()<br>
+0<br>
+&gt;&gt;&gt;&nbsp;q.success_requests[0].<a href="#Request-Server">Server</a>()<br>
+&lt;clc.APIv2.server.Server&nbsp;<a href="__builtin__.html#object">object</a>&nbsp;at&nbsp;0x1095a8390&gt;<br>
+&gt;&gt;&gt;&nbsp;print&nbsp;_<br>
+VA1BTDIAPI214</tt></dd></dl>
 
 <dl><dt><a name="Request-Status"><strong>Status</strong></a>(self, cached<font color="#909090">=False</font>)</dt></dl>
 
