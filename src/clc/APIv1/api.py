@@ -73,7 +73,7 @@ class API():
 
 
 	@staticmethod
-	def Call(method,url,payload,silent=False,hide_errors=[],recursion_cnt=0,debug=False):
+	def Call(method,url,payload,silent=False,hide_errors=[],session=None,recursion_cnt=0,debug=False):
 		"""Execute v1 API call.
 
 		:param url: URL paths associated with the API call
@@ -85,7 +85,9 @@ class API():
 		"""
 		if not clc._LOGIN_COOKIE_V1:  API._Login()
 
-		session = clc._REQUESTS_SESSION
+		if session is None:
+		    session = clc._REQUESTS_SESSION
+
 		session.headers.update({'content-type': 'application/json'})
 
 		r = session.request(method,"%s%s/JSON" % (clc.defaults.ENDPOINT_URL_V1,url),

@@ -108,7 +108,7 @@ class Datacenter:
 
 
 	def Templates(self):
-		return(clc.v2.Templates(self._DeploymentCapabilities()['templates']))
+		return(clc.v2.Templates(templates_lst=self._DeploymentCapabilities()['templates']))
 
 
 	def __getattr__(self,var):
