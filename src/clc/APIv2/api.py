@@ -83,7 +83,7 @@ class API():
 
 
 	@staticmethod
-	def Call(method,url,payload={},debug=False):
+	def Call(method,url,payload=None,session=None,debug=False):
 		"""Execute v2 API call.
 
 		:param url: URL paths associated with the API call
@@ -93,7 +93,11 @@ class API():
 		"""
 		if not clc._LOGIN_TOKEN_V2:  API._Login()
 
-		session = clc._REQUESTS_SESSION
+		if session is None:
+		    session = clc._REQUESTS_SESSION
+
+		if payload is None:
+		    payload = {}
 
 		# If executing refs provided in API they are abs paths,
 		# Else refs we build in the sdk are relative
