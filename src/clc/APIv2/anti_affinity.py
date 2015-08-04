@@ -20,6 +20,7 @@ Antiaffinity object variables:
 
 
 import clc
+import json
 
 class AntiAffinity(object):
 
@@ -75,7 +76,8 @@ class AntiAffinity(object):
 		if not alias:  alias = clc.v2.Account.GetAlias()
 		if not location:  location = clc.v2.Account.GetLocation()
 
-		r = clc.v2.API.Call('POST','antiAffinityPolicies/%s' % alias,{'name': name, 'location': location})
+		r = clc.v2.API.Call('POST','antiAffinityPolicies/%s' % alias,
+							json.dumps({'name': name, 'location': location}))
 		return(AntiAffinity(id=r['id'],name=r['name'],location=r['location'],servers=[]))
 
 
