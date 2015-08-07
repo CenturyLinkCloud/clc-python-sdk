@@ -144,6 +144,7 @@ class Group(object):
 
 		if key in self.data:  return(self.data[key])
 		elif key in self.data['changeInfo']:  return(self.data['changeInfo'][key])
+		elif key.lower() == 'description': return str()
 		else:  raise(AttributeError("'%s' instance has no attribute '%s'" % (self.__class__.__name__,key)))
 
 
