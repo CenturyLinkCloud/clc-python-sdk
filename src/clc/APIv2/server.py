@@ -43,15 +43,14 @@ Server object variables available but access subject to change with future relea
 """
 
 # vCur:
-# TODO - Servers.CreateSnapshot, Servers.Delete
+# TODO - Server pricing (/v2/billing/btdi/serverPricing/wa1btdiapi207) returns array with static hourly pricing
 
 # vNext:
 # TODO - Restore archived server - need API spec
 # TODO - cpuAutoscalePolicy - need API spec 404
 # TODO - AntiAffinity policy - need API spec put call 400 
-# TODO - Statistics - need API spec get call 500
 # TODO - Billing (server, group, account) - need API spec
-# TODO - Server pricing (/v2/billing/btdi/serverPricing/wa1btdiapi207) returns array with static hourly pricing
+# TODO - Statistics - need API spec get call 500
 # TODO - Validation tasks with Server.Create
 # TODO - create server capture and resolve alias via uuid
 # TODO - Scheduled activities
@@ -277,6 +276,28 @@ class Server(object):
 
 		return(clc.v2.Alerts(self.alert_policies))
 
+
+	# TODO
+	def PriceUnits(self):
+		"""Returns the hourly unit prices for this server.
+
+		>>> clc.v2.Server("NY1BTDIPHYP0101").PriceUnits()
+		xxxxxx
+
+		"""
+
+		return(clc.v2.API.Call('GET','servers/%s/%s/credentials' % (self.alias,self.name)))
+
+	# TODO
+	def PriceHourly(self):
+		"""Returns the total hourly price for the server.
+
+		>>> clc.v2.Server("NY1BTDIPHYP0101").PriceHourly()
+		xxxx
+
+		"""
+
+		return(clc.v2.API.Call('GET','servers/%s/%s/credentials' % (self.alias,self.name)))
 
 	def Credentials(self):
 		"""Returns the administrative credentials for this server.
