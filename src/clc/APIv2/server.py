@@ -19,7 +19,7 @@ Server object variables:
 	server.name
 	server.os
 	server.os_type
-	server.status - active, archived
+	server.status - active, archived underConstruction, deleted
 	server.type
 	server.storage_type
 	server.in_maintenance_mode
