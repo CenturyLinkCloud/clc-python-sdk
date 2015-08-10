@@ -64,6 +64,8 @@ class AccountDoesNotExistException(CLCException):
 	pass
 class AccountDeletedException(CLCException):
 	pass
+class ServerDeletedException(CLCException):
+	pass
 class AccountLoginException(CLCException):
     pass
 class InvalidAPIResponseException(CLCException):

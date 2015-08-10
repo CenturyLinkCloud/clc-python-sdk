@@ -681,6 +681,9 @@ clc.v2.Server.PriceUnits()
 Returns the hourly unit component prices for this server.  
 Total actual price is scaled by the unit quantity.
 
+Raises `clc.ServerDeletedException` if server is inactive.  Inactive servers do not hav pricing
+information associated with them.
+
 ```python
 >>> clc.v2.Server("NY1BTDIPHYP0101").PriceUnits()
 {'storage': 0.00021, 'cpu': 0.01, 'managed_os': 0.0, 'memory': 0.015}
@@ -695,12 +698,14 @@ clc.v2.Server.PriceHourly()
 Returns the total hourly price for the server.
 Sums unit prices with unit volumes.
 
+Raises `clc.ServerDeletedException` if server is inactive.  Inactive servers do not hav pricing
+information associated with them.
+
 ```python
 >>> clc.v2.Server("NY1BTDIPHYP0101").PriceHourly()
 0.02857
 ```
 
-L
 
 ### clc.v2.Server.Credentials
 ```python

@@ -287,7 +287,11 @@ class Server(object):
 
 		"""
 
-		units = clc.v2.API.Call('GET','billing/%s/serverPricing/%s' % (self.alias,self.name))
+		try:
+			units = clc.v2.API.Call('GET','billing/%s/serverPricing/%s' % (self.alias,self.name))
+		except clc.APIFailedResponse:
+			raise(clc.ServerDeletedException)
+			
 
 		return({
 				'cpu': units['cpu'],
