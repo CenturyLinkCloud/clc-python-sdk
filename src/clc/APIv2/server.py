@@ -277,27 +277,40 @@ class Server(object):
 		return(clc.v2.Alerts(self.alert_policies))
 
 
-	# TODO
 	def PriceUnits(self):
-		"""Returns the hourly unit prices for this server.
+		"""Returns the hourly unit component prices for this server.
+
+		Total actual price is scaled by the unit quantity.
 
 		>>> clc.v2.Server("NY1BTDIPHYP0101").PriceUnits()
-		xxxxxx
+		{'storage': 0.00021, 'cpu': 0.01, 'managed_os': 0.0, 'memory': 0.015}
 
 		"""
 
-		return(clc.v2.API.Call('GET','servers/%s/%s/credentials' % (self.alias,self.name)))
+		units = clc.v2.API.Call('GET','billing/%s/serverPricing/%s' % (self.alias,self.name))
 
-	# TODO
+		return({
+				'cpu': units['cpu'],
+				'memory': units['memoryGB'],
+				'storage': units['storageGB'],
+				'managed_os': units['managedOS'],
+			})
+
+
 	def PriceHourly(self):
 		"""Returns the total hourly price for the server.
 
+		Sums unit prices with unit volumes.
+
 		>>> clc.v2.Server("NY1BTDIPHYP0101").PriceHourly()
-		xxxx
+		0.02857
 
 		"""
 
-		return(clc.v2.API.Call('GET','servers/%s/%s/credentials' % (self.alias,self.name)))
+		units = self.PriceUnits()
+
+		return(units['cpu']*self.cpu+units['memory']*self.memory+units['storage']*self.storage+units['managed_os'])
+
 
 	def Credentials(self):
 		"""Returns the administrative credentials for this server.
