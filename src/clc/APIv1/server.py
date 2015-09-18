@@ -18,7 +18,7 @@ class Server:
 	def GetServerDetails(alias,servers):
 		"""Gets estimated costs for a group of servers.
 
-		https://t3n.zendesk.com/entries/21741917-Get-Server
+		https://www.ctl.io/api-docs/v1/#server-getserver
 
 		:param alias: short code for a particular account.  If none will use account's default alias
 		:param server: name of server to queury
@@ -37,7 +37,7 @@ class Server:
 	def GetServers(location,group=None,alias=None,name_groups=False):
 		"""Gets a deep list of all Servers for a given Hardware Group and its sub groups, or all Servers for a given location.
 
-		https://t3n.zendesk.com/entries/21735513-Get-All-Servers
+		https://www.ctl.io/api-docs/v1/#server-getallservers
 
 		:param alias: short code for a particular account.  If none will use account's default alias
 		:param location: datacenter where group resides
@@ -312,7 +312,7 @@ class Server:
 	def GetCredentials(servers,alias=None):
 		"""Gets the credentials for the specified servers.
 
-		https://t3n.zendesk.com/entries/21053657-Get-Server-Credentials
+		https://www.ctl.io/api-docs/v1/#server-getservercredentials
 
 		:param alias: short code for a particular account.  If none will use account's default alias
 		:param servers: list of server names
@@ -329,7 +329,7 @@ class Server:
 	def GetDisks(server,alias=None,guest_names=True):
 		"""Returns list of disks configured for the server
 
-		https://t3n.zendesk.com/entries/23087091-List-Disks
+		https://www.ctl.io/api-docs/v1/#server-listdisks
 
 		:param alias: short code for a particular account.  If none will use account's default alias
 		:param server: server name
@@ -338,6 +338,25 @@ class Server:
 		if alias is None:  alias = clc.v1.Account.GetAlias()
 
 		r = clc.v1.API.Call('post','Server/ListDisks', { 'AccountAlias': alias, 'Name': server, 'QueryGuestDiskNames': guest_names } )
+		return(r['Disks'])
+
+
+	@staticmethod
+	def DeleteDisk(server,scsi_bus_id,scsi_disk_id,alias=None):
+		"""Deletes the specified disk.
+
+		https://www.ctl.io/api-docs/v1/#server-delete-disk
+
+		:param alias: short code for a particular account.  If None will use account's default alias
+		:param server: server name
+		:param scsu_bus_id: bus ID associated with disk
+		:param scsu_disk_id: disk ID associated with disk
+		"""
+		if alias is None:  alias = clc.v1.Account.GetAlias()
+
+		r = clc.v1.API.Call('post','Server/DeleteDisk', 
+		                   {'AccountAlias': alias, 'Name': server, 'OverrideFailsafes': 'True',
+						    'ScsiBusID': scsi_bus_id, 'ScsiDeviceID': scsi_disk_id })
 		return(r['Disks'])
 
 
