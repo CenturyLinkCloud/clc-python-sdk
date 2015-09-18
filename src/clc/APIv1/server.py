@@ -349,14 +349,14 @@ class Server:
 
 		:param alias: short code for a particular account.  If None will use account's default alias
 		:param server: server name
-		:param scsu_bus_id: bus ID associated with disk
-		:param scsu_disk_id: disk ID associated with disk
+		:param scsi_bus_id: bus ID associated with disk
+		:param scsi_disk_id: disk ID associated with disk
 		"""
 		if alias is None:  alias = clc.v1.Account.GetAlias()
 
 		r = clc.v1.API.Call('post','Server/DeleteDisk', 
-		                   {'AccountAlias': alias, 'Name': server, 'OverrideFailsafes': 'True',
+		                   {'AccountAlias': alias, 'Name': server, 'OverrideFailsafes': True,
 						    'ScsiBusID': scsi_bus_id, 'ScsiDeviceID': scsi_disk_id })
-		return(r['Disks'])
+		return(r)
 
 

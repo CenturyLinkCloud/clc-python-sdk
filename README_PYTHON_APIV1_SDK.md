@@ -432,6 +432,17 @@ List all disks associated with the servere also querying the guest for disk name
 [{u'Name': u'C:\\', u'ScsiBusID': u'0', u'ScsiDeviceID': u'0', u'SizeGB': 60}]
 ```
 
+#### Delete Disk
+Delete specific disk.  This request over-rides any safeguards which may be in place to protect system disks.
+
+```python
+>>> clc.v1.Server.DeleteDisk(server='UC1BTDISERO2201',alias=None,scsi_bus_id=0,scsi_target_id=0)
+[{u'Message': u'OK',
+  u'RequestID': 36357,
+  u'StatusCode': 0,
+  u'Success': True}]
+```
+
 #### Misc Asynchronous server operations
 These asynchronous operations can be run on one more more servers.  Currently implemented are:
 *pause, delete, archive, poweron, poweroff, reset, shutdown, snapshot*.  Rather than waiting for process to 
