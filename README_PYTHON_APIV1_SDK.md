@@ -436,7 +436,7 @@ List all disks associated with the servere also querying the guest for disk name
 Delete specific disk.  This request over-rides any safeguards which may be in place to protect system disks.
 
 ```python
->>> clc.v1.Server.DeleteDisk(server='UC1BTDISERO2201',alias=None,scsi_bus_id=0,scsi_target_id=0)
+>>> clc.v1.Server.DeleteDisk(server='UC1BTDISERO2201',alias=None,scsi_bus_id=0,scsi_device_id=0)
 [{u'Message': u'OK',
   u'RequestID': 36357,
   u'StatusCode': 0,

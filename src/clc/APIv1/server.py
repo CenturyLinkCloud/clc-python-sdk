@@ -342,7 +342,7 @@ class Server:
 
 
 	@staticmethod
-	def DeleteDisk(server,scsi_bus_id,scsi_disk_id,alias=None):
+	def DeleteDisk(server,scsi_bus_id,scsi_device_id,alias=None):
 		"""Deletes the specified disk.
 
 		https://www.ctl.io/api-docs/v1/#server-delete-disk
@@ -350,13 +350,13 @@ class Server:
 		:param alias: short code for a particular account.  If None will use account's default alias
 		:param server: server name
 		:param scsi_bus_id: bus ID associated with disk
-		:param scsi_disk_id: disk ID associated with disk
+		:param scsi_device_id: disk ID associated with disk
 		"""
 		if alias is None:  alias = clc.v1.Account.GetAlias()
 
 		r = clc.v1.API.Call('post','Server/DeleteDisk', 
 		                   {'AccountAlias': alias, 'Name': server, 'OverrideFailsafes': True,
-						    'ScsiBusID': scsi_bus_id, 'ScsiDeviceID': scsi_disk_id })
+						    'ScsiBusID': scsi_bus_id, 'ScsiDeviceID': scsi_device_id })
 		return(r)
 
 

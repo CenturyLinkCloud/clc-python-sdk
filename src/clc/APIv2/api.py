@@ -106,8 +106,8 @@ class API():
 
 		session.headers.update({'Authorization': "Bearer %s" % clc._LOGIN_TOKEN_V2})
 
-		if isinstance(payload, basestring):
-			session.headers['content-type'] = "Application/json" # added for server ops with str payload
+		if isinstance(payload, basestring):  session.headers['content-type'] = "Application/json" # added for server ops with str payload
+		else:  session.headers['content-type'] = "application/x-www-form-urlencoded"
 
 		if method=="GET":
 			r = session.request(method,fq_url,
@@ -130,7 +130,7 @@ class API():
 		else:
 			try:
 				e = clc.APIFailedResponse("Response code %s.  %s %s %s" % 
-				                          (r.status_code,r.json()['message'],method,"%s%s" % (clc.defaults.ENDPOINT_URL_V2,url)))
+				                          (r.status_code,r.json()['message'],method,"%s/%s" % (clc.defaults.ENDPOINT_URL_V2,url)))
 				e.response_status_code = r.status_code
 				e.response_json = r.json()
 				e.response_text = r.text
@@ -139,7 +139,7 @@ class API():
 				raise
 			except:
 				e = clc.APIFailedResponse("Response code %s. %s. %s %s" % 
-				                         (r.status_code,r.text,method,"%s%s" % (clc.defaults.ENDPOINT_URL_V2,url)))
+				                         (r.status_code,r.text,method,"%s/%s" % (clc.defaults.ENDPOINT_URL_V2,url)))
 				e.response_status_code = r.status_code
 				e.response_json = {}	# or should this be None?
 				e.response_text = r.text
