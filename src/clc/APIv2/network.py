@@ -1,5 +1,5 @@
 """
-Network related functions.  
+Network related functions.
 
 These network related functions generally align one-for-one with published API calls categorized in the network category
 
@@ -68,6 +68,7 @@ class Networks(object):
 		for network in self.networks:
 			if network.id == key:  return(network)
 			if network.name == key:  return(network)
+			if network.cidr == key:  return(network)
 
 
 class Network(object):
@@ -121,5 +122,4 @@ class Network(object):
 
 
 	def __str__(self):
-		return(self.id)
-
+		return(str(self.id))
