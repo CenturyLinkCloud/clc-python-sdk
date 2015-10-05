@@ -77,7 +77,6 @@ class TestClcNetworks(unittest.TestCase):
         data = [{"networkId": 24601, "accountID": "XYZ", "name": "NAME"}]
         test_obj = Networks(alias="007", networks_lst=data)
         self.assertEquals(len(test_obj.networks), 1)
-        
 
     def testGetNetworkById(self):
         self.assertEqual(self.test_obj.Get(90210), self.test_obj.networks[2])
@@ -87,6 +86,9 @@ class TestClcNetworks(unittest.TestCase):
 
     def testGetNetworkNoResult(self):
         self.assertEqual(self.test_obj.Get("nothing_here"), None)
+
+    def testGetNetworkByCidr(self):
+        self.assertEqual(self.test_obj.Get("172.22.10.0/24"), self.test_obj.networks[1])
 
 if __name__ == '__main__':
     unittest.main()
