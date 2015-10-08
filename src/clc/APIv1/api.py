@@ -48,7 +48,7 @@ class API():
 	def _Login():
 		if not clc.v1.V1_API_KEY or not clc.v1.V1_API_PASSWD:
 			clc.v1.output.Status('ERROR',3,'V1 API key and password not provided')
-			raise(clc.v1.APIV1NotEnabled)
+			raise(clc.APIV1NotEnabled)
 
 		clc._LOGINS += 1
 
