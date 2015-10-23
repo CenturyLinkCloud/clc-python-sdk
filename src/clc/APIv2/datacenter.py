@@ -104,7 +104,7 @@ class Datacenter:
 
 
 	def Networks(self):
-		return(clc.v2.Networks(networks_lst=self._DeploymentCapabilities()['deployableNetworks']))
+		return(clc.v2.Networks(alias=self.alias, location=self.location))
 
 
 	def Templates(self):
