@@ -1,5 +1,5 @@
 """
-Datacenter related functions.  
+Datacenter related functions.
 
 These datacenter related functions generally align one-for-one with published API calls categorized in the account category
 
@@ -43,7 +43,7 @@ class Datacenter:
 	def __init__(self,location=None,name=None,alias=None):
 		"""Create Datacenter object.
 
-		If parameters are populated then create object location.  
+		If parameters are populated then create object location.
 		Else if only id is supplied issue a Get Policy call
 
 		https://t3n.zendesk.com/entries/31026420-Get-Data-Center-Group
@@ -97,14 +97,17 @@ class Datacenter:
 
 
 	def _DeploymentCapabilities(self,cached=True):
-		if not self.deployment_capabilities or not cached:  
+		if not self.deployment_capabilities or not cached:
 			self.deployment_capabilities = clc.v2.API.Call('GET','datacenters/%s/%s/deploymentCapabilities' % (self.alias,self.location))
 
 		return(self.deployment_capabilities)
 
 
-	def Networks(self):
-		return(clc.v2.Networks(networks_lst=self._DeploymentCapabilities()['deployableNetworks']))
+	def Networks(self, forced_load=False):
+		if forced_load:
+			return(clc.v2.Networks(alias=self.alias, location=self.location))
+		else:
+			return(clc.v2.Networks(networks_lst=self._DeploymentCapabilities()['deployableNetworks']))
 
 
 	def Templates(self):
@@ -120,4 +123,3 @@ class Datacenter:
 
 	def __str__(self):
 		return(self.location)
-
