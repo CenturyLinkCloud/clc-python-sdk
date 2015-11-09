@@ -637,6 +637,8 @@ Creates a new server.  See also class method to clone server.
 `cpu` and `memory` are optional and if not provided we pull from the default server size values associated with
 the provided `group_id`.
 
+`type` is one of standard, hyperscale, or baremetal.
+
 Set ttl as number of seconds before server is to be terminated.  Must be >3600
 
 ```python
