@@ -9,7 +9,7 @@ from setuptools import setup, find_packages
 
 setup(
 	name = "clc-sdk",
-	version = "2.37",
+	version = "2.38",
 	packages = find_packages("."),
 
 	install_requires = ['prettytable','clint','argparse','requests'],
