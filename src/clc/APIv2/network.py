@@ -117,7 +117,6 @@ class Network(object):
 		key = re.sub("_(.)",lambda pat: pat.group(1).upper(),var)
 
 		if key in self.data:  return(self.data[key])
-		elif key in self.data['changeInfo']:  return(self.data['changeInfo'][key])
 		else:  raise(AttributeError("'%s' instance has no attribute '%s'" % (self.__class__.__name__,key)))
 
 
