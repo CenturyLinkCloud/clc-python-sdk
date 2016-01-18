@@ -496,7 +496,7 @@ class Server(object):
                 if type.lower() == "hyperscale" and storage_type.lower() != "hyperscale":  raise(clc.CLCException("Invalid type/storage_type combo"))
 		if ttl and ttl<=3600: raise(clc.CLCException("ttl must be greater than 3600 seconds"))
 		if ttl: ttl = clc.v2.time_utils.SecondsToZuluTS(int(time.time())+ttl)
-		if type.low() == "baremetal":  type = "bareMetal"
+		if type.lower() == "baremetal":  type = "bareMetal"
 		# TODO - validate custom_fields as a list of dicts with an id and a value key
 		# TODO - validate template exists
 		# TODO - validate additional_disks as a list of dicts with a path, sizeGB, and type (partitioned,raw) keys
