@@ -3,7 +3,7 @@ Queue related functions.
 
 These queue related functions generally align one-for-one with published API calls categorized in the queue category
 
-API v2 - https://t3n.zendesk.com/forums/21772620-Queue
+API v2 - https://www.ctl.io/api-docs/v2/#queue
 
 Requests object variables:
 
@@ -52,7 +52,7 @@ class Requests(object):
 
 		for r in requests_lst:
 
-			if 'server' in r and len(r['server'])<6:  
+			if 'server' in r and len(r['server'])<=6:  
 				# Hopefully this captures only new server builds, TODO find a better way to ID these
 				for link in r['links']:
 					if re.search("/v2/servers/",link['href']):
