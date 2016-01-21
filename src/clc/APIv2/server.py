@@ -388,6 +388,31 @@ class Server(object):
 							   alias=self.alias))
 
 
+	def AddNIC(self,network_id,ip=''):
+		"""Execute an existing Bluerprint package on the server.
+
+		https://www.ctl.io/api-docs/v2/#servers-add-secondary-network
+
+		Requires package ID, currently only available by browsing control and browsing
+		for the package itself.  The UUID parameter is the package ID we need.
+
+		network_id - ID associated with the network to add
+		ip - Explicit IP address to assgin (optional)
+
+		Need to reinstantiate the server object after execution completes to see the assigned IP address.
+
+		>>> clc.v2.Server(alias='BTDI',id='WA1BTDIKRT06'). \
+		           AddNIC(package_id="77ab3844-579d-4c8d-8955-c69a94a2ba1a", \
+				   WaitUntilComplete()
+		0
+
+		"""
+
+		return(clc.v2.Requests(clc.v2.API.Call('POST','servers/%s/%s/networks' % (self.alias,self.id),
+		                                       json.dumps({'networkId': network_id, 'ipAddress': ip})),
+							   alias=self.alias))
+
+
 	def GetSnapshots(self):
 		"""Returns list of all snapshot names.
 

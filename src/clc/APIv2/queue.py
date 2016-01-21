@@ -11,6 +11,15 @@ Requests object variables:
 	requests.error_requests
 	requests.success_requests
 
+Request object variables:
+	
+	(undocumented)
+
+Requestv2Exprimental (extends request) variables:
+
+	request.id - operational ID
+	request.uri - status uri
+
 
 """
 
@@ -49,6 +58,8 @@ class Requests(object):
 		if requests_lst is None:  raise(Exception("Unexpected requests response"))
 		elif 'isQueued' in requests_lst:  requests_lst = [requests_lst]
 		elif 'href' in requests_lst: requests_lst = [{'isQueued': True, 'links': [requests_lst]}]
+		elif 'uri' in requests_lst: requests_lst = [{'isQueued': True, 'operation_id': requests_lst['operationId'], 'uri': requests_lst['uri']}]
+		# {"operationId":"0edee81c15154b82a0d5a6dddee7c24d","uri":"/v2-experimental/operations/KRAP/status/0edee81c15154b82a0d5a6dddee7c24d"}
 
 		for r in requests_lst:
 
@@ -67,7 +78,10 @@ class Requests(object):
 				context_val = "Unknown"
 
 			if r['isQueued']:  
-				self.requests.append(Request([obj['id'] for obj in r['links'] if obj['rel']=='status'][0],
+				if 'uri' in r:
+					self.requests.append(Requestv2Experimental(r['operation_id'],r['uri']))
+				else:
+					self.requests.append(Request([obj['id'] for obj in r['links'] if obj['rel']=='status'][0],
 				                             alias=self.alias,request_obj={'context_key': context_key, 'context_val': context_val}))
 			else:
 				# If we're dealing with a list of responses and we have an error with one I'm not sure how
@@ -121,7 +135,7 @@ class Requests(object):
 			cur_requests = []
 			for request in self.requests:
 				status = request.Status()
-				if status in ('notStarted','executing','resumed'):  cur_requests.append(request)
+				if status in ('notStarted','executing','resumed','queued'):  cur_requests.append(request)
 				elif status == 'succeeded':  self.success_requests.append(request)
 				elif status in ("failed", "unknown"): self.error_requests.append(request)
 
@@ -135,11 +149,12 @@ class Requests(object):
 
 
 class Request(object):
+	"""This is the current prod incantation for requests. """
 
 	def __init__(self,id,alias=None,request_obj=None):
 		"""Create Request object.
 
-		https://t3n.zendesk.com/entries/43699144-Get-Status
+		https://www.ctl.io/api-docs/v2/#queue-get-status
 
 		"""
 
@@ -219,4 +234,34 @@ class Request(object):
 
 	def __str__(self):
 		return(self.id)
+
+
+class Requestv2Experimental(Request):
+	"""This is the v2-experimental implementation for requests. """
+
+	def __init__(self,id,uri):
+		"""Create Request object.  
+
+		Response string feeding this looks like:
+		{"operationId":"OPERATIONAL_ID","uri":"/v2-experimental/operations/$ALIAS/status/$OPERATION_ID"}
+		"""
+
+		self.id = id
+		self.uri = uri
+		self.data = {'context_key': None, 'context_val': None, 'status': None}
+
+		self.time_created = time.time()
+		self.time_executed = None
+		self.time_completed = None
+
+
+	def Status(self,cached=False):
+		if not cached or not self.data['status']:  
+			try:
+				self.data['status'] = clc.v2.API.Call('GET',self.uri,{})['status']
+			except clc.APIFailedResponse as e:
+				if e.response_status_code == 500:  pass
+				else:  raise(e)
+		return(self.data['status'])
+		
 
