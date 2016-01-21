@@ -401,9 +401,10 @@ class Server(object):
 
 		Need to reinstantiate the server object after execution completes to see the assigned IP address.
 
-		>>> clc.v2.Server(alias='BTDI',id='WA1BTDIKRT06'). \
-		           AddNIC(package_id="77ab3844-579d-4c8d-8955-c69a94a2ba1a", \
-				   WaitUntilComplete()
+        >>> network = clc.v2.Networks(location="VA1").Get("10.128.166.0/24")
+        >>> clc.v2.Server(alias='BTDI',id='WA1BTDIKRT06'). \
+        		AddNIC(network_id=network.id,ip=''). \
+        		WaitUntilComplete()
 		0
 
 		"""

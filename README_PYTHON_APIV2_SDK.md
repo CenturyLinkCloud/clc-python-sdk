@@ -751,6 +751,29 @@ each of these changes requires a seperate API call.  Some API calls are synchron
 ```
 
 
+### clc.v2.Server.AddNIC
+```python
+clc.v2.Server.AddNIC( network_id, ip='' ):
+```
+Execute an existing Bluerprint package on the server.
+
+Requires package ID, currently only available by browsing control and browsing
+for the package itself.  The UUID parameter is the package ID we need.
+
+network_id - ID associated with the network to add
+ip - Explicit IP address to assgin (optional)
+
+Need to reinstantiate the server object after execution completes to see the assigned IP address.
+
+```python
+>>> network = clc.v2.Networks(location="VA1").Get("10.128.166.0/24")
+>>> clc.v2.Server(alias='BTDI',id='WA1BTDIKRT06'). \
+        AddNIC(network_id=network.id,ip=''). \
+        WaitUntilComplete()
+0
+```
+
+
 ### clc.v2.Server.SetCPU, SetMemory, SetDescription, SetGroup
 ```python
 clc.v2.Server.SetCPU( value )
