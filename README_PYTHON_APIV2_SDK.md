@@ -621,6 +621,7 @@ Object variables available but access subject to change with future releases:
 * server.custom_fields
 * server.alert_policies
 * server.ip_addresses
+* server.secondary_ip_addresses
 
 
 ### clc.v2.Server.Create (Static)
@@ -764,6 +765,7 @@ network_id - ID associated with the network to add
 ip - Explicit IP address to assgin (optional)
 
 Need to reinstantiate the server object after execution completes to see the assigned IP address.
+Note these addresses get populated in `server.secondary_ip_addresses` not `server.ip_addresses`.
 
 ```python
 >>> network = clc.v2.Networks(location="VA1").Get("10.128.166.0/24")
