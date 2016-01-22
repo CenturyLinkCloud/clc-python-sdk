@@ -38,6 +38,7 @@ Server object variables available but access subject to change with future relea
 	server.partitions
 	server.alert_policies
 	server.ip_addresses
+	server.secondary_ip_addresses
 	server.managed_apps
 
 """
@@ -210,6 +211,7 @@ class Server(object):
 
 	def __getattr__(self,var):
 		if var in ('memory','storage'):  key = var+'GB'
+		elif var == 'secondary_ip_addresses':  key = 'secondaryIPAddresses'
 		else:  key = re.sub("_(.)",lambda pat: pat.group(1).upper(),var)
 
 		if key in self.data:  return(self.data[key])
