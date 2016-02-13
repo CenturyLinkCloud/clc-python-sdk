@@ -147,7 +147,7 @@ class PublicIP(object):
 
 		"""
 
-		public_ip_set = [{'public_ipId': o.id, 'sizeGB': o.size} for o in self.parent.public_ips if o!=self]
+		public_ip_set = [{'public_ipId': o.id} for o in self.parent.public_ips if o!=self]
 		self.parent.public_ips = [o for o in self.parent.public_ips if o!=self]
 		return(clc.v2.Requests(clc.v2.API.Call('DELETE','servers/%s/%s/publicIPAddresses/%s' % (self.parent.server.alias,self.parent.server.id,self.id)),
 		                       alias=self.parent.server.alias))
