@@ -3,8 +3,8 @@
 import mock
 from mock import patch, create_autospec
 import unittest
-from library.datacenter import Datacenter
 import clc as clc_sdk
+from clc.APIv2 import Datacenter
 
 
 # Written by a non-Python developer

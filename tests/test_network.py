@@ -3,8 +3,8 @@
 import mock
 from mock import patch, create_autospec
 import unittest
-from library.network import Networks, Network
 import clc as clc_sdk
+from clc.APIv2 import Networks, Network
 
 
 # Written by a non-Python developer
@@ -37,7 +37,7 @@ class TestClcNetwork(unittest.TestCase):
 
     def testGetAttrInData(self):
         self.assertEqual(self.test_obj.field1, "value1")
-        self.assertEqual(self.test_obj.change1, 'changeVal1')
+        self.assertEqual(self.test_obj.changeInfo['change1'], 'changeVal1')
         with self.assertRaises(AttributeError) as ex:
             self.test_obj.does_not_exist
 
