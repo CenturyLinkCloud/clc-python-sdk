@@ -1,5 +1,6 @@
 #!/usr/bin/python
 
+import json
 import mock
 from mock import patch, create_autospec
 import unittest
@@ -166,17 +167,28 @@ class TestClcServer(unittest.TestCase):
         self.test_obj.Delete()
         clc_sdk.v2.API.Call.assert_called_once_with('DELETE','servers/base_test/12345')
 
-    # def testClone(self):
-    #     p = patch("clc.v2.Server", new=mock.MagicMock())
-    #     Server.Credentials = mock.MagicMock(return_value={'password':'aPassword'})
+    # AddNIC tests
 
-    #     to_clone = Server(name='cloneme',description='yes',cpu=13,memory=14,group_id=54321,
-    #         alias='clone-alias',storage_type='big',type='small',)
-    #     p.start()
-    #     to_clone.Clone(network_id=24601)
-    #     Server.Create.assert_called_once_with('data')
-    #     print("BRIAN:",output)
-    #     p.stop()
+    def test_AddNIC_calls_api_when_no_ip_provided(self):
+        clc_sdk.v2.Requests = mock.MagicMock()
+        clc_sdk.v2.API.Call = mock.MagicMock()
+        self.test_obj.AddNIC(network_id='test_network')
+        clc_sdk.v2.API.Call.assert_called_once_with(
+            'POST',
+            'servers/base_test/12345/networks',
+            json.dumps({'networkId': 'test_network', 'ipAddress': ''})
+            )
+
+    def test_AddNIC_calls_api_with_provided_ip(self):
+        clc_sdk.v2.Requests = mock.MagicMock()
+        clc_sdk.v2.API.Call = mock.MagicMock()
+        self.test_obj.AddNIC(network_id='test_network2', ip='1.2.3.4')
+        clc_sdk.v2.API.Call.assert_called_once_with(
+            'POST',
+            'servers/base_test/12345/networks',
+            json.dumps({'networkId': 'test_network2', 'ipAddress': '1.2.3.4'})
+            )
+
 
 
     # Static helpers
