@@ -1,5 +1,5 @@
 """
-Server related functions.  
+Server related functions.
 
 These server related functions generally align one-for-one with published API calls categorized in the account category
 
@@ -49,7 +49,7 @@ Server object variables available but access subject to change with future relea
 # vNext:
 # TODO - Restore archived server - need API spec
 # TODO - cpuAutoscalePolicy - need API spec 404
-# TODO - AntiAffinity policy - need API spec put call 400 
+# TODO - AntiAffinity policy - need API spec put call 400
 # TODO - Billing (server, group, account) - need API spec
 # TODO - Statistics - need API spec get call 500
 # TODO - Validation tasks with Server.Create
@@ -88,7 +88,7 @@ class Servers(object):
 
 	def Servers(self,cached=True):
 		"""Returns list of server objects, populates if necessary.
-		
+
 		>>> clc.v2.Servers(["NY1BTDIPHYP0101","NY1BTDIWEB0101"]).Servers()
 		[<clc.APIv2.server.Server object at 0x1065b0d50>, <clc.APIv2.server.Server object at 0x1065b0e50>]
 		>>> print _[0]
@@ -150,7 +150,7 @@ class Server(object):
 
 		http://www.centurylinkcloud.com/api-docs/v2#servers-get-server
 
-		#If parameters are populated then create object location.  
+		#If parameters are populated then create object location.
 		#Else if only id is supplied issue a Get Policy call
 
 		# successful creation
@@ -175,7 +175,7 @@ class Server(object):
 		else:  self.alias = clc.v2.Account.GetAlias()
 
 		if server_obj:  self.data = server_obj
-		else:  
+		else:
 			try:
 				self.Refresh()
 			except clc.APIFailedResponse as e:
@@ -228,7 +228,7 @@ class Server(object):
 		<clc.APIv2.account.Account instance at 0x108789878>
 		>>> print _
 		BTDI
-		
+
 		"""
 
 		return(clc.v2.Account(alias=self.alias))
@@ -246,7 +246,7 @@ class Server(object):
 
 		return(clc.v2.Group(id=self.groupId,alias=self.alias))
 
-	
+
 	def Disks(self):
 		"""Return disks object associated with server.
 
@@ -256,7 +256,7 @@ class Server(object):
 		"""
 
 		if not self.disks:  self.disks = clc.v2.Disks(server=self,disks_lst=self.data['details']['disks'])
-		
+
 		return(self.disks)
 
 
@@ -293,7 +293,7 @@ class Server(object):
 			units = clc.v2.API.Call('GET','billing/%s/serverPricing/%s' % (self.alias,self.name))
 		except clc.APIFailedResponse:
 			raise(clc.ServerDeletedException)
-			
+
 
 		return({
 				'cpu': units['cpu'],
@@ -438,7 +438,7 @@ class Server(object):
 
 		"""
 
-		if len(self.data['details']['snapshots']):  
+		if len(self.data['details']['snapshots']):
 			if delete_existing:  self.DeleteSnapshot()
 			else:  raise(clc.CLCException("Snapshot already exists cannot take another"))
 
@@ -464,7 +464,7 @@ class Server(object):
 		for name in names:
 			name_links = [obj['links'] for obj in self.data['details']['snapshots'] if obj['name']==name][0]
 			requests_lst.append(clc.v2.Requests(clc.v2.API.Call('DELETE',[obj['href'] for obj in name_links if obj['rel']=='delete'][0]),alias=self.alias))
-			
+
 		return(sum(requests_lst))
 
 
@@ -491,7 +491,7 @@ class Server(object):
 	           storage_type="standard",type="standard",primary_dns=None,secondary_dns=None,
 			   additional_disks=[],custom_fields=[],ttl=None,managed_os=False,description=None,
 			   source_server_password=None,cpu_autoscale_policy_id=None,anti_affinity_policy_id=None,
-			   packages=[]):  
+			   packages=[]):
 		"""Creates a new server.
 
 		https://www.centurylinkcloud.com/api-docs/v2/#servers-create-server
@@ -511,20 +511,32 @@ class Server(object):
 		"""
 
 		if not alias:  alias = clc.v2.Account.GetAlias()
+		if not description:  description = name
 
 		if not cpu or not memory:
 			group = clc.v2.Group(id=group_id,alias=alias)
-			if not cpu and group.Defaults("cpu"):  cpu = group.Defaults("cpu")
-			elif not cpu:  raise(clc.CLCException("No default CPU defined"))
 
-			if not memory and group.Defaults("memory"):  memory = group.Defaults("memory")
-			elif not memory:  raise(clc.CLCException("No default Memory defined"))
-		if not description:  description = name
-                if type.lower() == "standard" and storage_type.lower() not in ("standard","premium"):  raise(clc.CLCException("Invalid storage_type"))
-                if type.lower() == "hyperscale" and storage_type.lower() != "hyperscale":  raise(clc.CLCException("Invalid type/storage_type combo"))
+		if not cpu and group.Defaults("cpu"):
+			cpu = group.Defaults("cpu")
+		elif not cpu:
+			raise(clc.CLCException("No default CPU defined"))
+
+		if not memory and group.Defaults("memory"):
+			memory = group.Defaults("memory")
+		elif not memory:
+			raise(clc.CLCException("No default Memory defined"))
+
+		if type.lower() == "standard" and storage_type.lower() not in ("standard","premium"):
+			raise(clc.CLCException("Invalid type/storage_type combo"))
+		if type.lower() == "hyperscale" and storage_type.lower() != "hyperscale":
+			raise(clc.CLCException("Invalid type/storage_type combo"))
+		if type.lower() == "baremetal":
+			type = "bareMetal"
+
 		if ttl and ttl<=3600: raise(clc.CLCException("ttl must be greater than 3600 seconds"))
+
 		if ttl: ttl = clc.v2.time_utils.SecondsToZuluTS(int(time.time())+ttl)
-		if type.lower() == "baremetal":  type = "bareMetal"
+
 		# TODO - validate custom_fields as a list of dicts with an id and a value key
 		# TODO - validate template exists
 		# TODO - validate additional_disks as a list of dicts with a path, sizeGB, and type (partitioned,raw) keys
@@ -533,7 +545,7 @@ class Server(object):
 
 		return(clc.v2.Requests(clc.v2.API.Call('POST','servers/%s' % (alias),
 		         json.dumps({'name': name, 'description': description, 'groupId': group_id, 'sourceServerId': template,
-							 'isManagedOS': managed_os, 'primaryDNS': primary_dns, 'secondaryDNS': secondary_dns, 
+							 'isManagedOS': managed_os, 'primaryDNS': primary_dns, 'secondaryDNS': secondary_dns,
 							 'networkId': network_id, 'ipAddress': ip_address, 'password': password,
 							 'sourceServerPassword': source_server_password, 'cpu': cpu, 'cpuAutoscalePolicyId': cpu_autoscale_policy_id,
 							 'memoryGB': memory, 'type': type, 'storageType': storage_type, 'antiAffinityPolicyId': anti_affinity_policy_id,
@@ -545,7 +557,7 @@ class Server(object):
 	          storage_type=None,type=None,primary_dns=None,secondary_dns=None,
 			  custom_fields=None,ttl=None,managed_os=False,description=None,
 			  source_server_password=None,cpu_autoscale_policy_id=None,anti_affinity_policy_id=None,
-			  packages=[],count=1):  
+			  packages=[],count=1):
 		"""Creates one or more clones of existing server.
 
 		https://www.centurylinkcloud.com/api-docs/v2/#servers-create-server
@@ -580,7 +592,7 @@ class Server(object):
 		if not storage_type:  storage_type = self.storage_type
 		if not custom_fields and len(self.custom_fields): custom_fields = self.custom_fields
 		if not description:  description = self.description
-		# TODO - #if not cpu_autoscale_policy_id:  cpu_autoscale_policy_id = 
+		# TODO - #if not cpu_autoscale_policy_id:  cpu_autoscale_policy_id =
 		# TODO - #if not anti_affinity_policy_id:  anti_affinity_policy_id =
 		# TODO - need to get network_id of self, not currently exposed via API :(
 
@@ -637,8 +649,8 @@ class Server(object):
 		requests = []
 
 		for key in ("cpu","memory","description","groupId"):
-			if locals()[key]:  
-				requests.append(clc.v2.Requests(clc.v2.API.Call('PATCH','servers/%s/%s' % (self.alias,self.id), 
+			if locals()[key]:
+				requests.append(clc.v2.Requests(clc.v2.API.Call('PATCH','servers/%s/%s' % (self.alias,self.id),
 				                                                json.dumps([{"op": "set", "member": key, "value": locals()[key]}])),
 								alias=self.alias))
 
@@ -653,7 +665,7 @@ class Server(object):
 	def SetGroup(self,group_id):  return(self.Change(group_id=group_id))
 
 
-	def SetPassword(self,password):  
+	def SetPassword(self,password):
 		"""Request change of password.
 
 		The API request requires supplying the current password.  For this we issue a call
@@ -667,7 +679,7 @@ class Server(object):
 		# 0: {op: "set", member: "password", value: {current: " r`5Mun/vT:qZ]2?z", password: "Savvis123!"}}
 		if self.state != "active":  raise(clc.CLCException("Server must be powered on to change password"))
 
-		return(clc.v2.Requests(clc.v2.API.Call('PATCH','servers/%s/%s' % (self.alias,self.id), 
+		return(clc.v2.Requests(clc.v2.API.Call('PATCH','servers/%s/%s' % (self.alias,self.id),
 		                                       json.dumps([{"op": "set", "member": "password", "value": {"current": self.Credentials()['password'], "password": password}}])),
 							   alias=self.alias))
 
@@ -679,11 +691,10 @@ class Server(object):
 
 		>>> clc.v2.Server("WA1BTDIAPI219").Delete().WaitUntilComplete()
 		0
-		
+
 		"""
 		return(clc.v2.Requests(clc.v2.API.Call('DELETE','servers/%s/%s' % (self.alias,self.id)),alias=self.alias))
 
 
 	def __str__(self):
 		return(self.data['name'])
-
