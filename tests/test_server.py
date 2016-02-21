@@ -167,7 +167,7 @@ class TestClcServer(unittest.TestCase):
         self.test_obj.Delete()
         clc_sdk.v2.API.Call.assert_called_once_with('DELETE','servers/base_test/12345')
 
-    # AddNIC tests
+    # *NIC tests
 
     def test_AddNIC_calls_api_when_no_ip_provided(self):
         clc_sdk.v2.Requests = mock.MagicMock()
@@ -189,6 +189,12 @@ class TestClcServer(unittest.TestCase):
             json.dumps({'networkId': 'test_network2', 'ipAddress': '1.2.3.4'})
             )
 
+    def test_RemoveNIC_makes_expected_api_call(self):
+        clc_sdk.v2.Requests = mock.MagicMock()
+        clc_sdk.v2.API.Call = mock.MagicMock()
+        self.test_obj.RemoveNIC(network_id='goodbye_network')
+        clc_sdk.v2.API.Call.assert_called_once_with(
+            'DELETE', 'servers/base_test/12345/networks/goodbye_network')
 
 
     # Static helpers

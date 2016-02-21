@@ -391,7 +391,8 @@ class Server(object):
 
 
 	def AddNIC(self,network_id,ip=''):
-		"""Execute an existing Bluerprint package on the server.
+		"""Add a NIC from the provided network to server and, if provided,
+		   assign a provided IP address
 
 		https://www.ctl.io/api-docs/v2/#servers-add-secondary-network
 
@@ -399,7 +400,7 @@ class Server(object):
 		for the package itself.  The UUID parameter is the package ID we need.
 
 		network_id - ID associated with the network to add
-		ip - Explicit IP address to assgin (optional)
+		ip - Explicit IP address to assign (optional)
 
 		Need to reinstantiate the server object after execution completes to see the assigned IP address.
 
@@ -414,6 +415,28 @@ class Server(object):
 		return(clc.v2.Requests(clc.v2.API.Call('POST','servers/%s/%s/networks' % (self.alias,self.id),
 		                                       json.dumps({'networkId': network_id, 'ipAddress': ip})),
 							   alias=self.alias))
+
+	def RemoveNIC(self,network_id):
+		"""Remove the NIC associated with the provided network from the server.
+
+		https://www.ctl.io/api-docs/v2/#servers-remove-secondary-network
+
+		network_id - ID associated with the network to remove
+
+        >>> network = clc.v2.Networks(location="VA1").Get("10.128.166.0/24")
+        >>> clc.v2.Server(alias='BTDI',id='WA1BTDIKRT06'). \
+        		RemoveNIC(network_id=network.id). \
+        		WaitUntilComplete()
+		0
+
+		"""
+
+		return(
+			clc.v2.Requests(
+				clc.v2.API.Call('DELETE','servers/%s/%s/networks/%s'
+					% (self.alias,self.id,network_id)),
+			  alias=self.alias
+	  ))
 
 
 	def GetSnapshots(self):
