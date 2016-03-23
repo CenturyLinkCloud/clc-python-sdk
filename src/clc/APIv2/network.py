@@ -90,6 +90,19 @@ class Network(object):
 		if alias:  self.alias = alias
 		else:  self.alias = clc.v2.Account.GetAlias()
 
+	@staticmethod
+	def Create(alias=None,location=None):
+		"""Claims a new network within a given account.
+
+		https://www.ctl.io/api-docs/v2/#networks-claim-network
+
+		Returns operation id and link to check status
+		"""
+
+		if not alias:  alias = clc.v2.Account.GetAlias()
+		if not location:  location = clc.v2.Account.GetLocation()
+
+		return clc.v2.API.Call('POST','v2-experimental/networks/%s/%s/claim' % (alias, location))
 
 #	# TODO - untested below.  API still in experimental spec.  Need to update API.Call
 #	def Refresh(self):

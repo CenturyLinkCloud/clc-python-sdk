@@ -41,6 +41,24 @@ class TestClcNetwork(unittest.TestCase):
         with self.assertRaises(AttributeError) as ex:
             self.test_obj.does_not_exist
 
+    def testCreateNetworkGetsAbsentMembers(self):
+        clc_sdk.v2.Account.GetAlias = mock.MagicMock(return_value="alias1")
+        clc_sdk.v2.Account.GetLocation = mock.MagicMock(return_value="location1")
+        clc_sdk.v2.API.Call = mock.MagicMock()
+
+        network = Network.Create()
+        clc_sdk.v2.API.Call.assert_called_once_with(
+            'POST',
+            'v2-experimental/networks/alias1/location1/claim')
+
+    def testCreateNetworkWithAllArgs(self):
+        clc_sdk.v2.API.Call = mock.MagicMock()
+
+        network = Network.Create(alias='mock_alias', location='mock_dc')
+        clc_sdk.v2.API.Call.assert_called_once_with(
+            'POST',
+            'v2-experimental/networks/mock_alias/mock_dc/claim')
+
 class TestClcNetworks(unittest.TestCase):
 
     def setUp(self):
