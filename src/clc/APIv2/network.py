@@ -104,6 +104,18 @@ class Network(object):
 
 		return clc.v2.API.Call('POST','v2-experimental/networks/%s/%s/claim' % (alias, location))
 
+	def Delete(self,location=None):
+		"""Releases the calling network.
+
+		https://www.ctl.io/api-docs/v2/#networks-release-network
+
+		Returns a 204 and no content
+		"""
+
+		if not location:  location = clc.v2.Account.GetLocation()
+
+		return clc.v2.API.Call('POST','v2-experimental/networks/%s/%s/%s/release' % (self.alias, location, self.id))
+
 #	# TODO - untested below.  API still in experimental spec.  Need to update API.Call
 #	def Refresh(self):
 #		"""Reloads the network object to synchronize with cloud representation.
