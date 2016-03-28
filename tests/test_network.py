@@ -71,10 +71,34 @@ class TestClcNetwork(unittest.TestCase):
     def testDeleteNetworkWithAllArgs(self):
         clc_sdk.v2.API.Call = mock.MagicMock()
 
-        self.test_obj.Delete()
+        self.test_obj.Delete(location='location123')
         clc_sdk.v2.API.Call.assert_called_once_with(
             'POST',
-            'v2-experimental/networks/007/location1/12345/release')
+            'v2-experimental/networks/007/location123/12345/release')
+
+    def testUpdateNetworkGetsAbsentLocation(self):
+        clc_sdk.v2.Account.GetLocation = mock.MagicMock(return_value="location2")
+        clc_sdk.v2.API.Call = mock.MagicMock()
+
+        name = "Test Chickens Say 'Mock'"
+
+        self.test_obj.Update(name)
+        clc_sdk.v2.API.Call.assert_called_once_with(
+            'PUT',
+            'v2-experimental/networks/007/location2/12345',
+            {'name': name})
+
+    def testUpdateNetworkWithAllArgs(self):
+        clc_sdk.v2.API.Call = mock.MagicMock()
+
+        name = "AwesomeMockNet"
+        desc = "TestDesc"
+
+        self.test_obj.Update(name, description=desc, location='location456')
+        clc_sdk.v2.API.Call.assert_called_once_with(
+            'PUT',
+            'v2-experimental/networks/007/location456/12345',
+            {'name': name, 'description': desc})
 
 class TestClcNetworks(unittest.TestCase):
 

@@ -116,6 +116,29 @@ class Network(object):
 
 		return clc.v2.API.Call('POST','v2-experimental/networks/%s/%s/%s/release' % (self.alias, location, self.id))
 
+	def Update(self,name,description=None,location=None):
+		"""Updates the attributes of a given Network via PUT.
+
+		https://www.ctl.io/api-docs/v2/#networks-update-network
+
+		{
+      "name": "VLAN for Development Servers",
+      "description": "Development Servers on 11.22.33.0/24"
+		}
+
+		Returns a 204 and no content
+		"""
+
+		if not location:  location = clc.v2.Account.GetLocation()
+
+		payload = {'name': name}
+		if description: payload['description'] = description
+
+		r = clc.v2.API.Call('PUT','v2-experimental/networks/%s/%s/%s' % (self.alias, location, self.id), payload)
+
+		self.name = name
+		if description: self.description = description
+
 #	# TODO - untested below.  API still in experimental spec.  Need to update API.Call
 #	def Refresh(self):
 #		"""Reloads the network object to synchronize with cloud representation.
