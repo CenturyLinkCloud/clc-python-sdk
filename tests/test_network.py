@@ -32,6 +32,28 @@ class TestClcNetwork(unittest.TestCase):
         self.assertEqual(obj.name, "testme")
         self.assertEqual(obj.data, net_obj)
 
+    def testConstructorCallsRefreshWhenNetworkObjectNotProvided(self):
+        clc_sdk.v2.Account.GetLocation = mock.MagicMock(return_value="yup")
+        data = {
+            "id": "43",
+            "cidr": "192.168.10.0/24",
+            "description": "NiftyDescription",
+            "gateway": "192.168.109.1",
+            "name": "SparklyNewName",
+            "netmask": "255.255.255.0",
+            "type": "private",
+            "vlan": 555,
+            "links": []
+        }
+        clc_sdk.v2.API.Call = mock.MagicMock(return_value=data)
+
+        obj = Network(id=43, alias="XYZ")
+
+        self.assertEqual(obj.id, 43)
+        self.assertEqual(obj.alias, "XYZ")
+        self.assertEqual(obj.name, "SparklyNewName")
+        self.assertEqual(obj.data, data)
+
     def testStringify(self):
         self.assertEqual(str(self.test_obj), "12345")
 
@@ -99,6 +121,43 @@ class TestClcNetwork(unittest.TestCase):
             'PUT',
             'v2-experimental/networks/007/location456/12345',
             {'name': name, 'description': desc})
+
+    def testRefreshCallsGetLocationWhenLocationAbsent(self):
+        clc_sdk.v2.Account.GetLocation = mock.MagicMock(return_value="location222")
+        clc_sdk.v2.API.Call = mock.MagicMock()
+
+        self.test_obj.Refresh()
+        clc_sdk.v2.Account.GetLocation.assert_called_once_with()
+
+    def testRefreshCallsGetNetworkWithExpectedArgs(self):
+        clc_sdk.v2.Account.GetLocation = mock.MagicMock(return_value="locationlocationlocation")
+        clc_sdk.v2.API.Call = mock.MagicMock()
+
+        self.test_obj.Refresh()
+        clc_sdk.v2.API.Call.assert_called_once_with(
+            'GET',
+            'v2-experimental/networks/007/locationlocationlocation/12345')
+
+    def testRefreshUpdatesObjectData(self):
+        new_name = "UpdatedNetworkName"
+        new_desc = "UpdatedNetworkDesc"
+        data = {
+            "id": "12345",
+            "cidr": "192.168.10.0/24",
+            "description": new_desc,
+            "gateway": "192.168.109.1",
+            "name": new_name,
+            "netmask": "255.255.255.0",
+            "type": "private",
+            "vlan": 555,
+            "links": []
+        }
+        clc_sdk.v2.API.Call = mock.MagicMock(return_value=data)
+
+        self.test_obj.Refresh()
+
+        self.assertEqual(new_name, self.test_obj.name)
+        self.assertEqual(new_desc, self.test_obj.description)
 
 class TestClcNetworks(unittest.TestCase):
 
