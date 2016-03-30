@@ -19,6 +19,7 @@ class TestClcNetwork(unittest.TestCase):
 
     def testDefaultConstructor(self):
         clc_sdk.v2.Account.GetAlias = mock.MagicMock(return_value="default")
+        clc_sdk.v2.API.Call = mock.MagicMock(return_value=None)
         obj = Network(id=42)
         assert clc_sdk.v2.Account.GetAlias.call_count == 1
         self.assertEqual(obj.id, 42)
@@ -66,20 +67,24 @@ class TestClcNetwork(unittest.TestCase):
     def testCreateNetworkGetsAbsentMembers(self):
         clc_sdk.v2.Account.GetAlias = mock.MagicMock(return_value="alias1")
         clc_sdk.v2.Account.GetLocation = mock.MagicMock(return_value="location1")
-        clc_sdk.v2.API.Call = mock.MagicMock()
+        clc_sdk.v2.API.Call = mock.MagicMock(return_value="testing")
+        clc_sdk.v2.Requests = mock.MagicMock()
 
         network = Network.Create()
         clc_sdk.v2.API.Call.assert_called_once_with(
             'POST',
-            'v2-experimental/networks/alias1/location1/claim')
+            '/v2-experimental/networks/alias1/location1/claim')
+        clc_sdk.v2.Requests.assert_called_once_with("testing", alias="alias1")
 
     def testCreateNetworkWithAllArgs(self):
-        clc_sdk.v2.API.Call = mock.MagicMock()
+        clc_sdk.v2.API.Call = mock.MagicMock(return_value="testing")
+        clc_sdk.v2.Requests = mock.MagicMock()
 
         network = Network.Create(alias='mock_alias', location='mock_dc')
         clc_sdk.v2.API.Call.assert_called_once_with(
             'POST',
-            'v2-experimental/networks/mock_alias/mock_dc/claim')
+            '/v2-experimental/networks/mock_alias/mock_dc/claim')
+        clc_sdk.v2.Requests.assert_called_once_with("testing", alias="mock_alias")
 
     def testDeleteNetworkGetsAbsentLocation(self):
         clc_sdk.v2.Account.GetLocation = mock.MagicMock(return_value="location1")
@@ -88,7 +93,7 @@ class TestClcNetwork(unittest.TestCase):
         self.test_obj.Delete()
         clc_sdk.v2.API.Call.assert_called_once_with(
             'POST',
-            'v2-experimental/networks/007/location1/12345/release')
+            '/v2-experimental/networks/007/location1/12345/release')
 
     def testDeleteNetworkWithAllArgs(self):
         clc_sdk.v2.API.Call = mock.MagicMock()
@@ -96,7 +101,7 @@ class TestClcNetwork(unittest.TestCase):
         self.test_obj.Delete(location='location123')
         clc_sdk.v2.API.Call.assert_called_once_with(
             'POST',
-            'v2-experimental/networks/007/location123/12345/release')
+            '/v2-experimental/networks/007/location123/12345/release')
 
     def testUpdateNetworkGetsAbsentLocation(self):
         clc_sdk.v2.Account.GetLocation = mock.MagicMock(return_value="location2")
@@ -107,7 +112,7 @@ class TestClcNetwork(unittest.TestCase):
         self.test_obj.Update(name)
         clc_sdk.v2.API.Call.assert_called_once_with(
             'PUT',
-            'v2-experimental/networks/007/location2/12345',
+            '/v2-experimental/networks/007/location2/12345',
             {'name': name})
 
     def testUpdateNetworkWithAllArgs(self):
@@ -119,7 +124,7 @@ class TestClcNetwork(unittest.TestCase):
         self.test_obj.Update(name, description=desc, location='location456')
         clc_sdk.v2.API.Call.assert_called_once_with(
             'PUT',
-            'v2-experimental/networks/007/location456/12345',
+            '/v2-experimental/networks/007/location456/12345',
             {'name': name, 'description': desc})
 
     def testRefreshCallsGetLocationWhenLocationAbsent(self):
@@ -136,7 +141,7 @@ class TestClcNetwork(unittest.TestCase):
         self.test_obj.Refresh()
         clc_sdk.v2.API.Call.assert_called_once_with(
             'GET',
-            'v2-experimental/networks/007/locationlocationlocation/12345')
+            '/v2-experimental/networks/007/locationlocationlocation/12345')
 
     def testRefreshUpdatesObjectData(self):
         new_name = "UpdatedNetworkName"

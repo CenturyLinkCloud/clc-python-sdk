@@ -92,7 +92,6 @@ class Network(object):
 				if e.response_status_code==404:  raise(clc.CLCException("Network does not exist"))
 				else: raise(clc.CLCException("An error occurred while creating the Network object"))
 
-
 	@staticmethod
 	def Create(alias=None,location=None):
 		"""Claims a new network within a given account.
@@ -105,7 +104,9 @@ class Network(object):
 		if not alias:  alias = clc.v2.Account.GetAlias()
 		if not location:  location = clc.v2.Account.GetLocation()
 
-		return clc.v2.API.Call('POST','v2-experimental/networks/%s/%s/claim' % (alias, location))
+		return clc.v2.Requests(
+			clc.v2.API.Call('POST','/v2-experimental/networks/%s/%s/claim' % (alias, location)),
+			alias=alias)
 
 	def Delete(self,location=None):
 		"""Releases the calling network.
@@ -117,7 +118,7 @@ class Network(object):
 
 		if not location:  location = clc.v2.Account.GetLocation()
 
-		return clc.v2.API.Call('POST','v2-experimental/networks/%s/%s/%s/release' % (self.alias, location, self.id))
+		return clc.v2.API.Call('POST','/v2-experimental/networks/%s/%s/%s/release' % (self.alias, location, self.id))
 
 	def Update(self,name,description=None,location=None):
 		"""Updates the attributes of a given Network via PUT.
@@ -137,7 +138,7 @@ class Network(object):
 		payload = {'name': name}
 		if description: payload['description'] = description
 
-		r = clc.v2.API.Call('PUT','v2-experimental/networks/%s/%s/%s' % (self.alias, location, self.id), payload)
+		r = clc.v2.API.Call('PUT','/v2-experimental/networks/%s/%s/%s' % (self.alias, location, self.id), payload)
 
 		self.name = name
 		if description: self.description = description
@@ -151,7 +152,7 @@ class Network(object):
 		"""
 		if not location:  location = clc.v2.Account.GetLocation()
 
-		new_object = clc.v2.API.Call('GET','v2-experimental/networks/%s/%s/%s' % (self.alias,location,self.id))
+		new_object = clc.v2.API.Call('GET','/v2-experimental/networks/%s/%s/%s' % (self.alias,location,self.id))
 
 		if new_object:
 			self.name = new_object['name']
