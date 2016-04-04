@@ -126,6 +126,9 @@ class TestClcNetwork(unittest.TestCase):
             'PUT',
             '/v2-experimental/networks/007/location456/12345',
             {'name': name, 'description': desc})
+        self.assertEqual(name, self.test_obj.name)
+        self.assertEqual(name, self.test_obj.data['name'])
+        self.assertEqual(desc, self.test_obj.data['description'])
 
     def testRefreshCallsGetLocationWhenLocationAbsent(self):
         clc_sdk.v2.Account.GetLocation = mock.MagicMock(return_value="location222")

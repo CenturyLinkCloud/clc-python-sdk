@@ -140,8 +140,8 @@ class Network(object):
 
 		r = clc.v2.API.Call('PUT','/v2-experimental/networks/%s/%s/%s' % (self.alias, location, self.id), payload)
 
-		self.name = name
-		if description: self.description = description
+		self.name = self.data['name'] = name
+		if description: self.data['description'] = description
 
 	def Refresh(self, location=None):
 		"""Reloads the network object to synchronize with cloud representation.
