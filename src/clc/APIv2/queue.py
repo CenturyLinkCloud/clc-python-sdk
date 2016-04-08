@@ -1,5 +1,5 @@
 """
-Queue related functions.  
+Queue related functions.
 
 These queue related functions generally align one-for-one with published API calls categorized in the queue category
 
@@ -12,7 +12,7 @@ Requests object variables:
 	requests.success_requests
 
 Request object variables:
-	
+
 	(undocumented)
 
 Requestv2Exprimental (extends request) variables:
@@ -63,21 +63,21 @@ class Requests(object):
 
 		for r in requests_lst:
 
-			if 'server' in r and len(r['server'])<=6:  
+			if 'server' in r and len(r['server'])<=6:
 				# Hopefully this captures only new server builds, TODO find a better way to ID these
 				for link in r['links']:
 					if re.search("/v2/servers/",link['href']):
 						context_key = "newserver"
 						context_val = link['href']
 						break
-			elif 'server' in r:  
+			elif 'server' in r:
 				context_key = "server"
 				context_val = r['server']
-			else:  
+			else:
 				context_key = "Unknown"
 				context_val = "Unknown"
 
-			if r['isQueued']:  
+			if r['isQueued']:
 				if 'uri' in r:
 					self.requests.append(Requestv2Experimental(r['operation_id'],r['uri']))
 				else:
@@ -135,8 +135,8 @@ class Requests(object):
 			cur_requests = []
 			for request in self.requests:
 				status = request.Status()
-				if status in ('notStarted','executing','resumed','queued'):  cur_requests.append(request)
-				elif status == 'succeeded':  self.success_requests.append(request)
+				if status in ('notStarted','executing','resumed','queued','running'): cur_requests.append(request)
+				elif status == 'succeeded': self.success_requests.append(request)
 				elif status in ("failed", "unknown"): self.error_requests.append(request)
 
 			self.requests = cur_requests
@@ -178,14 +178,14 @@ class Request(object):
 
 
 	def Status(self,cached=False):
-		if not cached or not self.data['status']:  
+		if not cached or not self.data['status']:
 			try:
 				self.data['status'] = clc.v2.API.Call('GET','operations/%s/status/%s' % (self.alias,self.id),{})['status']
 			except clc.APIFailedResponse as e:
 				if e.response_status_code == 500:  pass
 				else:  raise(e)
 		return(self.data['status'])
-		
+
 
 	def WaitUntilComplete(self,poll_freq=2):
 		"""Poll until status is completed.
@@ -201,9 +201,9 @@ class Request(object):
 			status = self.Status()
 			if status == 'executing':
 				if not self.time_executed:  self.time_executed = time.time()
-			elif status == 'succeeded': 
+			elif status == 'succeeded':
 				self.time_completed = time.time()
-			elif status in ("failed", "resumed" or "unknown"): 
+			elif status in ("failed", "resumed" or "unknown"):
 				# TODO - need to ID best reaction for resumed status (e.g. manual intervention)
 				self.time_completed = time.time()
 				raise(clc.CLCException("%s %s execution %s" % (self.context_key,self.context_val,status)))
@@ -222,12 +222,12 @@ class Request(object):
 		<clc.APIv2.server.Server object at 0x1095a8390>
 		>>> print _
 		VA1BTDIAPI214
-		
+
 		"""
 		if self.context_key == 'newserver':
 			server_id = clc.v2.API.Call('GET', self.context_val)['id']
 			return(clc.v2.Server(id=server_id,alias=self.alias))
-		elif self.context_key == 'server':  
+		elif self.context_key == 'server':
 			return(clc.v2.Server(id=self.context_val,alias=self.alias))
 		else:  raise(clc.CLCException("%s object not server" % self.context_key))
 
@@ -240,7 +240,7 @@ class Requestv2Experimental(Request):
 	"""This is the v2-experimental implementation for requests. """
 
 	def __init__(self,id,uri):
-		"""Create Request object.  
+		"""Create Request object.
 
 		Response string feeding this looks like:
 		{"operationId":"OPERATIONAL_ID","uri":"/v2-experimental/operations/$ALIAS/status/$OPERATION_ID"}
@@ -256,12 +256,10 @@ class Requestv2Experimental(Request):
 
 
 	def Status(self,cached=False):
-		if not cached or not self.data['status']:  
+		if not cached or not self.data['status']:
 			try:
 				self.data['status'] = clc.v2.API.Call('GET',self.uri,{})['status']
 			except clc.APIFailedResponse as e:
 				if e.response_status_code == 500:  pass
 				else:  raise(e)
 		return(self.data['status'])
-		
-
