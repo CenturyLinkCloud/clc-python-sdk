@@ -13,7 +13,12 @@ from clc.APIv2 import Networks, Network
 class TestClcNetwork(unittest.TestCase):
 
     def setUp(self):
-        data = {"name":"Name", "field1": "value1", "changeInfo": {"change1": "changeVal1"}}
+        data = {
+            "name": "Name",
+            "description": "desc1234",
+            "field1": "value1",
+            "changeInfo": {"change1": "changeVal1"}
+            }
         clc_sdk.v2.Account.GetAlias = mock.MagicMock(return_value="base_test")
         self.test_obj = Network(id=12345, alias="007", network_obj=data)
 
@@ -113,7 +118,7 @@ class TestClcNetwork(unittest.TestCase):
         clc_sdk.v2.API.Call.assert_called_once_with(
             'PUT',
             '/v2-experimental/networks/007/location2/12345',
-            {'name': name})
+            {'name': name, 'description': self.test_obj.description})
 
     def testUpdateNetworkWithAllArgs(self):
         clc_sdk.v2.API.Call = mock.MagicMock()

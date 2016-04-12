@@ -136,7 +136,7 @@ class Network(object):
 		if not location:  location = clc.v2.Account.GetLocation()
 
 		payload = {'name': name}
-		if description: payload['description'] = description
+		payload['description'] = description if description else self.description
 
 		r = clc.v2.API.Call('PUT','/v2-experimental/networks/%s/%s/%s' % (self.alias, location, self.id), payload)
 
