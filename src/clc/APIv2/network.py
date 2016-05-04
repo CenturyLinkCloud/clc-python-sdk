@@ -80,37 +80,83 @@ class Network(object):
 		self.type = type
 		self.dirty = False
 		self.data = network_obj
-		if network_obj:  self.name = network_obj['name']
-		#else:
-		#	try:
-		#		self.Refresh()
-		#	except clc.APIFailedResponse as e:
-		#		if e.response_status_code==404:  raise(clc.CLCException("Network does not exist"))
 
 		if alias:  self.alias = alias
 		else:  self.alias = clc.v2.Account.GetAlias()
 
+		if network_obj:  self.name = network_obj['name']
+		else:
+			try:
+				self.Refresh()
+			except clc.APIFailedResponse as e:
+				if e.response_status_code==404:  raise(clc.CLCException("Network does not exist"))
+				else: raise(clc.CLCException("An error occurred while creating the Network object"))
 
-#	# TODO - untested below.  API still in experimental spec.  Need to update API.Call
-#	def Refresh(self):
-#		"""Reloads the network object to synchronize with cloud representation.
-#
-#		>>> clc.v2.Network("f58148729bd94b02ae8b652f5c5feba3").Refresh()
-#
-#		"""
-#
-#		self.dirty = False
-#		#GET https://api.ctl.io/v2-experimental/networks/{accountAlias}/{dataCenter}/{Network}?ipAddresses=none|claimed|free|all
-#		self.data = clc.v2.API.Call('GET','servers/%s/%s' % (self.alias,self.id),{})
-#
-#		try:
-#			self.data['changeInfo']['createdDate'] = clc.v2.time_utils.ZuluTSToSeconds(self.data['changeInfo']['createdDate'])
-#			self.data['changeInfo']['modifiedDate'] = clc.v2.time_utils.ZuluTSToSeconds(self.data['changeInfo']['modifiedDate'])
-#
-#			# API call switches between GB and MB.  Change to all references are in GB and we drop the units
-#			self.data['details']['memoryGB'] = int(math.floor(self.data['details']['memoryMB']/1024))
-#		except:
-#			pass
+	@staticmethod
+	def Create(alias=None,location=None):
+		"""Claims a new network within a given account.
+
+		https://www.ctl.io/api-docs/v2/#networks-claim-network
+
+		Returns operation id and link to check status
+		"""
+
+		if not alias:  alias = clc.v2.Account.GetAlias()
+		if not location:  location = clc.v2.Account.GetLocation()
+
+		return clc.v2.Requests(
+			clc.v2.API.Call('POST','/v2-experimental/networks/%s/%s/claim' % (alias, location)),
+			alias=alias)
+
+	def Delete(self,location=None):
+		"""Releases the calling network.
+
+		https://www.ctl.io/api-docs/v2/#networks-release-network
+
+		Returns a 204 and no content
+		"""
+
+		if not location:  location = clc.v2.Account.GetLocation()
+
+		return clc.v2.API.Call('POST','/v2-experimental/networks/%s/%s/%s/release' % (self.alias, location, self.id))
+
+	def Update(self,name,description=None,location=None):
+		"""Updates the attributes of a given Network via PUT.
+
+		https://www.ctl.io/api-docs/v2/#networks-update-network
+
+		{
+      "name": "VLAN for Development Servers",
+      "description": "Development Servers on 11.22.33.0/24"
+		}
+
+		Returns a 204 and no content
+		"""
+
+		if not location:  location = clc.v2.Account.GetLocation()
+
+		payload = {'name': name}
+		payload['description'] = description if description else self.description
+
+		r = clc.v2.API.Call('PUT','/v2-experimental/networks/%s/%s/%s' % (self.alias, location, self.id), payload)
+
+		self.name = self.data['name'] = name
+		if description: self.data['description'] = description
+
+	def Refresh(self, location=None):
+		"""Reloads the network object to synchronize with cloud representation.
+
+		>>> clc.v2.Network("f58148729bd94b02ae8b652f5c5feba3").Refresh()
+
+		GET https://api.ctl.io/v2-experimental/networks/{accountAlias}/{dataCenter}/{Network}?ipAddresses=none|claimed|free|all
+		"""
+		if not location:  location = clc.v2.Account.GetLocation()
+
+		new_object = clc.v2.API.Call('GET','/v2-experimental/networks/%s/%s/%s' % (self.alias,location,self.id))
+
+		if new_object:
+			self.name = new_object['name']
+			self.data = new_object
 
 
 	def __getattr__(self,var):

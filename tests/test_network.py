@@ -13,12 +13,18 @@ from clc.APIv2 import Networks, Network
 class TestClcNetwork(unittest.TestCase):
 
     def setUp(self):
-        data = {"name":"Name", "field1": "value1", "changeInfo": {"change1": "changeVal1"}}
+        data = {
+            "name": "Name",
+            "description": "desc1234",
+            "field1": "value1",
+            "changeInfo": {"change1": "changeVal1"}
+            }
         clc_sdk.v2.Account.GetAlias = mock.MagicMock(return_value="base_test")
         self.test_obj = Network(id=12345, alias="007", network_obj=data)
 
     def testDefaultConstructor(self):
         clc_sdk.v2.Account.GetAlias = mock.MagicMock(return_value="default")
+        clc_sdk.v2.API.Call = mock.MagicMock(return_value=None)
         obj = Network(id=42)
         assert clc_sdk.v2.Account.GetAlias.call_count == 1
         self.assertEqual(obj.id, 42)
@@ -32,6 +38,28 @@ class TestClcNetwork(unittest.TestCase):
         self.assertEqual(obj.name, "testme")
         self.assertEqual(obj.data, net_obj)
 
+    def testConstructorCallsRefreshWhenNetworkObjectNotProvided(self):
+        clc_sdk.v2.Account.GetLocation = mock.MagicMock(return_value="yup")
+        data = {
+            "id": "43",
+            "cidr": "192.168.10.0/24",
+            "description": "NiftyDescription",
+            "gateway": "192.168.109.1",
+            "name": "SparklyNewName",
+            "netmask": "255.255.255.0",
+            "type": "private",
+            "vlan": 555,
+            "links": []
+        }
+        clc_sdk.v2.API.Call = mock.MagicMock(return_value=data)
+
+        obj = Network(id=43, alias="XYZ")
+
+        self.assertEqual(obj.id, 43)
+        self.assertEqual(obj.alias, "XYZ")
+        self.assertEqual(obj.name, "SparklyNewName")
+        self.assertEqual(obj.data, data)
+
     def testStringify(self):
         self.assertEqual(str(self.test_obj), "12345")
 
@@ -40,6 +68,109 @@ class TestClcNetwork(unittest.TestCase):
         self.assertEqual(self.test_obj.changeInfo['change1'], 'changeVal1')
         with self.assertRaises(AttributeError) as ex:
             self.test_obj.does_not_exist
+
+    def testCreateNetworkGetsAbsentMembers(self):
+        clc_sdk.v2.Account.GetAlias = mock.MagicMock(return_value="alias1")
+        clc_sdk.v2.Account.GetLocation = mock.MagicMock(return_value="location1")
+        clc_sdk.v2.API.Call = mock.MagicMock(return_value="testing")
+        clc_sdk.v2.Requests = mock.MagicMock()
+
+        network = Network.Create()
+        clc_sdk.v2.API.Call.assert_called_once_with(
+            'POST',
+            '/v2-experimental/networks/alias1/location1/claim')
+        clc_sdk.v2.Requests.assert_called_once_with("testing", alias="alias1")
+
+    def testCreateNetworkWithAllArgs(self):
+        clc_sdk.v2.API.Call = mock.MagicMock(return_value="testing")
+        clc_sdk.v2.Requests = mock.MagicMock()
+
+        network = Network.Create(alias='mock_alias', location='mock_dc')
+        clc_sdk.v2.API.Call.assert_called_once_with(
+            'POST',
+            '/v2-experimental/networks/mock_alias/mock_dc/claim')
+        clc_sdk.v2.Requests.assert_called_once_with("testing", alias="mock_alias")
+
+    def testDeleteNetworkGetsAbsentLocation(self):
+        clc_sdk.v2.Account.GetLocation = mock.MagicMock(return_value="location1")
+        clc_sdk.v2.API.Call = mock.MagicMock()
+
+        self.test_obj.Delete()
+        clc_sdk.v2.API.Call.assert_called_once_with(
+            'POST',
+            '/v2-experimental/networks/007/location1/12345/release')
+
+    def testDeleteNetworkWithAllArgs(self):
+        clc_sdk.v2.API.Call = mock.MagicMock()
+
+        self.test_obj.Delete(location='location123')
+        clc_sdk.v2.API.Call.assert_called_once_with(
+            'POST',
+            '/v2-experimental/networks/007/location123/12345/release')
+
+    def testUpdateNetworkGetsAbsentLocation(self):
+        clc_sdk.v2.Account.GetLocation = mock.MagicMock(return_value="location2")
+        clc_sdk.v2.API.Call = mock.MagicMock()
+
+        name = "Test Chickens Say 'Mock'"
+
+        self.test_obj.Update(name)
+        clc_sdk.v2.API.Call.assert_called_once_with(
+            'PUT',
+            '/v2-experimental/networks/007/location2/12345',
+            {'name': name, 'description': self.test_obj.description})
+
+    def testUpdateNetworkWithAllArgs(self):
+        clc_sdk.v2.API.Call = mock.MagicMock()
+
+        name = "AwesomeMockNet"
+        desc = "TestDesc"
+
+        self.test_obj.Update(name, description=desc, location='location456')
+        clc_sdk.v2.API.Call.assert_called_once_with(
+            'PUT',
+            '/v2-experimental/networks/007/location456/12345',
+            {'name': name, 'description': desc})
+        self.assertEqual(name, self.test_obj.name)
+        self.assertEqual(name, self.test_obj.data['name'])
+        self.assertEqual(desc, self.test_obj.data['description'])
+
+    def testRefreshCallsGetLocationWhenLocationAbsent(self):
+        clc_sdk.v2.Account.GetLocation = mock.MagicMock(return_value="location222")
+        clc_sdk.v2.API.Call = mock.MagicMock()
+
+        self.test_obj.Refresh()
+        clc_sdk.v2.Account.GetLocation.assert_called_once_with()
+
+    def testRefreshCallsGetNetworkWithExpectedArgs(self):
+        clc_sdk.v2.Account.GetLocation = mock.MagicMock(return_value="locationlocationlocation")
+        clc_sdk.v2.API.Call = mock.MagicMock()
+
+        self.test_obj.Refresh()
+        clc_sdk.v2.API.Call.assert_called_once_with(
+            'GET',
+            '/v2-experimental/networks/007/locationlocationlocation/12345')
+
+    def testRefreshUpdatesObjectData(self):
+        new_name = "UpdatedNetworkName"
+        new_desc = "UpdatedNetworkDesc"
+        data = {
+            "id": "12345",
+            "cidr": "192.168.10.0/24",
+            "description": new_desc,
+            "gateway": "192.168.109.1",
+            "name": new_name,
+            "netmask": "255.255.255.0",
+            "type": "private",
+            "vlan": 555,
+            "links": []
+        }
+        clc_sdk.v2.API.Call = mock.MagicMock(return_value=data)
+
+        self.test_obj.Refresh()
+
+        self.assertEqual(new_name, self.test_obj.name)
+        self.assertEqual(new_desc, self.test_obj.description)
 
 class TestClcNetworks(unittest.TestCase):
 
