@@ -23,7 +23,7 @@ setup(
 
 	# metadata for upload to PyPI
 	author = "CenturyLink Cloud",
-	author_email = "clc-sdks@ctl.io",
+	author_email = "ecosystem@centurylink.com",
 	description = "CenturyLink Cloud SDK and CLI",
 	keywords = "CenturyLink Cloud SDK CLI",
 	url = "https://github.com/CenturyLinkCloud/clc-python-sdk",
