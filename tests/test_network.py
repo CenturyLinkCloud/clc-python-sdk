@@ -190,6 +190,10 @@ class TestClcNetworks(unittest.TestCase):
                 "id": 90210,
                 "cidr": "192.42.10.0/24",
                 "name": "fake_network_three",
+            },
+            {
+                "id": 24601,
+                "name": "snowflake-t3n-network-with-no-cidr-attribute",
             }
         ]
         clc_sdk.v2.API.Call = mock.MagicMock(return_value=mock_output)
@@ -220,6 +224,12 @@ class TestClcNetworks(unittest.TestCase):
 
     def testGetNetworkByCidr(self):
         self.assertEqual(self.test_obj.Get("172.22.10.0/24"), self.test_obj.networks[1])
+
+    def testGetNetworkDoesNotThrowException(self):
+        try:
+            self.test_obj.Get("whatever")
+        except Exception:
+            self.fail("Networks.v2.Get() should not raise an exception")
 
 if __name__ == '__main__':
     unittest.main()
