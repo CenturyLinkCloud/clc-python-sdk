@@ -66,9 +66,13 @@ class Networks(object):
 		"""
 
 		for network in self.networks:
-			if network.id == key:  return(network)
-			if network.name == key:  return(network)
-			if network.cidr == key:  return(network)
+			try:
+				if network.id == key:  return(network)
+				if network.name == key:  return(network)
+				if network.cidr == key:  return(network)
+			except:
+				# We ignore malformed records with missing attributes
+				pass
 
 
 class Network(object):
