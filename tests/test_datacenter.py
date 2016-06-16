@@ -26,7 +26,7 @@ class TestClcDatacenter(unittest.TestCase):
         obj = Datacenter()
         assert clc_sdk.v2.Account.GetAlias.call_count == 1
         assert clc_sdk.v2.Account.GetLocation.call_count == 1
-        clc_sdk.v2.API.Call.assert_called_with('GET','datacenters/mock_alias/mock_loc',{'GroupLinks': 'true'})
+        clc_sdk.v2.API.Call.assert_called_with('GET','datacenters/mock_alias/mock_loc',{'GroupLinks': 'true'}, session=None)
         self.assertEqual(obj.id, "mock_loc")
         self.assertEqual(obj.name, "test_dc_name")
         self.assertEqual(obj.alias, "mock_alias")
@@ -35,7 +35,7 @@ class TestClcDatacenter(unittest.TestCase):
         self.assertEqual(obj.root_group_name, "test_group_name")
 
     def testConstructorAllArgs(self):
-        clc_sdk.v2.API.Call.assert_called_once_with('GET','datacenters/007/test123',{'GroupLinks': 'true'})
+        clc_sdk.v2.API.Call.assert_called_once_with('GET','datacenters/007/test123',{'GroupLinks': 'true'}, session=None)
         self.assertEqual(self.test_obj.id, "test123")
         self.assertEqual(self.test_obj.name, "test_dc_name")
         self.assertEqual(self.test_obj.alias, "007")
@@ -50,12 +50,12 @@ class TestClcDatacenter(unittest.TestCase):
         clc_sdk.v2.Networks = mock.MagicMock(return_value="hello")
         clc_sdk.v2.API.Call = mock.MagicMock(return_value={"deployableNetworks": "network_list"})
         me = self.test_obj.Networks()
-        clc_sdk.v2.Networks.assert_called_once_with(networks_lst="network_list")
+        clc_sdk.v2.Networks.assert_called_once_with(networks_lst="network_list", session=None)
 
     def testNetworksWithForcedLoad(self):
         clc_sdk.v2.Networks = mock.MagicMock(return_value="hello")
         me = self.test_obj.Networks(forced_load=True)
-        clc_sdk.v2.Networks.assert_called_once_with(alias="007", location="test123")
+        clc_sdk.v2.Networks.assert_called_once_with(alias="007", location="test123", session=None)
 
 
 if __name__ == '__main__':

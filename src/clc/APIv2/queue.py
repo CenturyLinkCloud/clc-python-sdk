@@ -37,7 +37,7 @@ class Queue(object):
 
 class Requests(object):
 
-	def __init__(self,requests_lst,alias=None):
+	def __init__(self,requests_lst,alias=None,session=None):
 		"""Create Requests object.
 
 		Treats one or more requests as an atomic unit.
@@ -45,9 +45,9 @@ class Requests(object):
 		or fail as a group
 
 		"""
-
+		self.session = session
 		if alias:  self.alias = alias
-		else:  self.alias = clc.v2.Account.GetAlias()
+		else:  self.alias = clc.v2.Account.GetAlias(session=self.session)
 
 		self.requests = []
 		self.error_requests = []
@@ -79,10 +79,11 @@ class Requests(object):
 
 			if r['isQueued']:
 				if 'uri' in r:
-					self.requests.append(Requestv2Experimental(r['operation_id'],r['uri']))
+					self.requests.append(Requestv2Experimental(r['operation_id'],r['uri'],session=self.session))
 				else:
 					self.requests.append(Request([obj['id'] for obj in r['links'] if obj['rel']=='status'][0],
-				                             alias=self.alias,request_obj={'context_key': context_key, 'context_val': context_val}))
+				                             alias=self.alias,request_obj={'context_key': context_key, 'context_val': context_val},
+											 session=self.session))
 			else:
 				# If we're dealing with a list of responses and we have an error with one I'm not sure how
 				# folks would expect this to behave.  If server is already in desired state thus the request
@@ -104,7 +105,7 @@ class Requests(object):
 		if type(obj) is int:  return(self)	# we get this with a sum() call - ignore the first argument
 		if self.alias != obj.alias:  raise(ArithmeticError("Cannot add Requests operating on different aliases"))
 
-		new_obj = Requests([],alias=self.alias)
+		new_obj = Requests([],alias=self.alias,session=self.session)
 		new_obj.requests = obj.requests+self.requests
 		new_obj.success_requests = obj.success_requests+self.success_requests
 		new_obj.error_requests = obj.error_requests+self.error_requests
@@ -151,7 +152,7 @@ class Requests(object):
 class Request(object):
 	"""This is the current prod incantation for requests. """
 
-	def __init__(self,id,alias=None,request_obj=None):
+	def __init__(self,id,alias=None,request_obj=None,session=None):
 		"""Create Request object.
 
 		https://www.ctl.io/api-docs/v2/#queue-get-status
@@ -159,13 +160,14 @@ class Request(object):
 		"""
 
 		self.id = id
+		self.session = session
 
 		self.time_created = time.time()
 		self.time_executed = None
 		self.time_completed = None
 
 		if alias:  self.alias = alias
-		else:  self.alias = clc.v2.Account.GetAlias()
+		else:  self.alias = clc.v2.Account.GetAlias(session=self.session)
 
 		if request_obj:  self.data = request_obj
 		else:  self.data = {'context_key': None, 'context_val': None}
@@ -180,7 +182,7 @@ class Request(object):
 	def Status(self,cached=False):
 		if not cached or not self.data['status']:
 			try:
-				self.data['status'] = clc.v2.API.Call('GET','operations/%s/status/%s' % (self.alias,self.id),{})['status']
+				self.data['status'] = clc.v2.API.Call('GET','operations/%s/status/%s' % (self.alias,self.id),{},session=self.session)['status']
 			except clc.APIFailedResponse as e:
 				if e.response_status_code == 500:  pass
 				else:  raise(e)
@@ -225,10 +227,10 @@ class Request(object):
 
 		"""
 		if self.context_key == 'newserver':
-			server_id = clc.v2.API.Call('GET', self.context_val)['id']
-			return(clc.v2.Server(id=server_id,alias=self.alias))
+			server_id = clc.v2.API.Call('GET', self.context_val,session=self.session)['id']
+			return(clc.v2.Server(id=server_id,alias=self.alias,session=self.session))
 		elif self.context_key == 'server':
-			return(clc.v2.Server(id=self.context_val,alias=self.alias))
+			return(clc.v2.Server(id=self.context_val,alias=self.alias,session=self.session))
 		else:  raise(clc.CLCException("%s object not server" % self.context_key))
 
 
@@ -239,7 +241,7 @@ class Request(object):
 class Requestv2Experimental(Request):
 	"""This is the v2-experimental implementation for requests. """
 
-	def __init__(self,id,uri):
+	def __init__(self,id,uri,session=None):
 		"""Create Request object.
 
 		Response string feeding this looks like:
@@ -253,12 +255,13 @@ class Requestv2Experimental(Request):
 		self.time_created = time.time()
 		self.time_executed = None
 		self.time_completed = None
+		self.session = session
 
 
 	def Status(self,cached=False):
 		if not cached or not self.data['status']:
 			try:
-				self.data['status'] = clc.v2.API.Call('GET',self.uri,{})['status']
+				self.data['status'] = clc.v2.API.Call('GET',self.uri,{},session=self.session)['status']
 			except clc.APIFailedResponse as e:
 				if e.response_status_code == 500:  pass
 				else:  raise(e)

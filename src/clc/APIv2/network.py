@@ -33,14 +33,15 @@ import clc
 
 class Networks(object):
 
-	def __init__(self,alias=None,location=None,networks_lst=None):
+	def __init__(self,alias=None,location=None,networks_lst=None,session=None):
+		self.session = session
 		if alias:  self.alias = alias
-		else:  self.alias = clc.v2.Account.GetAlias()
+		else:  self.alias = clc.v2.Account.GetAlias(session=self.session)
 
 		self.networks = []
 		if networks_lst:
 			for network in networks_lst:
-				self.networks.append(Network(id=network['networkId'],alias=network['accountID'],network_obj=network))
+				self.networks.append(Network(id=network['networkId'],alias=network['accountID'],network_obj=network,session=self.session))
 		elif location:
 			self._Load(location)
 		else:
@@ -54,8 +55,8 @@ class Networks(object):
 		"""
 
 		# https://api.ctl.io/v2-experimental/networks/ALIAS/WA1
-		for network in clc.v2.API.Call('GET','/v2-experimental/networks/%s/%s' % (self.alias,location),{}):
-			self.networks.append(Network(id=network['id'],alias=self.alias,network_obj=network))
+		for network in clc.v2.API.Call('GET','/v2-experimental/networks/%s/%s' % (self.alias,location),{},session=self.session):
+			self.networks.append(Network(id=network['id'],alias=self.alias,network_obj=network,session=self.session))
 
 
 	def Get(self,key):
@@ -73,16 +74,17 @@ class Networks(object):
 
 class Network(object):
 
-	def __init__(self,id,alias=None,network_obj=None):
+	def __init__(self,id,alias=None,network_obj=None,session=None):
 		"""Create Network object."""
 
 		self.id = id
 		self.type = type
 		self.dirty = False
 		self.data = network_obj
+		self.session = session
 
 		if alias:  self.alias = alias
-		else:  self.alias = clc.v2.Account.GetAlias()
+		else:  self.alias = clc.v2.Account.GetAlias(session=self.session)
 
 		if network_obj:  self.name = network_obj['name']
 		else:
@@ -93,7 +95,7 @@ class Network(object):
 				else: raise(clc.CLCException("An error occurred while creating the Network object"))
 
 	@staticmethod
-	def Create(alias=None,location=None):
+	def Create(alias=None,location=None,session=None):
 		"""Claims a new network within a given account.
 
 		https://www.ctl.io/api-docs/v2/#networks-claim-network
@@ -101,12 +103,13 @@ class Network(object):
 		Returns operation id and link to check status
 		"""
 
-		if not alias:  alias = clc.v2.Account.GetAlias()
-		if not location:  location = clc.v2.Account.GetLocation()
+		if not alias:  alias = clc.v2.Account.GetAlias(session=session)
+		if not location:  location = clc.v2.Account.GetLocation(session=session)
 
 		return clc.v2.Requests(
-			clc.v2.API.Call('POST','/v2-experimental/networks/%s/%s/claim' % (alias, location)),
-			alias=alias)
+			clc.v2.API.Call('POST','/v2-experimental/networks/%s/%s/claim' % (alias, location),session=session),
+			alias=alias,
+			session=session)
 
 	def Delete(self,location=None):
 		"""Releases the calling network.
@@ -116,9 +119,10 @@ class Network(object):
 		Returns a 204 and no content
 		"""
 
-		if not location:  location = clc.v2.Account.GetLocation()
+		if not location:  location = clc.v2.Account.GetLocation(session=self.session)
 
-		return clc.v2.API.Call('POST','/v2-experimental/networks/%s/%s/%s/release' % (self.alias, location, self.id))
+		return clc.v2.API.Call('POST','/v2-experimental/networks/%s/%s/%s/release' % (self.alias, location, self.id),
+		                       session=self.session)
 
 	def Update(self,name,description=None,location=None):
 		"""Updates the attributes of a given Network via PUT.
@@ -133,12 +137,12 @@ class Network(object):
 		Returns a 204 and no content
 		"""
 
-		if not location:  location = clc.v2.Account.GetLocation()
+		if not location:  location = clc.v2.Account.GetLocation(session=self.session)
 
 		payload = {'name': name}
 		payload['description'] = description if description else self.description
 
-		r = clc.v2.API.Call('PUT','/v2-experimental/networks/%s/%s/%s' % (self.alias, location, self.id), payload)
+		r = clc.v2.API.Call('PUT','/v2-experimental/networks/%s/%s/%s' % (self.alias, location, self.id), payload, session=self.session)
 
 		self.name = self.data['name'] = name
 		if description: self.data['description'] = description
@@ -150,9 +154,9 @@ class Network(object):
 
 		GET https://api.ctl.io/v2-experimental/networks/{accountAlias}/{dataCenter}/{Network}?ipAddresses=none|claimed|free|all
 		"""
-		if not location:  location = clc.v2.Account.GetLocation()
+		if not location:  location = clc.v2.Account.GetLocation(session=self.session)
 
-		new_object = clc.v2.API.Call('GET','/v2-experimental/networks/%s/%s/%s' % (self.alias,location,self.id))
+		new_object = clc.v2.API.Call('GET','/v2-experimental/networks/%s/%s/%s' % (self.alias,location,self.id), session=self.session)
 
 		if new_object:
 			self.name = new_object['name']

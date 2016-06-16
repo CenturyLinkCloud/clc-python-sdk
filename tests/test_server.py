@@ -36,13 +36,15 @@ class TestClcServer(unittest.TestCase):
         clc_sdk.v2.API.Call = mock.MagicMock(side_effect=self.get_mock_exception(fail_json={'virus':'very yes'}))
         clc_sdk.v2.Requests = mock.MagicMock()
         self.test_obj._Operation(operation='whatever')
-        clc_sdk.v2.Requests.assert_called_once_with({'virus':'very yes'},alias='base_test')
+        clc_sdk.v2.Requests.assert_called_once_with({'virus':'very yes'},alias='base_test', session=None)
 
     def testOperationHappyPath(self):
         clc_sdk.v2.API.Call = mock.MagicMock()
         clc_sdk.v2.Requests = mock.MagicMock()
         self.test_obj._Operation(operation='whatever')
-        clc_sdk.v2.API.Call.assert_called_once_with('POST','operations/base_test/servers/whatever','["12345"]')
+        clc_sdk.v2.API.Call.assert_called_once_with(
+            'POST', 'operations/base_test/servers/whatever', '["12345"]',
+            session=None)
 
     def testArchive(self):
         self.test_obj._Operation = mock.MagicMock();
@@ -165,7 +167,7 @@ class TestClcServer(unittest.TestCase):
         clc_sdk.v2.Requests = mock.MagicMock()
         clc_sdk.v2.API.Call = mock.MagicMock()
         self.test_obj.Delete()
-        clc_sdk.v2.API.Call.assert_called_once_with('DELETE','servers/base_test/12345')
+        clc_sdk.v2.API.Call.assert_called_once_with('DELETE','servers/base_test/12345', session=None)
 
     # *NIC tests
 
@@ -176,7 +178,8 @@ class TestClcServer(unittest.TestCase):
         clc_sdk.v2.API.Call.assert_called_once_with(
             'POST',
             'servers/base_test/12345/networks',
-            json.dumps({'networkId': 'test_network', 'ipAddress': ''})
+            json.dumps({'networkId': 'test_network', 'ipAddress': ''}),
+            session=None
             )
 
     def test_AddNIC_calls_api_with_provided_ip(self):
@@ -186,7 +189,8 @@ class TestClcServer(unittest.TestCase):
         clc_sdk.v2.API.Call.assert_called_once_with(
             'POST',
             'servers/base_test/12345/networks',
-            json.dumps({'networkId': 'test_network2', 'ipAddress': '1.2.3.4'})
+            json.dumps({'networkId': 'test_network2', 'ipAddress': '1.2.3.4'}),
+            session=None
             )
 
     def test_RemoveNIC_makes_expected_api_call(self):
@@ -194,7 +198,8 @@ class TestClcServer(unittest.TestCase):
         clc_sdk.v2.API.Call = mock.MagicMock()
         self.test_obj.RemoveNIC(network_id='goodbye_network')
         clc_sdk.v2.API.Call.assert_called_once_with(
-            'DELETE', 'servers/base_test/12345/networks/goodbye_network')
+            'DELETE', 'servers/base_test/12345/networks/goodbye_network',
+            session=None)
 
 
     # Static helpers

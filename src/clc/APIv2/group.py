@@ -1,12 +1,12 @@
 """
-Group related functions.  
+Group related functions.
 
 These group related functions generally align one-for-one with published API calls categorized in the group category
 
 API v2 - https://t3n.zendesk.com/forums/21013480-Groups
 
 Groups object variables:
-	
+
 	groups.alias
 
 Group object variables:
@@ -52,14 +52,14 @@ import clc
 
 class Groups(object):
 
-	def __init__(self,groups_lst,alias=None):
-
+	def __init__(self,groups_lst,alias=None,session=None):
+		self.session = session
 		if alias:  self.alias = alias
-		else:  self.alias = clc.v2.Account.GetAlias()
+		else:  self.alias = clc.v2.Account.GetAlias(session=self.session)
 
 		self.groups = []
 		for group in groups_lst:
-			self.groups.append(Group(id=group['id'],alias=self.alias,group_obj=group))
+			self.groups.append(Group(id=group['id'],alias=self.alias,group_obj=group,session=self.session))
 
 
 	def Get(self,key):
@@ -102,38 +102,39 @@ class Groups(object):
 class Group(object):
 
 	@staticmethod
-	def GetAll(root_group_id,alias=None):  
+	def GetAll(root_group_id,alias=None,session=None):
 		"""Gets a list of groups within a given account.
 
 		>>> clc.v2.Group.GetAll("wa1-4416")
 		[<clc.APIv2.group.Group object at 0x1065b0190>, <clc.APIv2.group.Group object at 0x1065b0dd0>]
 
 		"""
-
-		if not alias:  alias = clc.v2.Account.GetAlias()
+		if not alias:  alias = clc.v2.Account.GetAlias(session=session)
 
 		groups = []
-		for r in clc.v2.API.Call('GET','groups/%s/%s' % (alias,root_group_id),{})['groups']:
-			groups.append(Group(id=r['id'],alias=alias,group_obj=r))
-		
+		for r in clc.v2.API.Call('GET','groups/%s/%s' % (alias,root_group_id),{}, session=session)['groups']:
+			groups.append(Group(id=r['id'],alias=alias,group_obj=r,session=session))
+
 		return(groups)
 
 
-	def __init__(self,id,alias=None,group_obj=None):
+	def __init__(self,id,alias=None,group_obj=None,session=None):
 		"""Create Group object.
 
-		If parameters are populated then create object location.  
+		If parameters are populated then create object location.
 		Else if only id is supplied issue a Get Policy call
 
 		>>> clc.v2.Group(id="wa1-1798")
 		<clc.APIv2.group.Group object at 0x109188b90>
 
 		"""
-
+		self.session = session
 		self.id = id
 
-		if alias:  self.alias = alias
-		else:  self.alias = clc.v2.Account.GetAlias()
+		if alias:
+			self.alias = alias
+		else:
+			self.alias = clc.v2.Account.GetAlias(session=self.session)
 
 		if group_obj:  self.data = group_obj
 		else:  self.Refresh()
@@ -150,13 +151,13 @@ class Group(object):
 
 	def Refresh(self):
 		"""Reloads the group object to synchronize with cloud representation.
-		
+
 		>>> clc.v2.Group("wa-1234").Refresh()
-		
+
 		"""
 
 		self.dirty = False
-		self.data = clc.v2.API.Call('GET','groups/%s/%s' % (self.alias,self.id))
+		self.data = clc.v2.API.Call('GET','groups/%s/%s' % (self.alias,self.id), session=self.session)
 
 		self.data['changeInfo']['createdDate'] = clc.v2.time_utils.ZuluTSToSeconds(self.data['changeInfo']['createdDate'])
 		self.data['changeInfo']['modifiedDate'] = clc.v2.time_utils.ZuluTSToSeconds(self.data['changeInfo']['modifiedDate'])
@@ -172,12 +173,13 @@ class Group(object):
 		# "templateName":{"value":"WIN2012DTC-64","inherited":false}}
 		"""
 
-		if not hasattr(self,'defaults'):  self.defaults = clc.v2.API.Call('GET','groups/%s/%s/defaults' % (self.alias,self.id))
+		if not hasattr(self,'defaults'):
+			self.defaults = clc.v2.API.Call('GET','groups/%s/%s/defaults' % (self.alias,self.id), session=self.session)
 		try:
 			return(self.defaults[key]['value'])
 		except:
 			return(None)
-		
+
 
 	def Subgroups(self):
 		"""Returns a Groups object containing all child groups.
@@ -187,7 +189,7 @@ class Group(object):
 
 		"""
 
-		return(Groups(alias=self.alias,groups_lst=self.data['groups']))
+		return(Groups(alias=self.alias,groups_lst=self.data['groups'],session=self.session))
 
 
 	def Servers(self):
@@ -198,7 +200,10 @@ class Group(object):
 
 		"""
 
-		return(clc.v2.Servers(alias=self.alias,servers_lst=[obj['id'] for obj in self.data['links'] if obj['rel']=='server']))
+		return(clc.v2.Servers(
+			alias=self.alias,
+			servers_lst=[obj['id'] for obj in self.data['links'] if obj['rel']=='server'],
+			session=self.session))
 
 
 	def Archive(self):  return(self.Servers().Archive())
@@ -212,7 +217,7 @@ class Group(object):
 	def StopMaintenance(self):  return(self.Servers().StopMaintenance())
 
 
-	def Create(self,name,description=None):  
+	def Create(self,name,description=None):
 		"""Creates a new group
 
 		>>> clc.v2.Datacenter(location="WA1").RootGroup().Create("Test3","Description3")
@@ -224,8 +229,12 @@ class Group(object):
 
 		if not description:  description = name
 
-		r = clc.v2.API.Call('POST','groups/%s' % (self.alias),{'name': name, 'description': description, 'parentGroupId': self.id})
-		return(Group(id=r['id'],alias=self.alias,group_obj=r))
+		r = clc.v2.API.Call(
+			'POST',
+			'groups/%s' % (self.alias),
+			{'name': name, 'description': description, 'parentGroupId': self.id},
+			session=self.session)
+		return(Group(id=r['id'],alias=self.alias,group_obj=r,session=self.session))
 
 
 	def Update(self):
@@ -239,7 +248,7 @@ class Group(object):
 
 	def Delete(self):
 		"""Delete group.
-		
+
 		>>> clc.v2.Group("wa1-4416").Create(name="Test6")
 		<clc.APIv2.group.Group object at 0x1041937d0>
 		>>> clc.v2.Group(_.id).Delete().WaitUntilComplete()
@@ -247,8 +256,15 @@ class Group(object):
 
 		"""
 
-		return(clc.v2.Requests(clc.v2.API.Call('DELETE','groups/%s/%s' % (self.alias,self.id),{}),alias=self.alias))
-	
+		return(clc.v2.Requests(
+			clc.v2.API.Call(
+				'DELETE',
+				'groups/%s/%s' % (self.alias,self.id),
+				{},
+				session=self.session),
+			alias=self.alias,
+			session=self.session))
+
 
 	def Account(self):
 		"""Return account object.
@@ -257,12 +273,11 @@ class Group(object):
 		<clc.APIv2.account.Account instance at 0x108789878>
 		>>> print _
 		BTDI
-		
+
 		"""
 
-		return(clc.v2.Account(alias=self.alias))
+		return(clc.v2.Account(alias=self.alias,session=self.session))
 
 
 	def __str__(self):
 		return(self.data['name'])
-

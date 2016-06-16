@@ -24,23 +24,23 @@ import clc
 class Datacenter:
 
 	@staticmethod
-	def Datacenters(alias=None):
+	def Datacenters(alias=None, session=None):
 		"""Return all cloud locations available to the calling alias.
 
 		>>> clc.v2.Datacenter.Datacenters(alias=None)
 		[<clc.APIv2.datacenter.Datacenter instance at 0x101462fc8>, <clc.APIv2.datacenter.Datacenter instance at 0x101464320>]
 
 		"""
-		if not alias:  alias = clc.v2.Account.GetAlias()
+		if not alias:  alias = clc.v2.Account.GetAlias(session=session)
 
 		datacenters = []
-		for r in clc.v2.API.Call('GET','datacenters/%s' % alias,{}):
-			datacenters.append(Datacenter(location=r['id'],name=r['name'],alias=alias))
+		for r in clc.v2.API.Call('GET','datacenters/%s' % alias,{}, session=session):
+			datacenters.append(Datacenter(location=r['id'],name=r['name'],alias=alias,session=session))
 
 		return(datacenters)
 
 
-	def __init__(self,location=None,name=None,alias=None):
+	def __init__(self,location=None,name=None,alias=None,session=None):
 		"""Create Datacenter object.
 
 		If parameters are populated then create object location.
@@ -51,11 +51,17 @@ class Datacenter:
 		"""
 
 		self.deployment_capabilities = None
+		self.session = session
 
-		if alias:  self.alias = alias
-		else:  self.alias = clc.v2.Account.GetAlias()
-		if location:  self.location = location
-		else:  self.location = clc.v2.Account.GetLocation()
+		if alias:
+			self.alias = alias
+		else:
+			self.alias = clc.v2.Account.GetAlias(session=self.session)
+
+		if location:
+			self.location = location
+		else:
+			self.location = clc.v2.Account.GetLocation(session=self.session)
 
 		if False:
 			# prepopulated info
@@ -63,7 +69,7 @@ class Datacenter:
 			self.location = location
 			#self.servers = servers
 		else:
-			r = clc.v2.API.Call('GET','datacenters/%s/%s' % (self.alias,self.location),{'GroupLinks': 'true'})
+			r = clc.v2.API.Call('GET','datacenters/%s/%s' % (self.alias,self.location),{'GroupLinks': 'true'}, session=session)
 			self.name = r['name']
 			self.root_group_id = [obj['id'] for obj in r['links'] if obj['rel'] == "group"][0]
 			self.root_group_name = [obj['name'] for obj in r['links'] if obj['rel'] == "group"][0]
@@ -81,7 +87,7 @@ class Datacenter:
 
 		"""
 
-		return(clc.v2.Group(id=self.root_group_id,alias=self.alias))
+		return(clc.v2.Group(id=self.root_group_id,alias=self.alias,session=self.session))
 
 
 	def Groups(self):
@@ -98,16 +104,19 @@ class Datacenter:
 
 	def _DeploymentCapabilities(self,cached=True):
 		if not self.deployment_capabilities or not cached:
-			self.deployment_capabilities = clc.v2.API.Call('GET','datacenters/%s/%s/deploymentCapabilities' % (self.alias,self.location))
+			self.deployment_capabilities = clc.v2.API.Call(
+				'GET',
+				'datacenters/%s/%s/deploymentCapabilities' % (self.alias,self.location),
+				session=self.session)
 
 		return(self.deployment_capabilities)
 
 
 	def Networks(self, forced_load=False):
 		if forced_load:
-			return(clc.v2.Networks(alias=self.alias, location=self.location))
+			return(clc.v2.Networks(alias=self.alias, location=self.location, session=self.session))
 		else:
-			return(clc.v2.Networks(networks_lst=self._DeploymentCapabilities()['deployableNetworks']))
+			return(clc.v2.Networks(networks_lst=self._DeploymentCapabilities()['deployableNetworks'], session=self.session))
 
 
 	def Templates(self):

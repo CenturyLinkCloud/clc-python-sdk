@@ -9,7 +9,7 @@ import sys
 
 
 class API():
-	
+
 	# requests module includes cacert.pem which is visible when run as installed module.
 	# pyinstall single-file deployment needs cacert.pem packaged along and referenced.
 	# This module proxies between the two based on whether the cacert.pem exists in
@@ -31,7 +31,7 @@ class API():
 	@staticmethod
 	def DisableSSLVerify():
 		""" Disable SSL endpoint verification.
-		
+
 		 This also disable certification error warnings within log messages with scope extended
 		 to all usages of the requests module."""
 
@@ -64,7 +64,7 @@ class API():
 		if not clc.v2.V2_API_USERNAME or not clc.v2.V2_API_PASSWD:
 			clc.v1.output.Status('ERROR',3,'V2 API username and password not provided')
 			raise(clc.APIV2NotEnabled)
-			
+
 		session = clc._REQUESTS_SESSION
 
 		r = session.request("POST",
@@ -91,10 +91,15 @@ class API():
 
 		:returns: decoded API json result
 		"""
-		if not clc._LOGIN_TOKEN_V2:  API._Login()
+		if session is not None:
+			token = session['token']
+			http_session = session['http_session']
 
-		if session is None:
-		    session = clc._REQUESTS_SESSION
+		else:
+			if not clc._LOGIN_TOKEN_V2:
+				API._Login()
+			token = clc._LOGIN_TOKEN_V2
+			http_session = clc._REQUESTS_SESSION
 
 		if payload is None:
 		    payload = {}
@@ -104,22 +109,22 @@ class API():
 		if url[0]=='/':  fq_url = "%s%s" % (clc.defaults.ENDPOINT_URL_V2,url)
 		else:  fq_url = "%s/v2/%s" % (clc.defaults.ENDPOINT_URL_V2,url)
 
-		session.headers.update({'Authorization': "Bearer %s" % clc._LOGIN_TOKEN_V2})
+		http_session.headers.update({'Authorization': "Bearer %s" % token})
 
-		if isinstance(payload, basestring):  session.headers['content-type'] = "Application/json" # added for server ops with str payload
-		else:  session.headers['content-type'] = "application/x-www-form-urlencoded"
+		if isinstance(payload, basestring):  http_session.headers['content-type'] = "Application/json" # added for server ops with str payload
+		else:  http_session.headers['content-type'] = "application/x-www-form-urlencoded"
 
 		if method=="GET":
-			r = session.request(method,fq_url,
-			                     params=payload, 
+			r = http_session.request(method,fq_url,
+			                     params=payload,
 								 verify=API._ResourcePath('clc/cacert.pem'))
 		else:
-			r = session.request(method,fq_url,
-			                     data=payload, 
+			r = http_session.request(method,fq_url,
+			                     data=payload,
 								 verify=API._ResourcePath('clc/cacert.pem'))
 
-		if debug:  
-			API._DebugRequest(request=requests.Request(method,fq_url,data=payload,headers=session.headers).prepare(),
+		if debug:
+			API._DebugRequest(request=requests.Request(method,fq_url,data=payload,headers=http_session.headers).prepare(),
 			                  response=r)
 
 		if r.status_code>=200 and r.status_code<300:
@@ -129,7 +134,7 @@ class API():
 				return({})
 		else:
 			try:
-				e = clc.APIFailedResponse("Response code %s.  %s %s %s" % 
+				e = clc.APIFailedResponse("Response code %s.  %s %s %s" %
 				                          (r.status_code,r.json()['message'],method,fq_url))
 				e.response_status_code = r.status_code
 				e.response_json = r.json()
@@ -138,11 +143,9 @@ class API():
 			except clc.APIFailedResponse:
 				raise
 			except:
-				e = clc.APIFailedResponse("Response code %s. %s. %s %s" % 
+				e = clc.APIFailedResponse("Response code %s. %s. %s %s" %
 				                         (r.status_code,r.text,method,fq_url))
 				e.response_status_code = r.status_code
 				e.response_json = {}	# or should this be None?
 				e.response_text = r.text
 				raise(e)
-
-

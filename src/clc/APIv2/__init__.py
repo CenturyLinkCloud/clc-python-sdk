@@ -15,6 +15,9 @@ API Documentaton v1: https://t3n.zendesk.com/categories/20012068-API-v1-0
 API Documentaton v2: https://t3n.zendesk.com/categories/20067994-API-v2-0-Beta-
 
 """
+import requests
+
+import clc.defaults
 
 from clc.APIv2.account import Account
 from clc.APIv2.group import Group
@@ -49,3 +52,39 @@ def SetCredentials(api_username,api_passwd):
 	V2_API_PASSWD = api_passwd
 
 
+def get_session(username, password, default_endpoints=clc.defaults, cert=None):
+	"""Start a session with the given parameters
+
+	Use instead of SetCredentials if you need a session object to avoid the use of global credentials.
+
+	Returns a session object accepted by many v2 objects.
+	"""
+	if cert is None:
+		cert = API._ResourcePath('clc/cacert.pem')
+
+	session = requests.Session()
+
+	request = session.request(
+		"POST",
+		"{}/v2/authentication/login".format(default_endpoints.ENDPOINT_URL_V2),
+		data={"username": username, "password": password},
+		verify=cert)
+
+	data = request.json()
+
+	if request.status_code == 200:
+		token = data['bearerToken']
+		alias = data['accountAlias']
+		location = data['locationAlias']
+	elif request.status_code == 400:
+		raise Exception("Invalid V2 API login. {}".format(data['message']))
+	else:
+		raise Exception("Error logging into V2 API.  Response code {}. message {}"
+					    .format(request.status_code,data['message']))
+
+	return {'username': username,
+			'password': password,
+			'http_session': session,
+			'token': token,
+			'alias': alias,
+			'location': location}

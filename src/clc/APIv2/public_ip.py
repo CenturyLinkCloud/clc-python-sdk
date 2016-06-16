@@ -1,5 +1,5 @@
 """
-PublicIP related functions.  
+PublicIP related functions.
 
 PublicIPs object variables:
 
@@ -41,11 +41,14 @@ import clc
 
 class PublicIPs(object):
 
-	def __init__(self,server,public_ips_lst):
+	def __init__(self,server,public_ips_lst,session=None):
 		self.server = server
 		self.public_ips = []
+		self.session = session
+
 		for public_ip in public_ips_lst:
-			if 'public' in public_ip:  self.public_ips.append(PublicIP(id=public_ip['public'],parent=self,public_ip_obj=public_ip))
+			if 'public' in public_ip:
+				self.public_ips.append(PublicIP(id=public_ip['public'],parent=self,public_ip_obj=public_ip,session=self.session))
 
 
 	def Get(self,key):
@@ -64,7 +67,7 @@ class PublicIPs(object):
 			protocol - TCP, UDP, or ICMP
 			port - int 0-65534
 			port_to - (optional) if specifying a range of ports then the rqange end.  int 0-65534
-		
+
 		Optionally specify one or more source restrictions using a list of dicts with the following keys:
 
 			cidr - string with CIDR notation for the subnet (e.g. "132.200.20.0/24")
@@ -101,46 +104,49 @@ class PublicIPs(object):
 		if source_restrictions:  payload['sourceRestrictions'] = source_restrictions
 		if private_ip:  payload['internalIPAddress'] = private_ip
 
-		return(clc.v2.Requests(clc.v2.API.Call('POST','servers/%s/%s/publicIPAddresses' % (self.server.alias,self.server.id),json.dumps(payload)),
-		                       alias=self.server.alias))
+		return(clc.v2.Requests(clc.v2.API.Call('POST','servers/%s/%s/publicIPAddresses' % (self.server.alias,self.server.id),
+		                                       json.dumps(payload),session=self.session),
+		                       alias=self.server.alias,session=self.session))
 
 
 
 class PublicIP(object):
 
-	def __init__(self,id,parent,public_ip_obj=None):
+	def __init__(self,id,parent,public_ip_obj=None,session=None):
 		"""Create PublicIP object."""
 
 		self.id = id
 		self.internal = public_ip_obj['internal']
 		self.parent = parent
 		self.data = None
+		self.session = session
 
 
 	def _Load(self,cached=True):
 		"""Performs a full load of all PublicIP metadata."""
 
-		if not self.data or not cached:  
-			self.data = clc.v2.API.Call('GET','servers/%s/%s/publicIPAddresses/%s' % (self.parent.server.alias,self.parent.server.id,self.id))
+		if not self.data or not cached:
+			self.data = clc.v2.API.Call('GET','servers/%s/%s/publicIPAddresses/%s' % (self.parent.server.alias,self.parent.server.id,self.id),
+										session=self.session)
 
 			# build ports
 			self.data['_ports'] = self.data['ports']
 			self.data['ports'] = []
-			for port in self.data['_ports']:  
+			for port in self.data['_ports']:
 				if 'portTo' in port:  self.ports.append(Port(self,port['protocol'],port['port'],port['portTo']))
 				else:  self.ports.append(Port(self,port['protocol'],port['port']))
 
 			# build source restriction
 			self.data['_source_restrictions'] = self.data['sourceRestrictions']
 			self.data['source_restrictions'] = []
-			for source_restriction in self.data['_source_restrictions']:  
+			for source_restriction in self.data['_source_restrictions']:
 				self.source_restrictions.append(SourceRestriction(self,source_restriction['cidr']))
 
 		return(self.data)
 
 
 	def Delete(self):
-		"""Delete public IP.  
+		"""Delete public IP.
 
 		>>> clc.v2.Server("WA1BTDIX01").PublicIPs().public_ips[0].Delete().WaitUntilComplete()
 		0
@@ -149,8 +155,10 @@ class PublicIP(object):
 
 		public_ip_set = [{'public_ipId': o.id} for o in self.parent.public_ips if o!=self]
 		self.parent.public_ips = [o for o in self.parent.public_ips if o!=self]
-		return(clc.v2.Requests(clc.v2.API.Call('DELETE','servers/%s/%s/publicIPAddresses/%s' % (self.parent.server.alias,self.parent.server.id,self.id)),
-		                       alias=self.parent.server.alias))
+		return(clc.v2.Requests(clc.v2.API.Call('DELETE','servers/%s/%s/publicIPAddresses/%s' % (self.parent.server.alias,self.parent.server.id,self.id),
+											   session=self.session),
+		                       alias=self.parent.server.alias,
+							   session=self.session))
 
 
 	def Update(self):
@@ -164,19 +172,21 @@ class PublicIP(object):
 		"""
 
 		return(clc.v2.Requests(clc.v2.API.Call('PUT','servers/%s/%s/publicIPAddresses/%s' % (self.parent.server.alias,self.parent.server.id,self.id),
-		                       json.dumps({'ports': [o.ToDict() for o in self.ports], 
-							               'sourceRestrictions': [o.ToDict() for o in self.source_restrictions] })),
-							   alias=self.parent.server.alias))
+						                       json.dumps({'ports': [o.ToDict() for o in self.ports],
+											               'sourceRestrictions': [o.ToDict() for o in self.source_restrictions] }),
+											   session=self.session),
+							   alias=self.parent.server.alias,
+							   session=self.session))
 
 
-	def AddPort(self,protocol,port,port_to=None):  
+	def AddPort(self,protocol,port,port_to=None):
 		"""Add and commit a single port.
 
 		# Add single port
 		>>> clc.v2.Server("WA1BTDIX01").PublicIPs().public_ips[0].AddPort(protocol='TCP',port='22').WaitUntilComplete()
 		0
 
-		# Add port range 
+		# Add port range
 		>>> clc.v2.Server("WA1BTDIX01").PublicIPs().public_ips[0].AddPort(protocol='UDP',port='10000',port_to='15000').WaitUntilComplete()
 		0
 
@@ -187,7 +197,7 @@ class PublicIP(object):
 		return(self.Update())
 
 
-	def AddPorts(self,ports):  
+	def AddPorts(self,ports):
 		"""Create one or more port access policies.
 
 		Include a list of dicts with protocol, port, and port_to (optional - for range) keys.
@@ -199,14 +209,14 @@ class PublicIP(object):
 
 		"""
 
-		for port in ports:  
+		for port in ports:
 			if 'port_to' in port:  self.ports.append(Port(self,port['protocol'],port['port'],port['port_to']))
 			else:  self.ports.append(Port(self,port['protocol'],port['port']))
 
 		return(self.Update())
 
 
-	def AddSourceRestriction(self,cidr):  
+	def AddSourceRestriction(self,cidr):
 		"""Add and commit a single source IP restriction policy.
 
 		>>> clc.v2.Server("WA1BTDIX01").PublicIPs().public_ips[0]
@@ -316,5 +326,3 @@ class SourceRestriction(object):
 
 	def __str__(self):
 		return("%s" % (self.cidr))
-
-
