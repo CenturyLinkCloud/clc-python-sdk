@@ -1,4 +1,4 @@
-#/bin/bash
+#!/usr/bin/env bash
 
 pydoc -w clc \
 		 clc.APIv1 clc.APIv2 \

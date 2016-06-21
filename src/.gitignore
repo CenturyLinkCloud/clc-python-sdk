@@ -1,5 +1,0 @@
-*.ini
-*.pyc
-*.sw?
-clc_sdk.egg-info
-dist/clc
