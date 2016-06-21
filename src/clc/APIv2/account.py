@@ -1,5 +1,5 @@
 """
-Account related functions.  
+Account related functions.
 
 These account related functions generally align one-for-one with published API calls categorized in the account category
 
@@ -32,39 +32,48 @@ import clc
 class Account:
 
 	@staticmethod
-	def GetAlias():  
+	def GetAlias(session=None):
 		"""Return specified alias or if none the alias associated with the provided credentials.
 
 		>>> clc.v2.Account.GetAlias()
 		u'BTDI'
 		"""
+		if session is not None:
+			return session['alias']
+
 		if not clc.ALIAS:  clc.v2.API._Login()
 		return(clc.ALIAS)
 
 
 	@staticmethod
-	def GetLocation():  
+	def GetLocation(session=None):
 		"""Return specified location or if none the default location associated with the provided credentials and alias.
-		
+
 		>>> clc.v2.Account.GetLocation()
 		u'WA1'
 		"""
+		if session is not None:
+			return session['location']
+
 		if not clc.LOCATION:  clc.v2.API._Login()
 		return(clc.LOCATION)
 
 
-	def __init__(self,alias=None):
+	def __init__(self,alias=None,session=None):
 		"""Create account object.
 
 		>>> clc.v2.Account()
 		<clc.APIv2.account.Account instance at 0x1065a2e60>
 
 		"""
+		self.session = session
 
-		if alias:  self.alias = alias
-		else:  self.alias = clc.v2.Account.GetAlias()
+		if alias:
+			self.alias = alias
+		else:
+			self.alias = clc.v2.Account.GetAlias(session=self.session)
 
-		self.data = clc.v2.API.Call('GET','accounts/%s' % (self.alias),{})
+		self.data = clc.v2.API.Call('GET','accounts/%s' % (self.alias),{},session=session)
 
 
 	def ParentAccount(self):
@@ -79,7 +88,7 @@ class Account:
 		None
 		"""
 
-		return(Account(alias=self.data['parentAlias']))
+		return(Account(alias=self.data['parentAlias'], session=self.session))
 
 
 	def PrimaryDatacenter(self):
@@ -92,7 +101,7 @@ class Account:
 
 		"""
 
-		return(clc.v2.Datacenter(alias=self.alias,location=self.data['primaryDataCenter']))
+		return(clc.v2.Datacenter(alias=self.alias,location=self.data['primaryDataCenter'], session=self.session))
 
 
 	def __getattr__(self,var):
@@ -105,6 +114,3 @@ class Account:
 
 	def __str__(self):
 		return(self.data['accountAlias'])
-
-
-

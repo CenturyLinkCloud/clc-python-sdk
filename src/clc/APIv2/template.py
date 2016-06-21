@@ -1,5 +1,5 @@
 """
-Template related functions.  
+Template related functions.
 
 Templates object variables:
 
@@ -62,4 +62,3 @@ class Template(object):
 
 	def __str__(self):
 		return(self.id)
-

@@ -68,7 +68,7 @@ import clc
 
 class Servers(object):
 
-	def __init__(self,servers_lst,alias=None):
+	def __init__(self,servers_lst,alias=None,session=None):
 		"""Container class for one or more servers.
 
 		Behaves differently than the other container classes like Groups where the *_lst
@@ -80,8 +80,9 @@ class Servers(object):
 
 		"""
 
+		self.session = session
 		if alias:  self.alias = alias
-		else:  self.alias = clc.v2.Account.GetAlias()
+		else:  self.alias = clc.v2.Account.GetAlias(session=self.session)
 
 		self.servers_lst = servers_lst
 
@@ -99,7 +100,7 @@ class Servers(object):
 		if not hasattr(self,'_servers') or not cached:
 			self._servers = []
 			for server in self.servers_lst:
-				self._servers.append(Server(id=server,alias=self.alias))
+				self._servers.append(Server(id=server,alias=self.alias,session=self.session))
 
 		return(self._servers)
 
@@ -124,10 +125,12 @@ class Servers(object):
 
 		try:
 			return(clc.v2.Requests(clc.v2.API.Call('POST','operations/%s/servers/%s' % (self.alias,operation),
-			                                       json.dumps(self.servers_lst)),alias=self.alias))
+			                                       json.dumps(self.servers_lst),
+												   session=self.session),
+								   alias=self.alias,session=self.session))
 		except clc.APIFailedResponse as e:
 			# Most likely a queue add error presented as a 400.  Let Requests parse this
-			return(clc.v2.Requests(e.response_json,alias=self.alias))
+			return(clc.v2.Requests(e.response_json,alias=self.alias,session=self.session))
 
 
 	def Archive(self):  return(self._Operation('archive'))
@@ -145,7 +148,7 @@ class Servers(object):
 class Server(object):
 
 
-	def __init__(self,id,alias=None,server_obj=None):
+	def __init__(self,id,alias=None,server_obj=None,session=None):
 		"""Create Server object.
 
 		http://www.centurylinkcloud.com/api-docs/v2#servers-get-server
@@ -170,9 +173,10 @@ class Server(object):
 		self.disks = None
 		self.public_ips = None
 		self.dirty = False
+		self.session = session
 
 		if alias:  self.alias = alias
-		else:  self.alias = clc.v2.Account.GetAlias()
+		else:  self.alias = clc.v2.Account.GetAlias(session=self.session)
 
 		if server_obj:  self.data = server_obj
 		else:
@@ -190,7 +194,7 @@ class Server(object):
 		"""
 
 		self.dirty = False
-		self.data = clc.v2.API.Call('GET','servers/%s/%s' % (self.alias,self.id),{})
+		self.data = clc.v2.API.Call('GET','servers/%s/%s' % (self.alias,self.id),{},session=self.session)
 
 		try:
 			self.data['changeInfo']['createdDate'] = clc.v2.time_utils.ZuluTSToSeconds(self.data['changeInfo']['createdDate'])
@@ -204,7 +208,7 @@ class Server(object):
 
 	def _Capabilities(self,cached=True):
 		if not self.capabilities or not cached:
-			self.capabilities = clc.v2.API.Call('GET','servers/%s/%s/capabilities' % (self.alias,self.name))
+			self.capabilities = clc.v2.API.Call('GET','servers/%s/%s/capabilities' % (self.alias,self.name),session=self.session)
 
 		return(self.capabilities)
 
@@ -231,7 +235,7 @@ class Server(object):
 
 		"""
 
-		return(clc.v2.Account(alias=self.alias))
+		return(clc.v2.Account(alias=self.alias,session=self.session))
 
 
 	def Group(self):
@@ -244,7 +248,7 @@ class Server(object):
 
 		"""
 
-		return(clc.v2.Group(id=self.groupId,alias=self.alias))
+		return(clc.v2.Group(id=self.groupId,alias=self.alias,session=self.session))
 
 
 	def Disks(self):
@@ -255,7 +259,7 @@ class Server(object):
 
 		"""
 
-		if not self.disks:  self.disks = clc.v2.Disks(server=self,disks_lst=self.data['details']['disks'])
+		if not self.disks:  self.disks = clc.v2.Disks(server=self,disks_lst=self.data['details']['disks'],session=self.session)
 
 		return(self.disks)
 
@@ -264,7 +268,7 @@ class Server(object):
 		"""Returns PublicIPs object associated with the server.
 
 		"""
-		if not self.public_ips:  self.public_ips = clc.v2.PublicIPs(server=self,public_ips_lst=self.ip_addresses)
+		if not self.public_ips:  self.public_ips = clc.v2.PublicIPs(server=self,public_ips_lst=self.ip_addresses,session=self.session)
 
 		return(self.public_ips)
 
@@ -290,7 +294,7 @@ class Server(object):
 		"""
 
 		try:
-			units = clc.v2.API.Call('GET','billing/%s/serverPricing/%s' % (self.alias,self.name))
+			units = clc.v2.API.Call('GET','billing/%s/serverPricing/%s' % (self.alias,self.name),session=self.session)
 		except clc.APIFailedResponse:
 			raise(clc.ServerDeletedException)
 
@@ -326,7 +330,7 @@ class Server(object):
 
 		"""
 
-		return(clc.v2.API.Call('GET','servers/%s/%s/credentials' % (self.alias,self.name)))
+		return(clc.v2.API.Call('GET','servers/%s/%s/credentials' % (self.alias,self.name),session=self.session))
 
 
 	def _Operation(self,operation):
@@ -340,10 +344,16 @@ class Server(object):
 		"""
 
 		try:
-			return(clc.v2.Requests(clc.v2.API.Call('POST','operations/%s/servers/%s' % (self.alias,operation),'["%s"]' % self.id),alias=self.alias))
+			return(clc.v2.Requests(
+				clc.v2.API.Call(
+					'POST',
+					'operations/%s/servers/%s' % (self.alias,operation),'["%s"]' % self.id,
+					session=self.session),
+				alias=self.alias,
+				session=self.session))
 		except clc.APIFailedResponse as e:
 			# Most likely a queue add error presented as a 400.  Let Requests parse this
-			return(clc.v2.Requests(e.response_json,alias=self.alias))
+			return(clc.v2.Requests(e.response_json,alias=self.alias,session=self.session))
 
 
 	def Archive(self):  return(self._Operation('archive'))
@@ -386,8 +396,10 @@ class Server(object):
 		"""
 
 		return(clc.v2.Requests(clc.v2.API.Call('POST','operations/%s/servers/executePackage' % (self.alias),
-		                                       json.dumps({'servers': [self.id], 'package': {'packageId': package_id, 'parameters': parameters}})),
-							   alias=self.alias))
+		                                       json.dumps({'servers': [self.id], 'package': {'packageId': package_id, 'parameters': parameters}}),
+											   session=self.session),
+							   alias=self.alias,
+							   session=self.session))
 
 
 	def AddNIC(self,network_id,ip=''):
@@ -413,8 +425,10 @@ class Server(object):
 		"""
 
 		return(clc.v2.Requests(clc.v2.API.Call('POST','servers/%s/%s/networks' % (self.alias,self.id),
-		                                       json.dumps({'networkId': network_id, 'ipAddress': ip})),
-							   alias=self.alias))
+		                                       json.dumps({'networkId': network_id, 'ipAddress': ip}),
+											   session=self.session),
+							   alias=self.alias,
+							   session=self.session))
 
 	def RemoveNIC(self,network_id):
 		"""Remove the NIC associated with the provided network from the server.
@@ -434,8 +448,10 @@ class Server(object):
 		return(
 			clc.v2.Requests(
 				clc.v2.API.Call('DELETE','servers/%s/%s/networks/%s'
-					% (self.alias,self.id,network_id)),
-			  alias=self.alias
+					% (self.alias,self.id,network_id),
+					session=self.session),
+			  alias=self.alias,
+			  session=self.session
 	  ))
 
 
@@ -466,8 +482,10 @@ class Server(object):
 			else:  raise(clc.CLCException("Snapshot already exists cannot take another"))
 
 		return(clc.v2.Requests(clc.v2.API.Call('POST','operations/%s/servers/createSnapshot' % (self.alias),
-											   {'serverIds': self.id, 'snapshotExpirationDays': expiration_days}),
-							   alias=self.alias))
+											   {'serverIds': self.id, 'snapshotExpirationDays': expiration_days},
+											   session=self.session),
+							   alias=self.alias,
+							   session=self.session))
 
 
 	def DeleteSnapshot(self,names=None):
@@ -486,7 +504,13 @@ class Server(object):
 		requests_lst = []
 		for name in names:
 			name_links = [obj['links'] for obj in self.data['details']['snapshots'] if obj['name']==name][0]
-			requests_lst.append(clc.v2.Requests(clc.v2.API.Call('DELETE',[obj['href'] for obj in name_links if obj['rel']=='delete'][0]),alias=self.alias))
+			requests_lst.append(
+				clc.v2.Requests(
+					clc.v2.API.Call('DELETE',
+						[obj['href'] for obj in name_links if obj['rel']=='delete'][0],
+						session=self.session),
+					alias=self.alias,
+					session=self.session))
 
 		return(sum(requests_lst))
 
@@ -506,7 +530,11 @@ class Server(object):
 		if name is None:  name = self.GetSnapshots()[0]
 
 		name_links = [obj['links'] for obj in self.data['details']['snapshots'] if obj['name']==name][0]
-		return(clc.v2.Requests(clc.v2.API.Call('POST',[obj['href'] for obj in name_links if obj['rel']=='restore'][0]),alias=self.alias))
+		return(clc.v2.Requests(clc.v2.API.Call('POST',
+											   [obj['href'] for obj in name_links if obj['rel']=='restore'][0],
+											   session=self.session),
+							   alias=self.alias,
+							   session=self.session))
 
 
 	@staticmethod
@@ -514,7 +542,7 @@ class Server(object):
 	           storage_type="standard",type="standard",primary_dns=None,secondary_dns=None,
 			   additional_disks=[],custom_fields=[],ttl=None,managed_os=False,description=None,
 			   source_server_password=None,cpu_autoscale_policy_id=None,anti_affinity_policy_id=None,
-			   packages=[]):
+			   packages=[],session=None):
 		"""Creates a new server.
 
 		https://www.centurylinkcloud.com/api-docs/v2/#servers-create-server
@@ -533,11 +561,11 @@ class Server(object):
 
 		"""
 
-		if not alias:  alias = clc.v2.Account.GetAlias()
+		if not alias:  alias = clc.v2.Account.GetAlias(session=session)
 		if not description:  description = name
 
 		if not cpu or not memory:
-			group = clc.v2.Group(id=group_id,alias=alias)
+			group = clc.v2.Group(id=group_id,alias=alias,session=session)
 
 		if not cpu and group.Defaults("cpu"):
 			cpu = group.Defaults("cpu")
@@ -572,8 +600,10 @@ class Server(object):
 							 'networkId': network_id, 'ipAddress': ip_address, 'password': password,
 							 'sourceServerPassword': source_server_password, 'cpu': cpu, 'cpuAutoscalePolicyId': cpu_autoscale_policy_id,
 							 'memoryGB': memory, 'type': type, 'storageType': storage_type, 'antiAffinityPolicyId': anti_affinity_policy_id,
-							 'customFields': custom_fields, 'additionalDisks': additional_disks, 'ttl': ttl, 'packages': packages})),
-				 alias=alias))
+							 'customFields': custom_fields, 'additionalDisks': additional_disks, 'ttl': ttl, 'packages': packages}),
+				 		 session=session),
+				 alias=alias,
+				 session=session))
 
 
 	def Clone(self,network_id,name=None,cpu=None,memory=None,group_id=None,alias=None,password=None,ip_address=None,
@@ -628,7 +658,7 @@ class Server(object):
 						custom_fields=custom_fields,ttl=ttl,managed_os=managed_os,description=description,
                         source_server_password=source_server_password,cpu_autoscale_policy_id=cpu_autoscale_policy_id,
 						anti_affinity_policy_id=anti_affinity_policy_id,packages=packages,
-						template=self.id))
+						template=self.id,session=self.session))
 
 		return(sum(requests_lst))
 
@@ -650,8 +680,10 @@ class Server(object):
 		if not description:  description = self.description
 
 		return(clc.v2.Requests(clc.v2.API.Call('POST','servers/%s/%s/convertToTemplate' % (self.alias,self.id),
-											   json.dumps({"description": description, "visibility": visibility, "password": password})),
-							   alias=self.alias))
+											   json.dumps({"description": description, "visibility": visibility, "password": password}),
+											   session=self.session),
+							   alias=self.alias,
+							   session=self.session))
 
 
 
@@ -674,8 +706,10 @@ class Server(object):
 		for key in ("cpu","memory","description","groupId"):
 			if locals()[key]:
 				requests.append(clc.v2.Requests(clc.v2.API.Call('PATCH','servers/%s/%s' % (self.alias,self.id),
-				                                                json.dumps([{"op": "set", "member": key, "value": locals()[key]}])),
-								alias=self.alias))
+				                                                json.dumps([{"op": "set", "member": key, "value": locals()[key]}]),
+																session=self.session),
+								alias=self.alias,
+								session=self.session))
 
 		if len(requests):  self.dirty = True
 
@@ -703,8 +737,10 @@ class Server(object):
 		if self.state != "active":  raise(clc.CLCException("Server must be powered on to change password"))
 
 		return(clc.v2.Requests(clc.v2.API.Call('PATCH','servers/%s/%s' % (self.alias,self.id),
-		                                       json.dumps([{"op": "set", "member": "password", "value": {"current": self.Credentials()['password'], "password": password}}])),
-							   alias=self.alias))
+		                                       json.dumps([{"op": "set", "member": "password", "value": {"current": self.Credentials()['password'], "password": password}}]),
+											   session=self.session),
+							   alias=self.alias,
+							   session=self.session))
 
 
 	def Delete(self):
@@ -716,7 +752,7 @@ class Server(object):
 		0
 
 		"""
-		return(clc.v2.Requests(clc.v2.API.Call('DELETE','servers/%s/%s' % (self.alias,self.id)),alias=self.alias))
+		return(clc.v2.Requests(clc.v2.API.Call('DELETE','servers/%s/%s' % (self.alias,self.id),session=self.session),alias=self.alias,session=self.session))
 
 
 	def __str__(self):
