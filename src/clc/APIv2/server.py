@@ -542,7 +542,7 @@ class Server(object):
 	           storage_type="standard",type="standard",primary_dns=None,secondary_dns=None,
 			   additional_disks=[],custom_fields=[],ttl=None,managed_os=False,description=None,
 			   source_server_password=None,cpu_autoscale_policy_id=None,anti_affinity_policy_id=None,
-			   packages=[],session=None):
+			   packages=[],configuration_id=None,session=None):
 		"""Creates a new server.
 
 		https://www.centurylinkcloud.com/api-docs/v2/#servers-create-server
@@ -564,18 +564,19 @@ class Server(object):
 		if not alias:  alias = clc.v2.Account.GetAlias(session=session)
 		if not description:  description = name
 
-		if not cpu or not memory:
-			group = clc.v2.Group(id=group_id,alias=alias,session=session)
+		if type.lower() != "baremetal":
+			if not cpu or not memory:
+				group = clc.v2.Group(id=group_id,alias=alias,session=session)
 
-		if not cpu and group.Defaults("cpu"):
-			cpu = group.Defaults("cpu")
-		elif not cpu:
-			raise(clc.CLCException("No default CPU defined"))
+			if not cpu and group.Defaults("cpu"):
+				cpu = group.Defaults("cpu")
+			elif not cpu:
+				raise(clc.CLCException("No default CPU defined"))
 
-		if not memory and group.Defaults("memory"):
-			memory = group.Defaults("memory")
-		elif not memory:
-			raise(clc.CLCException("No default Memory defined"))
+			if not memory and group.Defaults("memory"):
+				memory = group.Defaults("memory")
+			elif not memory:
+				raise(clc.CLCException("No default Memory defined"))
 
 		if type.lower() == "standard" and storage_type.lower() not in ("standard","premium"):
 			raise(clc.CLCException("Invalid type/storage_type combo"))
@@ -594,16 +595,40 @@ class Server(object):
 		# TODO - validate addition_disks path not in template reserved paths
 		# TODO - validate antiaffinity policy id set only with type=hyperscale
 
-		return(clc.v2.Requests(clc.v2.API.Call('POST','servers/%s' % (alias),
-		         json.dumps({'name': name, 'description': description, 'groupId': group_id, 'sourceServerId': template,
-							 'isManagedOS': managed_os, 'primaryDNS': primary_dns, 'secondaryDNS': secondary_dns,
-							 'networkId': network_id, 'ipAddress': ip_address, 'password': password,
-							 'sourceServerPassword': source_server_password, 'cpu': cpu, 'cpuAutoscalePolicyId': cpu_autoscale_policy_id,
-							 'memoryGB': memory, 'type': type, 'storageType': storage_type, 'antiAffinityPolicyId': anti_affinity_policy_id,
-							 'customFields': custom_fields, 'additionalDisks': additional_disks, 'ttl': ttl, 'packages': packages}),
-				 		 session=session),
-				 alias=alias,
-				 session=session))
+		if type == 'bareMetal':
+			return clc.v2.Requests(
+				clc.v2.API.Call(
+					'POST',
+					'servers/%s' % (alias),
+					json.dumps({
+						'name': name,
+						'description': description,
+						'groupId': group_id,
+						'primaryDNS': primary_dns,
+						'secondaryDNS': secondary_dns,
+						'networkId': network_id,
+						'password': password,
+						'type': type,
+						'customFields': custom_fields,
+						'configurationId': configuration_id,
+						'osType': template
+					}),
+					session=session
+				),
+				alias=alias,
+				session=session)
+
+		else:
+			return(clc.v2.Requests(clc.v2.API.Call('POST','servers/%s' % (alias),
+					json.dumps({'name': name, 'description': description, 'groupId': group_id, 'sourceServerId': template,
+								'isManagedOS': managed_os, 'primaryDNS': primary_dns, 'secondaryDNS': secondary_dns,
+								'networkId': network_id, 'ipAddress': ip_address, 'password': password,
+								'sourceServerPassword': source_server_password, 'cpu': cpu, 'cpuAutoscalePolicyId': cpu_autoscale_policy_id,
+								'memoryGB': memory, 'type': type, 'storageType': storage_type, 'antiAffinityPolicyId': anti_affinity_policy_id,
+								'customFields': custom_fields, 'additionalDisks': additional_disks, 'ttl': ttl, 'packages': packages}),
+							session=session),
+					alias=alias,
+					session=session))
 
 
 	def Clone(self,network_id,name=None,cpu=None,memory=None,group_id=None,alias=None,password=None,ip_address=None,

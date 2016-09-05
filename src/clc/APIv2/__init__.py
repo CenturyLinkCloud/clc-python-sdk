@@ -30,6 +30,7 @@ from clc.APIv2.alert import Alerts, Alert
 from clc.APIv2.queue import Queue, Request, Requests
 from clc.APIv2.anti_affinity import AntiAffinity
 from clc.APIv2.datacenter import Datacenter
+from clc.APIv2.horizontal_autoscale import HorizontalAutoscalePolicy
 from clc.APIv2.api import API
 import clc.APIv2.time_utils
 

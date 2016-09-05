@@ -192,6 +192,35 @@ class Group(object):
 		return(Groups(alias=self.alias,groups_lst=self.data['groups'],session=self.session))
 
 
+	def HorizontalAutoscale(self):
+		group_policy = clc.v2.API.Call(
+			'GET',
+			'groups/%s/%s/horizontalAutoscalePolicy' % (self.alias, self.id),
+			{},
+			session=self.session)
+
+		if group_policy:
+			return clc.v2.HorizontalAutoscalePolicy(group_policy['policyId'], alias=self.alias, session=self.session)
+
+
+	def ApplyHorizontalAutoscale(self, policy_id):
+		return clc.v2.API.Call(
+			'PUT',
+			'groups/%s/%s/horizontalAutoscalePolicy' % (self.alias, self.id),
+			{'policyId': policy_id},
+			session=self.session
+		)
+
+
+	def RemoveHorizontalAutoscale(self):
+		return clc.v2.API.Call(
+			'DELETE',
+			'groups/%s/%s/horizontalAutoscalePolicy' % (self.alias, self.id),
+			{},
+			session=self.session
+		)
+
+
 	def Servers(self):
 		"""Returns a Servers object containing all servers within the group.
 

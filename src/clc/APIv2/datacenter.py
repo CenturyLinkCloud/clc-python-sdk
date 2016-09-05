@@ -51,6 +51,7 @@ class Datacenter:
 		"""
 
 		self.deployment_capabilities = None
+		self.baremetal_capabilities = None
 		self.session = session
 
 		if alias:
@@ -110,6 +111,17 @@ class Datacenter:
 				session=self.session)
 
 		return(self.deployment_capabilities)
+
+
+	def BareMetalCapabilities(self,cached=True):
+		if self._DeploymentCapabilities()['supportsBareMetalServers']:
+			if not self.baremetal_capabilities or not cached:
+				self.baremetal_capabilities = clc.v2.API.Call(
+					'GET',
+					'datacenters/%s/%s/bareMetalCapabilities' % (self.alias,self.location),
+					session=self.session)
+
+		return(self.baremetal_capabilities)
 
 
 	def Networks(self, forced_load=False):

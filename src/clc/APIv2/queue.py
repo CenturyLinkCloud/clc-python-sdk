@@ -116,7 +116,7 @@ class Requests(object):
 	def __radd__(self,obj):  return(self.__add__(obj))
 
 
-	def WaitUntilComplete(self,poll_freq=2):
+	def WaitUntilComplete(self,poll_freq=2,timeout=None):
 		"""Poll until all request objects have completed.
 
 		If status is 'notStarted' or 'executing' continue polling.
@@ -132,6 +132,7 @@ class Requests(object):
 
 		"""
 
+		start_time = time.time()
 		while len(self.requests):
 			cur_requests = []
 			for request in self.requests:
@@ -141,6 +142,9 @@ class Requests(object):
 				elif status in ("failed", "unknown"): self.error_requests.append(request)
 
 			self.requests = cur_requests
+			if self.requests > 0 and timeout and (time.time() - start_time) > timeout:
+				raise clc.CLCException('Timeout waiting for Requests: {0}'.format(self.requests[0].id))
+
 			time.sleep(poll_freq)	# alternately - sleep for the delta between start time and 2s
 
 		# Is this the best approach?  Non-zero indicates some error.  Exception seems the wrong approach for
@@ -189,7 +193,7 @@ class Request(object):
 		return(self.data['status'])
 
 
-	def WaitUntilComplete(self,poll_freq=2):
+	def WaitUntilComplete(self,poll_freq=2,timeout=None):
 		"""Poll until status is completed.
 
 		If status is 'notStarted' or 'executing' continue polling.
@@ -199,10 +203,13 @@ class Request(object):
 		poll_freq option is in seconds
 
 		"""
+		start_time = time.time()
 		while not self.time_completed:
 			status = self.Status()
 			if status == 'executing':
 				if not self.time_executed:  self.time_executed = time.time()
+				if timeout and (time.time() - start_time) > timeout:
+					raise clc.CLCException('Timeout waiting for Request: {0}'.format(self.id))
 			elif status == 'succeeded':
 				self.time_completed = time.time()
 			elif status in ("failed", "resumed" or "unknown"):
