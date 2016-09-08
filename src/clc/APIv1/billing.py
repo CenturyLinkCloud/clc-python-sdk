@@ -24,10 +24,10 @@ class Billing:
 		"""
 		if alias is None:  alias = clc.v1.Account.GetAlias()
 		if location is None:  location = clc.v1.Account.GetLocation()
-		groups_id = clc.Group.GetGroupID(alias,location,group)
+                group_uuid = clc.v1.Group.GetGroupUUID(group,alias,location)
 
-		r = clc.v1.API.Call('post','Billing/GetGroupEstimate',{'AccountAlias': alias, 'HardwareGroupID': groups_id})
-		if int(r['StatusCode']) == 0:  
+		r = clc.v1.API.Call('post','Billing/GetGroupEstimate',{'AccountAlias': alias, 'HardwareGroupUUID': group_uuid})
+		if int(r['StatusCode']) == 0:
 			return(r)
 
 
@@ -49,7 +49,7 @@ class Billing:
 		if date_end is not None:  payload['EndDate'] = date_end
 
 		r = clc.v1.API.Call('post','Billing/GetGroupSummaries',payload)
-		if int(r['StatusCode']) == 0:  
+		if int(r['StatusCode']) == 0:
 			return(r['GroupTotals'])
 
 
@@ -64,7 +64,7 @@ class Billing:
 		"""
 		if alias is None:  alias = clc.v1.Account.GetAlias()
 		r = clc.v1.API.Call('post','Billing/GetServerEstimate',{'AccountAlias': alias, 'ServerName': server})
-		if int(r['StatusCode']) == 0:  
+		if int(r['StatusCode']) == 0:
 			return(r)
 
 
@@ -78,8 +78,5 @@ class Billing:
 		"""
 		if alias is None:  alias = clc.v1.Account.GetAlias()
 		r = clc.v1.API.Call('post','Billing/GetAccountSummary',{'AccountAlias': alias})
-		if int(r['StatusCode']) == 0:  
+		if int(r['StatusCode']) == 0:
 			return(r)
-
-
-
