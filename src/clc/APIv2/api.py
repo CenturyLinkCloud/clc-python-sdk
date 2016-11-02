@@ -66,10 +66,11 @@ class API():
 			raise(clc.APIV2NotEnabled)
 
 		session = clc._REQUESTS_SESSION
+		session.headers['content-type'] = "application/json"
 
 		r = session.request("POST",
                             "%s/v2/%s" % (clc.defaults.ENDPOINT_URL_V2,"authentication/login"),
-                            data={"username": clc.v2.V2_API_USERNAME, "password": clc.v2.V2_API_PASSWD},
+                            json={"username": clc.v2.V2_API_USERNAME, "password": clc.v2.V2_API_PASSWD},
                             verify=API._ResourcePath('clc/cacert.pem'))
 
 		if r.status_code == 200:
