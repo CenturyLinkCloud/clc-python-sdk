@@ -595,40 +595,22 @@ class Server(object):
 		# TODO - validate addition_disks path not in template reserved paths
 		# TODO - validate antiaffinity policy id set only with type=hyperscale
 
-		if type == 'bareMetal':
-			return clc.v2.Requests(
-				clc.v2.API.Call(
-					'POST',
-					'servers/%s' % (alias),
-					json.dumps({
-						'name': name,
-						'description': description,
-						'groupId': group_id,
-						'primaryDNS': primary_dns,
-						'secondaryDNS': secondary_dns,
-						'networkId': network_id,
-						'password': password,
-						'type': type,
-						'customFields': custom_fields,
-						'configurationId': configuration_id,
-						'osType': template
-					}),
-					session=session
-				),
-				alias=alias,
-				session=session)
+		payload = {
+			'name': name, 'description': description, 'groupId': group_id, 'primaryDNS': primary_dns, 'secondaryDNS': secondary_dns,
+			'networkId': network_id, 'password': password, 'type': type, 'customFields': custom_fields
+		}
 
+		if type == 'bareMetal':
+			payload.update({'configurationId': configuration_id, 'osType': template})
 		else:
-			return(clc.v2.Requests(clc.v2.API.Call('POST','servers/%s' % (alias),
-					json.dumps({'name': name, 'description': description, 'groupId': group_id, 'sourceServerId': template,
-								'isManagedOS': managed_os, 'primaryDNS': primary_dns, 'secondaryDNS': secondary_dns,
-								'networkId': network_id, 'ipAddress': ip_address, 'password': password,
-								'sourceServerPassword': source_server_password, 'cpu': cpu, 'cpuAutoscalePolicyId': cpu_autoscale_policy_id,
-								'memoryGB': memory, 'type': type, 'storageType': storage_type, 'antiAffinityPolicyId': anti_affinity_policy_id,
-								'customFields': custom_fields, 'additionalDisks': additional_disks, 'ttl': ttl, 'packages': packages}),
-							session=session),
-					alias=alias,
-					session=session))
+			payload.update({'sourceServerId': template, 'isManagedOS': managed_os, 'ipAddress': ip_address,
+				'sourceServerPassword': source_server_password, 'cpu': cpu, 'cpuAutoscalePolicyId': cpu_autoscale_policy_id,
+				'memoryGB': memory, 'storageType': storage_type, 'antiAffinityPolicyId': anti_affinity_policy_id,
+				'additionalDisks': additional_disks, 'ttl': ttl, 'packages': packages})
+
+		return clc.v2.Requests(clc.v2.API.Call('POST','servers/%s' % (alias), json.dumps(payload), session=session),
+							   alias=alias,
+							   session=session)
 
 
 	def Clone(self,network_id,name=None,cpu=None,memory=None,group_id=None,alias=None,password=None,ip_address=None,

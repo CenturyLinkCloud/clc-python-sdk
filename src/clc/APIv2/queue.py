@@ -142,8 +142,9 @@ class Requests(object):
 				elif status in ("failed", "unknown"): self.error_requests.append(request)
 
 			self.requests = cur_requests
-			if self.requests > 0 and timeout and (time.time() - start_time) > timeout:
-				raise clc.CLCException('Timeout waiting for Requests: {0}'.format(self.requests[0].id))
+			if self.requests > 0 and clc.v2.time_utils.TimeoutExpired(start_time, timeout):
+				raise clc.RequestTimeoutException('Timeout waiting for Requests: {0}'.format(self.requests[0].id),
+				                                  self.requests[0].Status())
 
 			time.sleep(poll_freq)	# alternately - sleep for the delta between start time and 2s
 
@@ -208,8 +209,9 @@ class Request(object):
 			status = self.Status()
 			if status == 'executing':
 				if not self.time_executed:  self.time_executed = time.time()
-				if timeout and (time.time() - start_time) > timeout:
-					raise clc.CLCException('Timeout waiting for Request: {0}'.format(self.id))
+				if clc.v2.time_utils.TimeoutExpired(start_time, timeout):
+					raise clc.RequestTimeoutException('Timeout waiting for Request: {0}'.format(self.id), status)
+
 			elif status == 'succeeded':
 				self.time_completed = time.time()
 			elif status in ("failed", "resumed" or "unknown"):

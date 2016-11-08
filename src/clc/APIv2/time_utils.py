@@ -24,6 +24,10 @@ def SecondsToZuluTS(secs=None):
 	return(datetime.utcfromtimestamp(secs).strftime("%Y-%m-%dT%H:%M:%SZ"))
 
 
+def TimeoutExpired(start_time, timeout):
+	return timeout and (time.time() - start_time) > timeout
+
+
 
 if __name__ == "__main__":
 	now = int(time.time())
