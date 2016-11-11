@@ -72,4 +72,7 @@ class InvalidAPIResponseException(CLCException):
     pass
 class APIFailedResponse(CLCException):
 	pass
-
+class RequestTimeoutException(CLCException):
+    def __init__(self, message, status):
+        super(RequestTimeoutException, self).__init__(message)
+        self.status = status
