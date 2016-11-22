@@ -185,7 +185,7 @@ class Server(object):
 				self.Refresh()
 			except clc.APIFailedResponse as e:
 				if e.response_status_code==404:  raise(clc.CLCException("Server does not exist"))
-				else: raise(clc.CLCException("An error occurred while creating the Server object"))
+				else: raise(clc.CLCException("HTTP error: %s" % e.response_status_code))
 
 
 	def Refresh(self):
