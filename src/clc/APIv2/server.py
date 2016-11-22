@@ -174,6 +174,7 @@ class Server(object):
 		self.public_ips = None
 		self.dirty = False
 		self.session = session
+		self.data = None
 
 		if alias:  self.alias = alias
 		else:  self.alias = clc.v2.Account.GetAlias(session=self.session)
@@ -184,6 +185,7 @@ class Server(object):
 				self.Refresh()
 			except clc.APIFailedResponse as e:
 				if e.response_status_code==404:  raise(clc.CLCException("Server does not exist"))
+				else: raise(clc.CLCException("An error occurred while creating the Server object"))
 
 
 	def Refresh(self):
@@ -218,9 +220,11 @@ class Server(object):
 		elif var == 'secondary_ip_addresses':  key = 'secondaryIPAddresses'
 		else:  key = re.sub("_(.)",lambda pat: pat.group(1).upper(),var)
 
-		if key in self.data:  return(self.data[key])
-		elif key in self.data['details']:  return(self.data['details'][key])
-		elif key in self.data['changeInfo']:  return(self.data['changeInfo'][key])
+		data = self.__dict__.get('data', None)
+		if data is None:  raise AttributeError('Server object has no info loaded')
+		elif key in data:  return(data[key])
+		elif 'details' in data and key in data['details']:  return(data['details'][key])
+		elif 'changeInfo' in data and key in data['changeInfo']:  return(data['changeInfo'][key])
 		elif key in ("reservedDrivePaths", "addingCpuRequiresReboot", "addingMemoryRequiresReboot"):  return(self._Capabilities()[key])
 		else:  raise(AttributeError("'%s' instance has no attribute '%s'" % (self.__class__.__name__,key)))
 
