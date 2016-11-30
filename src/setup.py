@@ -5,6 +5,9 @@
 # python setup.py bdist_rpm
 #
 
+# follow notes from https://packaging.python.org/distributing/#id69
+# and release with `python setup.py sdist upload`
+
 from setuptools import setup, find_packages
 
 setup(
