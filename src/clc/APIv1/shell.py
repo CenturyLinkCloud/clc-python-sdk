@@ -1,7 +1,10 @@
 """Command-line interface to the CenturyLink Cloud (CLC) API."""
 
 import argparse
-import ConfigParser
+try:
+    from configparser import ConfigParser
+except:
+    from ConfigParser import ConfigParser
 import os
 import sys
 import clc
@@ -372,7 +375,7 @@ class Args:
 				config_file = "/usr/local/etc/clc_config"
 		if config_file:  
 			clc.v1.output.Status('SUCCESS',3,"Reading %s" % (config_file))
-			config = ConfigParser.ConfigParser()
+			config = ConfigParser()
 			config.read(config_file)
 
 			if config.has_option('global','v1_api_key'):  clc.v1.V1_API_KEY = config.get('global','v1_api_key')
@@ -921,10 +924,10 @@ class ExecCommand():
 				cols = ['Server']
 
 			if not isinstance(r, list):  r = [r]
-			if not supress_output and clc.args.args.format == 'json':  print clc.v1.output.Json(r,cols)
-			elif not supress_output and clc.args.args.format == 'table':  print clc.v1.output.Table(r,cols)
-			elif not supress_output and clc.args.args.format == 'text':  print clc.v1.output.Text(r,cols)
-			elif not supress_output and clc.args.args.format == 'csv':  print clc.v1.output.Csv(r,cols)
+			if not supress_output and clc.args.args.format == 'json':  print( clc.v1.output.Json(r,cols))
+			elif not supress_output and clc.args.args.format == 'table':  print( clc.v1.output.Table(r,cols))
+			elif not supress_output and clc.args.args.format == 'text':  print( clc.v1.output.Text(r,cols))
+			elif not supress_output and clc.args.args.format == 'csv':  print( clc.v1.output.Csv(r,cols))
 
 			return(r)
 		except clc.AccountDeletedException:

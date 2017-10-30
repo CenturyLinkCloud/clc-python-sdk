@@ -10,7 +10,10 @@ API v2 - n/a
 import re
 import os
 import ftplib
-import urlparse
+# try:
+#     from urllib.parse import urlparse
+# except ImportError:
+#     from urlparse import urlparse
 if os.name == 'posix':  import curses
 import operator
 import clc
@@ -199,10 +202,10 @@ class Blueprint:
 			for t in sorted(items_lst.items(),key = lambda x :x[1]['Description']):
 				l = t[0]
 				l_f = "(%s)" % (l)
-				if items_lst[l]['selected']:  print "[x] %s %s" % (l_f.ljust(4),items_lst[l]['Description'])
-				else:  print "[ ] %s %s" % (l_f.ljust(4),items_lst[l]['Description'])
+				if items_lst[l]['selected']:  print( "[x] %s %s" % (l_f.ljust(4),items_lst[l]['Description']))
+				else:  print( "[ ] %s %s" % (l_f.ljust(4),items_lst[l]['Description']))
 
-		print "\n"
+		print( "\n")
 		return(raw_input(" > "))
 
 
