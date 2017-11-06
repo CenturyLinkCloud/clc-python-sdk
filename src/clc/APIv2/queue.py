@@ -84,7 +84,7 @@ class Requests(object):
 					self.requests.append(Request([obj['id'] for obj in r['links'] if obj['rel']=='status'][0],
 				                             alias=self.alias,request_obj={'context_key': context_key, 'context_val': context_val},
 											 session=self.session))
-			else:
+			elif 'errorMessage' in r:
 				# If we're dealing with a list of responses and we have an error with one I'm not sure how
 				# folks would expect this to behave.  If server is already in desired state thus the request
 				# fails that shouldn't be an exception.  If we're running against n tasks and just one has an
