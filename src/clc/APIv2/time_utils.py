@@ -32,7 +32,7 @@ def TimeoutExpired(start_time, timeout):
 if __name__ == "__main__":
 	now = int(time.time())
 
-	print "Now:     %s" % now
-	print "To TS:   %s" % SecondsToZuluTS(now)
-	print "To Secs: %s" % ZuluTSToSeconds(SecondsToZuluTS(now))
+	print( "Now:     %s" % now)
+	print( "To TS:   %s" % SecondsToZuluTS(now))
+	print( "To Secs: %s" % ZuluTSToSeconds(SecondsToZuluTS(now)))
 

@@ -16,9 +16,9 @@ API Documentaton v2: https://t3n.zendesk.com/categories/20067994-API-v2-0-Beta-
 
 """
 
-import APIv1 as v1
-import APIv2 as v2
-import defaults
+from . import defaults
+from . import APIv1 as v1
+from . import APIv2 as v2
 import requests
 
 
