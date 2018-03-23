@@ -189,7 +189,7 @@ class Request(object):
 			try:
 				self.data['status'] = clc.v2.API.Call('GET','operations/%s/status/%s' % (self.alias,self.id),{},session=self.session)['status']
 			except clc.APIFailedResponse as e:
-				if e.response_status_code == 500:  pass
+				if e.response_status_code == 500 or e.response_status_code == 503:  pass
 				else:  raise(e)
 		return(self.data['status'])
 
@@ -272,6 +272,6 @@ class Requestv2Experimental(Request):
 			try:
 				self.data['status'] = clc.v2.API.Call('GET',self.uri,{},session=self.session)['status']
 			except clc.APIFailedResponse as e:
-				if e.response_status_code == 500:  pass
+				if e.response_status_code == 500 or e.response_status_code == 503:  pass
 				else:  raise(e)
 		return(self.data['status'])
