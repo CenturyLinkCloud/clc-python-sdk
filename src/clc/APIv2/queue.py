@@ -63,7 +63,7 @@ class Requests(object):
 
 		for r in requests_lst:
 
-			if 'server' in r and len(r['server'])<=6:
+			if 'server' in r and len(r['server'])<=8:
 				# Hopefully this captures only new server builds, TODO find a better way to ID these
 				for link in r['links']:
 					if re.search("/v2/servers/",link['href']):
