@@ -745,7 +745,7 @@ class Server(object):
 		"""
 
 		# 0: {op: "set", member: "password", value: {current: " r`5Mun/vT:qZ]2?z", password: "Savvis123!"}}
-		if self.state != "active":  raise(clc.CLCException("Server must be powered on to change password"))
+		if self.data['status'] != "active":  raise(clc.CLCException("Server must be powered on to change password"))
 
 		return(clc.v2.Requests(clc.v2.API.Call('PATCH','servers/%s/%s' % (self.alias,self.id),
 		                                       json.dumps([{"op": "set", "member": "password", "value": {"current": self.Credentials()['password'], "password": password}}]),
