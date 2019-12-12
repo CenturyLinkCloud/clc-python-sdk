@@ -42,6 +42,7 @@ Server object variables available but access subject to change with future relea
 	server.managed_apps
 
 """
+from __future__ import print_function, absolute_import, unicode_literals
 
 # vCur:
 # TODO - Server pricing (/v2/billing/btdi/serverPricing/wa1btdiapi207) returns array with static hourly pricing
@@ -145,7 +146,7 @@ class Servers(object):
 
 
 
-class Server(object):
+class Server(object):  # pylint: disable=too-many-instance-attributes
 
 
 	def __init__(self,id,alias=None,server_obj=None,session=None):
@@ -203,7 +204,7 @@ class Server(object):
 			self.data['changeInfo']['modifiedDate'] = clc.v2.time_utils.ZuluTSToSeconds(self.data['changeInfo']['modifiedDate'])
 
 			# API call switches between GB and MB.  Change to all references are in GB and we drop the units
-			self.data['details']['memoryGB'] = int(math.floor(self.data['details']['memoryMB']/1024))
+			self.data['details']['memoryGB'] = int(math.floor(self.data['details']['memoryMB'] // 1024))
 		except:
 			pass
 
@@ -547,6 +548,7 @@ class Server(object):
 			   additional_disks=[],custom_fields=[],ttl=None,managed_os=False,description=None,
 			   source_server_password=None,cpu_autoscale_policy_id=None,anti_affinity_policy_id=None,
 			   packages=[],configuration_id=None,session=None):
+		# pylint: disable=too-many-locals,too-many-branches
 		"""Creates a new server.
 
 		https://www.centurylinkcloud.com/api-docs/v2/#servers-create-server
@@ -622,6 +624,7 @@ class Server(object):
 			  custom_fields=None,ttl=None,managed_os=False,description=None,
 			  source_server_password=None,cpu_autoscale_policy_id=None,anti_affinity_policy_id=None,
 			  packages=[],count=1):
+		# pylint: disable=too-many-locals,too-many-branches
 		"""Creates one or more clones of existing server.
 
 		https://www.centurylinkcloud.com/api-docs/v2/#servers-create-server
@@ -643,7 +646,7 @@ class Server(object):
 
 		"""
 
-		if not name:  name = re.search("%s(.+)\d{2}$" % self.alias,self.name).group(1)
+		if not name:  name = re.search(r"%s(.+)\d{2}$" % self.alias,self.name).group(1)
 		#if not description and self.description:  description = self.description
 		if not cpu:  cpu = self.cpu
 		if not memory:  memory = self.memory
@@ -661,7 +664,7 @@ class Server(object):
 		# TODO - need to get network_id of self, not currently exposed via API :(
 
 		requests_lst = []
-		for i in range(0,count):
+		for _ in range(0,count):
 			requests_lst.append(Server.Create( \
 			            name=name,cpu=cpu,memory=memory,group_id=group_id,network_id=network_id,alias=self.alias,
 						password=password,ip_address=ip_address,storage_type=storage_type,type=type,
@@ -698,7 +701,7 @@ class Server(object):
 
 
 
-	def Change(self,cpu=None,memory=None,description=None,group_id=None):
+	def Change(self,cpu=None,memory=None,description=None,group_id=None):  # pylint: disable=unused-argument
 		"""Change existing server object.
 
 		One more more fields can be set and method will return with a requests
@@ -708,10 +711,9 @@ class Server(object):
 
 		"""
 
-		if group_id:  groupId = group_id
+		if group_id:  groupId = group_id  # pylint: disable=unused-variable
 		else:  groupId = None
 
-		payloads = []
 		requests = []
 
 		for key in ("cpu","memory","description","groupId"):

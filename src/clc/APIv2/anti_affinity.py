@@ -13,14 +13,15 @@ Antiaffinity object variables:
 	antiaffinity.servers
 
 """
+from __future__ import print_function, absolute_import, unicode_literals
 
 # TODO - Update Anti-Affinity Policy - returning 500 error
 # TODO - Create Anti-Affinity Policy - returning 400 error
 # TODO - Return servers object
 
 
-import clc
 import json
+import clc
 
 class AntiAffinity(object):
 
@@ -121,7 +122,7 @@ class AntiAffinity(object):
 
 		"""
 
-		r = clc.v2.API.Call('PUT','antiAffinityPolicies/%s/%s' % (self.alias,self.id),{'name': name},session=self.session)
+		_ = clc.v2.API.Call('PUT','antiAffinityPolicies/%s/%s' % (self.alias,self.id),{'name': name},session=self.session)
 		self.name = name
 
 
@@ -133,7 +134,7 @@ class AntiAffinity(object):
 		>>> a = clc.v2.AntiAffinity.GetLocation("WA1")[0]
 		>>> a.Delete()
 		"""
-		r = clc.v2.API.Call('DELETE','antiAffinityPolicies/%s/%s' % (self.alias,self.id),{},session=self.session)
+		_ = clc.v2.API.Call('DELETE','antiAffinityPolicies/%s/%s' % (self.alias,self.id),{},session=self.session)
 
 
 	def __str__(self):

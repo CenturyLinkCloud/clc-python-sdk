@@ -15,6 +15,7 @@ API Documentaton v1: https://t3n.zendesk.com/categories/20012068-API-v1-0
 API Documentaton v2: https://t3n.zendesk.com/categories/20067994-API-v2-0-Beta-
 
 """
+from __future__ import print_function, absolute_import, unicode_literals
 import requests
 
 import clc.defaults

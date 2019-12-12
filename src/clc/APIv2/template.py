@@ -9,9 +9,7 @@ Template object variables:
 	template.id (alias of name)
 
 """
-
-
-import clc
+from __future__ import print_function, absolute_import, unicode_literals
 
 
 class Templates(object):
@@ -46,7 +44,7 @@ class Templates(object):
 		return(results)
 
 
-class Template(object):
+class Template(object):  # pylint: disable=too-few-public-methods
 
 	def __init__(self,id,template_obj=None):
 		"""Create Template object."""

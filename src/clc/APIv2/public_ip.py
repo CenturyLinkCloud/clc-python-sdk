@@ -23,6 +23,7 @@ Source Restriction object variables:
 	source_restriction.cidr
 
 """
+from __future__ import print_function, absolute_import, unicode_literals
 
 # vCur:
 
@@ -34,7 +35,6 @@ Source Restriction object variables:
 
 
 import re
-import time
 import json
 import clc
 
@@ -153,7 +153,6 @@ class PublicIP(object):
 
 		"""
 
-		public_ip_set = [{'public_ipId': o.id} for o in self.parent.public_ips if o!=self]
 		self.parent.public_ips = [o for o in self.parent.public_ips if o!=self]
 		return(clc.v2.Requests(clc.v2.API.Call('DELETE','servers/%s/%s/publicIPAddresses/%s' % (self.parent.server.alias,self.parent.server.id,self.id),
 											   session=self.session),

@@ -1,5 +1,5 @@
 """
-Alert related functions.  
+Alert related functions.
 
 Alerts object variables:
 
@@ -10,14 +10,12 @@ Alert object variables:
 	alert.server (optional server name already mapped to policy)
 
 """
+from __future__ import print_function, absolute_import, unicode_literals
 
 # TODO - Alerts filter by server, type (RAM, Disk, etc.)
 # TODO - Alert map/unmap
 # TODO - Alert delete
 # TODO - Alert create - missing API spec
-
-import clc
-
 
 class Alerts(object):
 
