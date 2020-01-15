@@ -14,7 +14,7 @@ This repository contains a *Python SDK* and a command line interface *CLI* (base
 ## Installing
 
 ### Via Python's pip
-Cross-platform installation is available via pypi.  Requires *Python 2.7* - this is not currently compatible with Python 3.
+Cross-platform installation is available via pypi.
 If you have pip already installed the following command will get you running:
 ```
 > pip install clc-sdk

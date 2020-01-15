@@ -61,7 +61,6 @@ from __future__ import print_function, absolute_import, unicode_literals
 # TODO - Servers search by custom field
 
 import re
-import math
 import json
 import time
 import clc
@@ -204,7 +203,7 @@ class Server(object):  # pylint: disable=too-many-instance-attributes
 			self.data['changeInfo']['modifiedDate'] = clc.v2.time_utils.ZuluTSToSeconds(self.data['changeInfo']['modifiedDate'])
 
 			# API call switches between GB and MB.  Change to all references are in GB and we drop the units
-			self.data['details']['memoryGB'] = int(math.floor(self.data['details']['memoryMB'] // 1024))
+			self.data['details']['memoryGB'] = self.data['details']['memoryMB'] // 1024
 		except:
 			pass
 
