@@ -28,6 +28,7 @@ Group object variables available but access subject to change with future releas
 	group.custom_fields
 
 """
+from __future__ import print_function, absolute_import, unicode_literals
 
 # vCur:
 
@@ -46,7 +47,6 @@ Group object variables available but access subject to change with future releas
 
 
 import re
-import json
 import clc
 
 

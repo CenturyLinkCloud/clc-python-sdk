@@ -10,6 +10,7 @@ Disk object variables:
 	disk.size - disk size in GB
 
 """
+from __future__ import print_function, absolute_import, unicode_literals
 
 
 import re

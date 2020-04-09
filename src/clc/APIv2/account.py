@@ -21,6 +21,7 @@ Account object variables:
     account.is_managed
 
 """
+from __future__ import print_function, absolute_import, unicode_literals
 
 # TODO - change account
 # TODO - delete account
@@ -29,7 +30,7 @@ Account object variables:
 import re
 import clc
 
-class Account:
+class Account(object):
 
     @staticmethod
     def GetAlias(session=None):

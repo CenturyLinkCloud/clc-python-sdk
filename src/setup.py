@@ -1,4 +1,3 @@
-
 #
 # python setup.py sdist
 # python setup.py bdist_dumb
@@ -7,12 +6,12 @@
 
 # follow notes from https://packaging.python.org/distributing/#id69
 # and release with `python setup.py sdist upload`
-
+from __future__ import unicode_literals
 from setuptools import setup, find_packages
 
 setup(
 	name = "clc-sdk",
-	version = "2.47",
+	version = "2.48",
 	packages = find_packages("."),
 
 	install_requires = ['prettytable','clint','argparse','requests'],
@@ -31,6 +30,12 @@ setup(
 	keywords = "CenturyLink Cloud SDK CLI",
 	url = "https://github.com/CenturyLinkCloud/clc-python-sdk",
 
-	# could also include long_description, download_url, classifiers, etc.
+	classifiers=[ # See https://pypi.org/pypi?%3Aaction=list_classifiers
+		"Natural Language :: English",
+		"Intended Audience :: Developers",
+		"Programming Language :: Python",
+		"Programming Language :: Python :: 2.7",
+		"Programming Language :: Python :: 3",  # v2 API only
+	],
 )
 

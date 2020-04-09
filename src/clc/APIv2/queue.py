@@ -22,6 +22,7 @@ Requestv2Exprimental (extends request) variables:
 
 
 """
+from __future__ import print_function, absolute_import, unicode_literals
 
 # TODO - Do something with timing info from Request and Requests?
 
@@ -30,14 +31,14 @@ import time
 import clc
 
 
-class Queue(object):
+class Queue(object):  # pylint: disable=too-few-public-methods
 	pass
 
 
 
 class Requests(object):
 
-	def __init__(self,requests_lst,alias=None,session=None):
+	def __init__(self,requests_lst,alias=None,session=None):  # pylint: disable=too-many-branches
 		"""Create Requests object.
 
 		Treats one or more requests as an atomic unit.
@@ -102,7 +103,7 @@ class Requests(object):
 
 
 	def __add__(self,obj):
-		if type(obj) is int:  return(self)	# we get this with a sum() call - ignore the first argument
+		if isinstance(obj, int):  return(self)	# we get this with a sum() call - ignore the first argument
 		if self.alias != obj.alias:  raise(ArithmeticError("Cannot add Requests operating on different aliases"))
 
 		new_obj = Requests([],alias=self.alias,session=self.session)
@@ -176,7 +177,7 @@ class Request(object):
 
 		if request_obj:  self.data = request_obj
 		else:  self.data = {'context_key': None, 'context_val': None}
-		self.data = dict({'status': None}.items() + self.data.items())
+		self.data = dict(list({'status': None}.items()) + list(self.data.items()))
 
 
 	def __getattr__(self,var):
@@ -250,7 +251,7 @@ class Request(object):
 class Requestv2Experimental(Request):
 	"""This is the v2-experimental implementation for requests. """
 
-	def __init__(self,id,uri,session=None):
+	def __init__(self,id,uri,session=None):  # pylint: disable=super-init-not-called
 		"""Create Request object.
 
 		Response string feeding this looks like:

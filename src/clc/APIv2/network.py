@@ -21,6 +21,7 @@ Network object variables:
 	network.description
 
 """
+from __future__ import print_function, absolute_import, unicode_literals
 
 
 # TODO - create, change, delete NW  - pending API spec
@@ -146,7 +147,7 @@ class Network(object):
 		payload = {'name': name}
 		payload['description'] = description if description else self.description
 
-		r = clc.v2.API.Call('PUT','/v2-experimental/networks/%s/%s/%s' % (self.alias, location, self.id), payload, session=self.session)
+		_ = clc.v2.API.Call('PUT','/v2-experimental/networks/%s/%s/%s' % (self.alias, location, self.id), payload, session=self.session)
 
 		self.name = self.data['name'] = name
 		if description: self.data['description'] = description

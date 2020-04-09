@@ -14,6 +14,7 @@ Datacenter object variables:
 	datacenter.supports_shared_load_balancer
 
 """
+from __future__ import print_function, absolute_import, unicode_literals
 
 # TODO - init link to billing, statistics, scheduled activities
 # TODO - accounts link?
@@ -21,7 +22,7 @@ Datacenter object variables:
 import re
 import clc
 
-class Datacenter:
+class Datacenter(object):  # pylint: disable=too-many-instance-attributes
 
 	@staticmethod
 	def Datacenters(alias=None, session=None):
@@ -64,7 +65,7 @@ class Datacenter:
 		else:
 			self.location = clc.v2.Account.GetLocation(session=self.session)
 
-		if False:
+		if False:  # pylint: disable=using-constant-test
 			# prepopulated info
 			self.name = name
 			self.location = location

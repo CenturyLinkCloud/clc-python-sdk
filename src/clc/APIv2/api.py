@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 """Private class that executes API calls."""
+from __future__ import print_function, absolute_import, unicode_literals
 
-import requests
-import xml.etree.ElementTree
-import clc
 import os
 import sys
+import clc
+import requests
 
 
-class API():
+class API(object):
 
 	# requests module includes cacert.pem which is visible when run as installed module.
 	# pyinstall single-file deployment needs cacert.pem packaged along and referenced.
@@ -84,7 +84,7 @@ class API():
 
 
 	@staticmethod
-	def Call(method,url,payload=None,session=None,debug=False):
+	def Call(method,url,payload=None,session=None,debug=False):  # pylint: disable=too-many-branches
 		"""Execute v2 API call.
 
 		:param url: URL paths associated with the API call
@@ -112,7 +112,7 @@ class API():
 
 		http_session.headers.update({'Authorization': "Bearer %s" % token})
 
-		if isinstance(payload, basestring):  http_session.headers['content-type'] = "Application/json" # added for server ops with str payload
+		if isinstance(payload, str):  http_session.headers['content-type'] = "Application/json" # added for server ops with str payload
 		else:  http_session.headers['content-type'] = "application/x-www-form-urlencoded"
 
 		if method=="GET":
