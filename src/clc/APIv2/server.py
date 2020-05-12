@@ -351,7 +351,7 @@ class Server(object):  # pylint: disable=too-many-instance-attributes
 			return(clc.v2.Requests(
 				clc.v2.API.Call(
 					'POST',
-					'operations/%s/servers/%s' % (self.alias,operation),'["%s"]' % self.id,
+					'operations/%s/servers/%s' % (self.alias,operation),json.dumps([self.id]),
 					session=self.session),
 				alias=self.alias,
 				session=self.session))
