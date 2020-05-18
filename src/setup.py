@@ -11,7 +11,7 @@ from setuptools import setup, find_packages
 
 setup(
 	name = "clc-sdk",
-	version = "2.48",
+	version = "2.49",
 	packages = find_packages("."),
 
 	install_requires = ['prettytable','clint','argparse','requests'],
