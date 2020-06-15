@@ -143,7 +143,7 @@ class Requests(object):
 				elif status in ("failed", "unknown"): self.error_requests.append(request)
 
 			self.requests = cur_requests
-			if self.requests > 0 and clc.v2.time_utils.TimeoutExpired(start_time, timeout):
+			if len(self.requests) > 0 and clc.v2.time_utils.TimeoutExpired(start_time, timeout):
 				raise clc.RequestTimeoutException('Timeout waiting for Requests: {0}'.format(self.requests[0].id),
 				                                  self.requests[0].Status())
 
