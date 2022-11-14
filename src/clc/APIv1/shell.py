@@ -344,7 +344,7 @@ class Args:
 		parser.add_argument('--v1-api-passwd', metavar='PASSWORD', help='V1 API password')
 		parser.add_argument('--v2-api-username', metavar='USERNAME', help='V2 API username')
 		parser.add_argument('--v2-api-passwd', metavar='PASSWORD', help='V2 API password')
-		parser.add_argument('--async', action="store_true", default=False, help='Return immediately after queueing long-running calls')
+		parser.add_argument('--async', action="store_true", dest='is_async', default=False, help='Return immediately after queueing long-running calls')
 		parser.add_argument('--quiet', '-q', action='count', help='Supress status output (repeat up to 2 times)')
 		parser.add_argument('--verbose', '-v', action='count', help='Increase verbosity')
 		parser.add_argument('--format', '-f', choices=['json','table','text','csv'], default='table', help='Output result format (table is default)')
@@ -709,7 +709,7 @@ class ExecCommand():
 
 
 	def ServerActions(self,action):
-		clc.args.args.async = True  # Force async - we can't current deal with multiple queued objects
+		clc.args.args.is_async = True  # Force async - we can't current deal with multiple queued objects
 		r = self.Exec('clc.v1.Server.%s' % (action), { 'alias': self._GetAlias(), 'servers': clc.args.GetArgs().server },
 		              cols=['RequestID','StatusCode','Message'])
 
@@ -898,7 +898,7 @@ class ExecCommand():
 
 
 	def PublishBlueprintsPackage(self):
-		clc.args.args.async = True
+		clc.args.args.is_async = True
 		if clc.args.args.os is None:
 			r = self.Exec('clc.v1.Blueprint.PackagePublishUI', 
 			              { 'package': clc.args.args.package, 'classification': clc.args.args.type, 'visibility': clc.args.args.visibility },
@@ -919,7 +919,7 @@ class ExecCommand():
 
 			# Output results
 			# TODO - how do we differentiate blueprints vs. queue RequestIDs?
-			if r is not None and 'RequestID' in r and not clc.args.args.async:  
+			if r is not None and 'RequestID' in r and not clc.args.args.is_async:  
 				r = clc.v1.output.RequestBlueprintProgress(r['RequestID'],self._GetLocation(),self._GetAlias(),clc.args.args.quiet)
 				cols = ['Server']
 
